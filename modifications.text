@@ -1,0 +1,5 @@
+
+To verify:
+1) ATS Score Checker Button - Analyze CV against common ATS keywords - check if everything works fine
+2) Bug when downlaoding the PDF is blank, the preview is fine, but the downlaoded document isn't, also, the name is strange of the document, can we have name_profile_date_language?
+3) from the landing modal, when we select one language, if we click on it, it doesn't remain highlighted, despite the language seelction process works, can you check please and spot the Bug

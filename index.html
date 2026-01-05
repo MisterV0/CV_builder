@@ -5,11 +5,44 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sartor CV - Tailored by your needs</title>
     
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="resources/logo.svg">
+    <link rel="apple-touch-icon" href="resources/logo.svg">
+    
+    <!-- Open Graph / Social Media Meta Tags -->
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Sartor CV - Tailored by your needs">
+    <meta property="og:description" content="Create professional CVs tailored to your needs">
+    <meta property="og:image" content="resources/logo.svg">
+    <meta property="og:image:type" content="image/svg+xml">
+    <meta property="og:image:width" content="745">
+    <meta property="og:image:height" content="608">
+    
+    <!-- Twitter Card Meta Tags -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Sartor CV - Tailored by your needs">
+    <meta name="twitter:description" content="Create professional CVs tailored to your needs">
+    <meta name="twitter:image" content="resources/logo.svg">
+    
+    <!-- Google Search / General Meta Tags -->
+    <meta name="description" content="Create professional CVs tailored to your needs">
+    <meta name="image" content="resources/logo.svg">
+    
+    <!-- Language Alternate Links for SEO -->
+    <link rel="alternate" hreflang="en" href="https://sartorcv.com/" />
+    <link rel="alternate" hreflang="it" href="https://sartorcv.com/?lang=it" />
+    <link rel="alternate" hreflang="ro" href="https://sartorcv.com/?lang=ro" />
+    <link rel="alternate" hreflang="ru" href="https://sartorcv.com/?lang=ru" />
+    <link rel="alternate" hreflang="uk" href="https://sartorcv.com/?lang=uk" />
+    <link rel="alternate" hreflang="x-default" href="https://sartorcv.com/" />
+    
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Outfit:wght@400;500;600&family=Plus+Jakarta+Sans:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
     
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <script src="translations.js"></script>
+    <script src="validation.js"></script>
 
     <style>
         /* 
@@ -18,29 +51,29 @@
         :root {
             --bg-body: #FAFBFC; 
             --surface-card: #FFFFFF;
-            --surface-border: rgba(15, 23, 42, 0.08);
+            --surface-border: rgba(55, 65, 81, 0.08);
             
-            --text-primary: #0F172A;
-            --text-secondary: #64748B;
-            --text-tertiary: #94A3B8;
+            --text-primary: #1F2937;
+            --text-secondary: #374151;
+            --text-tertiary: #6B7280;
             
-            --brand-primary: #1E40AF;
-            --brand-gradient: linear-gradient(135deg, #1E40AF 0%, #2563EB 100%);
-            --brand-light: #EFF6FF;
-            --brand-hover: #1e3a8a;
+            --brand-primary: #FB7185;
+            --brand-gradient: linear-gradient(135deg, #FB7185 0%, #F43F5E 100%);
+            --brand-light: rgba(251, 113, 133, 0.08);
+            --brand-hover: #F43F5E;
             --success: #10B981; 
             --danger: #EF4444;
-            --accent-exp: #F59E0B;
-            --accent-edu: #06B6D4;
-            --accent-skill: #8B5CF6;
-            --accent-cert: #EC4899;
-            --accent-lang: #6366F1;
+            --accent-exp: #FB7185;
+            --accent-edu: #F43F5E;
+            --accent-skill: #FB7185;
+            --accent-cert: #F43F5E;
+            --accent-lang: #FB7185;
             
             --radius-std: 10px;
             --radius-lg: 16px; 
             
             --shadow-card: 0 1px 3px rgba(0, 0, 0, 0.08), 0 1px 2px rgba(0, 0, 0, 0.04);
-            --shadow-hover: 0 10px 25px rgba(30, 64, 175, 0.12);
+            --shadow-hover: 0 10px 25px rgba(251, 113, 133, 0.12);
             --shadow-neumorphic: 0 4px 20px rgba(0, 0, 0, 0.08);
             
             --font-head: "Outfit", -apple-system, sans-serif;
@@ -77,14 +110,14 @@
             display: none;
             align-items: center;
             justify-content: center;
-            box-shadow: 0 8px 24px rgba(30, 64, 175, 0.3);
+            box-shadow: 0 8px 24px rgba(251, 113, 133, 0.3);
             transition: all 0.3s var(--transition-smooth);
             z-index: 999;
         }
         
         #scrollToTopBtn:hover {
             transform: translateY(-4px);
-            box-shadow: 0 12px 32px rgba(30, 64, 175, 0.4);
+            box-shadow: 0 12px 32px rgba(251, 113, 133, 0.4);
         }
         
         #scrollToTopBtn:active {
@@ -199,6 +232,129 @@
             text-decoration: underline;
         }
         
+        /* --- PREMIUM MODAL STYLES --- */
+        .premium-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(31, 41, 55, 0.75);
+            z-index: 2100;
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            backdrop-filter: blur(20px) saturate(180%);
+            -webkit-backdrop-filter: blur(20px) saturate(180%);
+            padding: 20px;
+            animation: fadeIn 0.3s var(--transition-smooth);
+        }
+        
+        .premium-modal.show {
+            display: flex;
+        }
+        
+        .premium-modal-container {
+            background: white;
+            border-radius: 20px;
+            padding: 0;
+            box-shadow: 0 32px 96px rgba(0, 0, 0, 0.25), 0 0 0 1px rgba(251, 113, 133, 0.08) inset;
+            max-width: 600px;
+            width: 100%;
+            max-height: 85vh;
+            overflow: hidden;
+            animation: modalSlideIn 0.4s var(--transition-bouncy);
+            position: relative;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .premium-modal-header {
+            background: linear-gradient(135deg, #1F2937 0%, #374151 100%);
+            padding: 20px 28px;
+            position: relative;
+        }
+        
+        .premium-modal-header::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+        }
+        
+        .premium-modal-title {
+            font-size: 24px;
+            font-weight: 700;
+            color: white;
+            margin: 0;
+            font-family: 'Plus Jakarta Sans', -apple-system, sans-serif;
+            letter-spacing: -0.3px;
+        }
+        
+        .premium-modal-subtitle {
+            font-size: 13px;
+            color: rgba(255, 255, 255, 0.8);
+            margin: 8px 0 0;
+            font-weight: 700;
+            font-family: 'Plus Jakarta Sans', -apple-system, sans-serif;
+            text-align: center;
+        }
+        
+        .premium-modal-close {
+            position: absolute;
+            top: 24px;
+            right: 24px;
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            border: none;
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s var(--transition-smooth);
+            font-size: 18px;
+            line-height: 1;
+        }
+        
+        .premium-modal-close:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: scale(1.1);
+        }
+        
+        .premium-modal-content {
+            padding: 40px;
+            overflow-y: auto;
+            flex: 1;
+            min-height: 0;
+            font-family: 'Plus Jakarta Sans', -apple-system, sans-serif;
+        }
+        
+        .premium-modal-body {
+            font-size: 14px;
+            line-height: 1.7;
+            color: var(--text-primary);
+        }
+        
+        /* --- LANGUAGE MODAL STYLES --- */
+        .language-option-btn:hover {
+            border-color: var(--brand-primary) !important;
+            background: var(--brand-light) !important;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(251, 113, 133, 0.15);
+        }
+        
+        .language-option-btn.active {
+            border-color: var(--brand-primary) !important;
+            background: var(--brand-light) !important;
+        }
+        
         /* --- TERMS OF SERVICE MODAL --- */
         #tos-modal {
             position: fixed;
@@ -206,14 +362,16 @@
             left: 0;
             right: 0;
             bottom: 0;
-            background: rgba(15, 23, 42, 0.7);
+            background: rgba(31, 41, 55, 0.75);
             z-index: 2100;
             display: none;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            backdrop-filter: blur(16px);
+            backdrop-filter: blur(20px) saturate(180%);
+            -webkit-backdrop-filter: blur(20px) saturate(180%);
             padding: 20px;
+            animation: fadeIn 0.3s var(--transition-smooth);
         }
         
         .tos-container {
@@ -281,12 +439,12 @@
         .tos-btn-primary {
             background: var(--brand-gradient);
             color: white;
-            box-shadow: 0 8px 20px rgba(30, 64, 175, 0.2);
+            box-shadow: 0 8px 20px rgba(251, 113, 133, 0.2);
         }
         
         .tos-btn-primary:hover {
             transform: translateY(-2px);
-            box-shadow: 0 12px 28px rgba(30, 64, 175, 0.3);
+            box-shadow: 0 12px 28px rgba(251, 113, 133, 0.3);
         }
         
         .tos-btn-secondary {
@@ -406,7 +564,7 @@
         .card:hover { 
             box-shadow: var(--shadow-hover);
             transform: translateY(-6px);
-            border-color: rgba(30, 64, 175, 0.12);
+            border-color: rgba(251, 113, 133, 0.12);
         }
 
         .section-title {
@@ -505,11 +663,11 @@
         input:focus, textarea:focus, select:focus {
             background: #FFFFFF;
             border-color: var(--brand-primary);
-            box-shadow: 0 0 0 5px rgba(30, 64, 175, 0.1), inset 0 1px 2px rgba(0, 0, 0, 0.04);
+            box-shadow: 0 0 0 5px rgba(251, 113, 133, 0.1), inset 0 1px 2px rgba(0, 0, 0, 0.04);
             transform: translateY(-2px);
         }
         input:hover:not(:focus), textarea:hover:not(:focus), select:hover:not(:focus) {
-            border-color: rgba(30, 64, 175, 0.4);
+            border-color: rgba(251, 113, 133, 0.4);
             background: #FFFFFF;
         }
         textarea { resize: vertical; min-height: 90px; height: auto; line-height: 1.5; padding: 11px 12px;}
@@ -529,8 +687,8 @@
         }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
         .dynamic-item:hover {
-            background: linear-gradient(135deg, rgba(255, 255, 255, 0.7) 0%, rgba(30, 64, 175, 0.03) 100%);
-            border-bottom-color: rgba(30, 64, 175, 0.15);
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.7) 0%, rgba(251, 113, 133, 0.03) 100%);
+            border-bottom-color: rgba(251, 113, 133, 0.15);
         }
         .dynamic-item:last-child { border: none; margin-bottom: 0; padding-bottom: 24px; }
 
@@ -569,7 +727,7 @@
             width: 100%;
             padding: 15px;
             background: #FFFFFF;
-            border: 1.5px dashed rgba(30, 64, 175, 0.25);
+            border: 1.5px dashed rgba(251, 113, 133, 0.25);
             color: var(--brand-primary);
             font-weight: 600;
             font-size: 13px;
@@ -586,7 +744,7 @@
             border-color: var(--brand-primary); 
             border-style: solid;
             transform: translateY(-2px);
-            box-shadow: 0 6px 16px rgba(30, 64, 175, 0.18);
+            box-shadow: 0 6px 16px rgba(251, 113, 133, 0.18);
         }
         .btn-add:active {
             transform: translateY(0);
@@ -609,7 +767,7 @@
         .date-container-modern:focus-within {
             background: #FFFFFF;
             border-color: var(--brand-primary);
-            box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.02), 0 0 0 4px rgba(30, 64, 175, 0.1);
+            box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.02), 0 0 0 4px rgba(251, 113, 133, 0.1);
         }
 
         .date-half { flex: 1; position: relative; }
@@ -697,17 +855,17 @@
             transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
             cursor: pointer;
             box-shadow: none;
-            border: 1px solid rgba(30, 64, 175, 0.15);
+            border: 1px solid rgba(251, 113, 133, 0.15);
         }
         
         /* Interaction States */
         .segment-block.active { 
-            background: linear-gradient(135deg, #1E40AF 0%, #2563EB 100%);
-            box-shadow: 0 2px 8px rgba(30, 64, 175, 0.2);
-            border-color: #1E40AF;
+            background: linear-gradient(135deg, #FB7185 0%, #F43F5E 100%);
+            box-shadow: 0 2px 8px rgba(251, 113, 133, 0.3);
+            border-color: #FB7185;
         }
         .segment-block.preview { 
-            background: rgba(30, 64, 175, 0.15);
+            background: rgba(251, 113, 133, 0.15);
             transform: scale(1.05);
         } 
 
@@ -718,14 +876,14 @@
             font-size: 12px; font-weight: 600; 
             color: var(--brand-primary); 
             min-width: 110px; text-align: center; 
-            background: linear-gradient(135deg, rgba(30, 64, 175, 0.08) 0%, rgba(30, 64, 175, 0.04) 100%);
+            background: linear-gradient(135deg, rgba(251, 113, 133, 0.08) 0%, rgba(251, 113, 133, 0.04) 100%);
             padding: 7px 14px;
             border-radius: 8px;
             transition: all 0.3s var(--transition-smooth);
-            box-shadow: 0 2px 6px rgba(30, 64, 175, 0.1);
+            box-shadow: 0 2px 6px rgba(251, 113, 133, 0.1);
             letter-spacing: 0px;
             text-transform: capitalize;
-            border: 1px solid rgba(30, 64, 175, 0.12);
+            border: 1px solid rgba(251, 113, 133, 0.12);
         }
 
         /* --- ELEGANT CHECKBOX TOGGLE --- */
@@ -762,13 +920,13 @@
             box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.03);
         }
         .elegant-checkbox-box:hover {
-            border-color: rgba(30, 64, 175, 0.5);
-            background: rgba(30, 64, 175, 0.05);
+            border-color: rgba(251, 113, 133, 0.5);
+            background: rgba(251, 113, 133, 0.05);
         }
         .elegant-checkbox input[type="checkbox"]:checked + .elegant-checkbox-box {
             background: var(--brand-gradient);
             border-color: var(--brand-primary);
-            box-shadow: 0 0 0 4px rgba(30, 64, 175, 0.12);
+            box-shadow: 0 0 0 4px rgba(251, 113, 133, 0.12);
             transform: scale(1.08);
         }
 
@@ -804,26 +962,26 @@
         .photo-circle-wrapper {
             width: 150px; height: 150px;
             border-radius: 50%; cursor: pointer; transition: all 0.4s var(--transition-bouncy); position: relative;
-            box-shadow: 0 12px 36px rgba(30, 64, 175, 0.16);
+            box-shadow: 0 12px 36px rgba(251, 113, 133, 0.16);
         }
         .photo-circle-wrapper:hover { 
             transform: scale(1.06) translateY(-6px);
-            box-shadow: 0 18px 48px rgba(30, 64, 175, 0.24);
+            box-shadow: 0 18px 48px rgba(251, 113, 133, 0.24);
         }
         .avatar-preview {
             width: 100%; height: 100%; border-radius: 50%;
             background: linear-gradient(135deg, #FFFFFF 0%, #F0F4F9 100%);
-            border: 2px solid rgba(30, 64, 175, 0.2);
+            border: 2px solid rgba(251, 113, 133, 0.2);
             overflow: hidden; display: flex; align-items: center; justify-content: center;
             transition: all 0.3s var(--transition-smooth);
         }
         .photo-circle-wrapper:hover .avatar-preview {
-            border-color: rgba(30, 64, 175, 0.4);
+            border-color: rgba(251, 113, 133, 0.4);
             background: linear-gradient(135deg, #F8FAFC 0%, #EFF6FF 100%);
         }
         .photo-overlay {
             position: absolute; top: 0; left: 0; right: 0; bottom: 0;
-            background: rgba(30, 64, 175, 0.45); border-radius: 50%;
+            background: rgba(251, 113, 133, 0.45); border-radius: 50%;
             display: flex; align-items: center; justify-content: center;
             opacity: 0; transition: opacity 0.3s var(--transition-smooth);
             backdrop-filter: blur(3px);
@@ -838,7 +996,7 @@
             border: 1.5px solid #E2E8F0; background: #FAFBFC;
             cursor: pointer; color: var(--text-secondary); transition: all 0.3s var(--transition-smooth);
         }
-        .social-btn:hover { border-color: var(--brand-primary); background: var(--brand-light); color: var(--brand-primary); transform: translateY(-3px); box-shadow: 0 6px 16px rgba(30, 64, 175, 0.15); }
+        .social-btn:hover { border-color: var(--brand-primary); background: var(--brand-light); color: var(--brand-primary); transform: translateY(-3px); box-shadow: 0 6px 16px rgba(251, 113, 133, 0.15); }
 
         /* --- ACTION BUTTON --- */
         .action-container { margin-top: 48px; text-align: center; animation: actionFadeIn 1s var(--transition-smooth); }
@@ -847,7 +1005,7 @@
             background: var(--brand-gradient); color: white; border: none;
             padding: 16px 56px; font-size: 15px; font-weight: 700;
             border-radius: 50px; cursor: pointer;
-            box-shadow: 0 12px 28px rgba(30, 64, 175, 0.28);
+            box-shadow: 0 12px 28px rgba(251, 113, 133, 0.28);
             transition: all 0.4s var(--transition-bouncy); 
             font-family: var(--font-head);
             letter-spacing: 0.5px;
@@ -865,7 +1023,7 @@
         }
         .btn-generate:hover {
             transform: translateY(-4px);
-            box-shadow: 0 16px 36px rgba(30, 64, 175, 0.35);
+            box-shadow: 0 16px 36px rgba(251, 113, 133, 0.35);
         }
         .btn-generate:hover:before {
             left: 100%;
@@ -884,6 +1042,64 @@
             font-size: 13px; font-weight: 700; color: var(--text-primary);
             backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
             border: 1px solid rgba(255,255,255,0.5);
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+        }
+        
+        #progress-widget:hover {
+            transform: scale(1.1);
+            box-shadow: 0 16px 40px rgba(0,0,0,0.18);
+        }
+        
+        #progress-widget::after {
+            content: attr(data-tooltip);
+            position: absolute;
+            top: calc(100% + 8px);
+            right: 0;
+            background: rgba(15, 23, 42, 0.95);
+            color: white;
+            padding: 8px 12px;
+            border-radius: 8px;
+            font-size: 12px;
+            font-weight: 500;
+            white-space: nowrap;
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+            transition: all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+            transform: translateY(4px);
+            z-index: 1001;
+        }
+        
+        #progress-widget:hover::after {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+        
+        @media (max-width: 768px) {
+            #progress-widget {
+                top: 12px;
+                right: 12px;
+                padding: 8px 12px;
+                font-size: 12px;
+            }
+            .progress-ring {
+                width: 16px !important;
+                height: 16px !important;
+            }
+            #progress-text {
+                font-size: 11px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            #progress-widget {
+                top: 8px;
+                right: 8px;
+                padding: 6px 10px;
+                font-size: 11px;
+            }
         }
         .progress-ring { position: relative; width: 20px; height: 20px; }
         .progress-ring svg { transform: rotate(-90deg); width: 100%; height: 100%; }
@@ -947,11 +1163,11 @@
         
         .progress-bar-fill {
             height: 100%;
-            background: linear-gradient(90deg, #1E40AF 0%, #2563EB 100%);
+            background: linear-gradient(90deg, #FB7185 0%, #F43F5E 100%);
             width: 0%;
             border-radius: 10px;
             transition: width 0.3s var(--transition-smooth);
-            box-shadow: 0 2px 8px rgba(30, 64, 175, 0.3);
+            box-shadow: 0 2px 8px rgba(251, 113, 133, 0.3);
         }
         
         .progress-percentage {
@@ -962,8 +1178,8 @@
         }
         
         .future-space {
-            background: linear-gradient(135deg, rgba(30, 64, 175, 0.05) 0%, rgba(30, 64, 175, 0.02) 100%);
-            border: 1.5px dashed rgba(30, 64, 175, 0.2);
+            background: linear-gradient(135deg, rgba(251, 113, 133, 0.05) 0%, rgba(251, 113, 133, 0.02) 100%);
+            border: 1.5px dashed rgba(251, 113, 133, 0.2);
             border-radius: 12px;
             padding: 32px 24px;
             margin-bottom: 0;
@@ -991,12 +1207,12 @@
             width: 100%;
             text-transform: uppercase;
             letter-spacing: 0.5px;
-            box-shadow: 0 8px 20px rgba(30, 64, 175, 0.2);
+            box-shadow: 0 8px 20px rgba(251, 113, 133, 0.2);
         }
         
         .btn-show-result:hover {
             transform: translateY(-2px);
-            box-shadow: 0 12px 28px rgba(30, 64, 175, 0.3);
+            box-shadow: 0 12px 28px rgba(251, 113, 133, 0.3);
         }
         
         .btn-show-result:active {
@@ -1030,7 +1246,7 @@
             width: 20px;
             height: 20px;
             border-radius: 50%;
-            background: rgba(30, 64, 175, 0.1);
+            background: rgba(251, 113, 133, 0.1);
             color: var(--brand-primary);
             font-size: 12px;
             font-weight: 700;
@@ -1041,7 +1257,7 @@
         }
         
         .tooltip-icon:hover {
-            background: rgba(30, 64, 175, 0.2);
+            background: rgba(251, 113, 133, 0.2);
             transform: scale(1.1);
         }
         
@@ -1079,51 +1295,282 @@
             pointer-events: auto;
         }
         
-        /* --- LANDING PAGE STYLES --- */
-        #landing-page {
+        /* --- WELCOME MODAL STYLES --- */
+        #welcome-modal {
             position: fixed;
             top: 0;
             left: 0;
             right: 0;
             bottom: 0;
-            background: linear-gradient(135deg, #FAFBFC 0%, #F0F4F9 100%);
-            display: flex;
+            background: rgba(15, 23, 42, 0.75);
+            backdrop-filter: blur(20px) saturate(180%);
+            -webkit-backdrop-filter: blur(20px) saturate(180%);
+            z-index: 3000;
+            display: none;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            z-index: 3000;
             padding: 20px;
+            animation: fadeIn 0.4s var(--transition-smooth);
         }
         
-        .landing-content {
-            text-align: center;
-            animation: fadeInDown 0.6s var(--transition-smooth);
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
         }
         
-        @keyframes fadeInDown {
-            from { opacity: 0; transform: translateY(-20px); }
-            to { opacity: 1; transform: translateY(0); }
+        #welcome-modal.show {
+            display: flex;
         }
         
-        .landing-subtitle {
-            font-size: 16px;
+        .welcome-container {
+            background: var(--surface-card);
+            border-radius: 24px;
+            padding: 0;
+            max-width: 640px;
+            width: 100%;
+            max-height: 90vh;
+            box-shadow: 0 32px 96px rgba(15, 23, 42, 0.2), 0 0 0 1px rgba(37, 99, 235, 0.08) inset;
+            animation: modalSlideIn 0.5s var(--transition-bouncy);
+            overflow: hidden;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        @keyframes modalSlideIn {
+            from { 
+                opacity: 0; 
+                transform: translateY(20px) scale(0.96); 
+            }
+            to { 
+                opacity: 1; 
+                transform: translateY(0) scale(1); 
+            }
+        }
+        
+        .welcome-header {
+            background: #FFFFFF;
+            padding: 28px 40px;
+            text-align: left;
+            position: relative;
+            flex-shrink: 0;
+        }
+        
+        .welcome-header::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(0, 0, 0, 0.08), transparent);
+        }
+        
+        .welcome-title-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-wrap: nowrap;
+        }
+        
+        .welcome-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: white;
+            margin: 0;
+            font-family: 'Plus Jakarta Sans', -apple-system, sans-serif;
+            letter-spacing: 0.2px;
+        }
+        
+        .welcome-subtitle {
+            font-size: 24px;
+            color: #000000;
+            margin: 0;
+            font-weight: 700;
+            line-height: 1.4;
+            font-family: 'Plus Jakarta Sans', -apple-system, sans-serif;
+        }
+        
+        .welcome-content {
+            padding: 40px;
+            overflow-y: auto;
+            flex: 1;
+            min-height: 0;
+            font-family: 'Plus Jakarta Sans', -apple-system, sans-serif;
+        }
+        
+        .welcome-perks {
+            margin-bottom: 40px;
+        }
+        
+        .perks-title {
+            font-size: 14px;
+            font-weight: 600;
             color: var(--text-secondary);
-            margin-bottom: 48px;
-            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin: 0 0 20px;
+        }
+        
+        .perks-list {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+        
+        .perk-item {
+            display: flex;
+            align-items: center;
+            padding: 16px 20px;
+            background: rgba(251, 113, 133, 0.04);
+            border-radius: 12px;
+        }
+        
+        .perk-text {
+            font-size: 14px;
+            color: var(--text-primary);
+            line-height: 1.6;
+            margin: 0;
+        }
+        
+        .perk-text strong {
+            font-weight: 600;
+            color: #FB7185;
+        }
+        
+        .welcome-todo {
+            margin-bottom: 40px;
+        }
+        
+        .todo-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin: 0 0 20px;
+        }
+        
+        .todo-list {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 20px 0;
+        }
+        
+        .todo-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            padding: 0;
+            background: transparent;
+            border: none;
+            border-radius: 0;
+            transition: none;
+            position: relative;
+            flex: 1;
+            max-width: 120px;
+        }
+        
+        
+        .todo-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: rgba(55, 65, 81, 0.3);
+            border: 2px solid rgba(55, 65, 81, 0.4);
+            position: relative;
+            z-index: 2;
+            transition: all 0.4s var(--transition-smooth);
+            animation: pulseDot 2s ease-in-out infinite;
+            animation-delay: calc(var(--item-index) * 0.3s);
+        }
+        
+        @keyframes pulseDot {
+            0%, 100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+            50% {
+                transform: scale(1.2);
+                opacity: 0.8;
+            }
+        }
+        
+        .todo-item.active .todo-dot {
+            background: #FB7185;
+            border-color: #F43F5E;
+            box-shadow: 0 0 0 4px rgba(251, 113, 133, 0.2);
+            animation: pulseActive 1.5s ease-in-out infinite;
+            transform: scale(1.2);
+        }
+        
+        @keyframes pulseActive {
+            0%, 100% {
+                transform: scale(1.2);
+                box-shadow: 0 0 0 4px rgba(251, 113, 133, 0.2);
+            }
+            50% {
+                transform: scale(1.35);
+                box-shadow: 0 0 0 8px rgba(251, 113, 133, 0.1);
+            }
+        }
+        
+        .todo-item .todo-dot {
+            transition: all 0.5s var(--transition-smooth);
+        }
+        
+        .todo-item.completed .todo-dot {
+            background: #FB7185;
+            border-color: #F43F5E;
+            animation: none;
+            box-shadow: 0 0 0 2px rgba(251, 113, 133, 0.2);
+        }
+        
+        .todo-text {
+            font-size: 11px;
+            color: var(--text-secondary);
+            font-weight: 400;
+            margin: 0;
+            letter-spacing: 0.2px;
+            text-align: center;
+            line-height: 1.3;
+            opacity: 0;
+            transition: opacity 0.5s var(--transition-smooth), transform 0.5s var(--transition-smooth);
+            position: absolute;
+            bottom: -20px;
+            left: 50%;
+            transform: translateX(-50%) translateY(5px);
+            white-space: nowrap;
+            pointer-events: none;
+        }
+        
+        .todo-item.active .todo-text {
+            opacity: 1;
+            transform: translateX(-50%) translateY(0);
+        }
+        
+        .welcome-language {
+            margin-bottom: 32px;
+        }
+        
+        .language-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin: 0 0 16px;
         }
         
         .language-selector {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
-            gap: 32px;
-            max-width: 800px;
-            margin: 0 auto;
-            animation: fadeInUp 0.8s var(--transition-smooth) 0.2s both;
-        }
-        
-        @keyframes fadeInUp {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
+            grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+            gap: 12px;
         }
         
         .language-btn {
@@ -1131,24 +1578,43 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            gap: 14px;
-            padding: 40px 28px;
-            background: white;
-            border: 2px solid var(--surface-border);
-            border-radius: var(--radius-lg);
+            gap: 8px;
+            padding: 18px 14px;
+            background: var(--surface-card);
+            border: 1.5px solid rgba(251, 113, 133, 0.12);
+            border-radius: 12px;
             cursor: pointer;
             transition: all 0.3s var(--transition-smooth);
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
         }
         
         .language-btn.available:hover {
-            border-color: var(--brand-primary);
-            box-shadow: 0 8px 24px rgba(30, 64, 175, 0.15);
-            transform: translateY(-4px);
+            border-color: #FB7185;
+            background: rgba(251, 113, 133, 0.04);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(251, 113, 133, 0.12);
         }
         
         .language-btn.available:active {
+            transform: translateY(0);
+        }
+        
+        .language-btn.selected {
+            border-color: #FB7185;
+            background: rgba(251, 113, 133, 0.06);
+            box-shadow: 0 0 0 3px rgba(251, 113, 133, 0.1), 0 4px 12px rgba(251, 113, 133, 0.08);
+        }
+        
+        /* Ensure selected state persists on hover with higher specificity */
+        .language-btn.selected:hover {
+            border-color: #FB7185;
+            background: rgba(251, 113, 133, 0.1);
             transform: translateY(-2px);
+            box-shadow: 0 0 0 3px rgba(251, 113, 133, 0.15), 0 6px 16px rgba(251, 113, 133, 0.15);
+        }
+        
+        .language-btn.selected:active {
+            transform: translateY(0);
         }
         
         .language-btn.unavailable {
@@ -1157,18 +1623,25 @@
         }
         
         .language-flag {
-            font-size: 18px;
+            font-size: 15px;
             line-height: 1;
             display: block;
-            font-weight: 600;
-            color: var(--text-primary);
-            letter-spacing: 1px;
+            font-weight: 700;
+            color: #FB7185;
+            letter-spacing: 0.5px;
+            font-family: 'Plus Jakarta Sans', -apple-system, sans-serif;
         }
         
         .language-name {
-            font-size: 14px;
-            font-weight: 600;
+            font-size: 11px;
+            font-weight: 700;
             color: var(--text-primary);
+            font-family: 'Plus Jakarta Sans', -apple-system, sans-serif;
+            letter-spacing: 0.2px;
+        }
+        
+        .language-btn.selected .language-flag {
+            color: #F43F5E;
         }
         
         .language-btn.unavailable .language-name {
@@ -1176,7 +1649,7 @@
         }
         
         .coming-soon {
-            font-size: 11px;
+            font-size: 10px;
             color: var(--text-tertiary);
             font-weight: 500;
             text-transform: uppercase;
@@ -1187,6 +1660,165 @@
         
         .language-btn.unavailable .coming-soon {
             opacity: 1;
+        }
+        
+        .welcome-footer {
+            padding: 24px 40px 32px;
+            border-top: 1px solid var(--surface-border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 16px;
+            flex-shrink: 0;
+        }
+        
+        
+        .welcome-btn {
+            padding: 12px 32px;
+            border-radius: 8px;
+            border: 2px solid #FB7185;
+            background: transparent;
+            font-weight: 500;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            color: #FB7185;
+            font-family: 'Plus Jakarta Sans', -apple-system, sans-serif;
+            letter-spacing: 0.2px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .welcome-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 0;
+            height: 100%;
+            background: #FB7185;
+            transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: 0;
+        }
+        
+        .welcome-btn span {
+            position: relative;
+            z-index: 1;
+        }
+        
+        .welcome-btn:hover {
+            color: white;
+        }
+        
+        .welcome-btn:hover::before {
+            width: 100%;
+        }
+        
+        .welcome-btn:active {
+            transform: scale(0.98);
+        }
+        
+        .welcome-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        /* --- LANGUAGE SELECTOR IN HEADER --- */
+        .header-language-selector {
+            position: fixed;
+            top: 24px;
+            right: 24px;
+            z-index: 500;
+            display: none;
+        }
+        
+        .header-language-selector.show {
+            display: block;
+        }
+        
+        .lang-select-btn {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 14px;
+            background: var(--surface-card);
+            border: 1.5px solid var(--surface-border);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s var(--transition-smooth);
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text-primary);
+            box-shadow: var(--shadow-card);
+        }
+        
+        .lang-select-btn:hover {
+            border-color: var(--brand-primary);
+            background: var(--brand-light);
+            transform: translateY(-1px);
+            box-shadow: var(--shadow-hover);
+        }
+        
+        .lang-select-btn svg {
+            width: 16px;
+            height: 16px;
+            stroke: currentColor;
+            stroke-width: 2;
+        }
+        
+        @media (max-width: 768px) {
+            .welcome-container {
+                max-width: 100%;
+                border-radius: 20px;
+            }
+            
+            .welcome-header {
+                padding: 36px 24px 32px;
+            }
+            
+            .welcome-title {
+                font-size: 26px;
+            }
+            
+            .welcome-content {
+                padding: 32px 24px;
+            }
+            
+            .welcome-footer {
+                flex-direction: column;
+                padding: 20px 24px 24px;
+            }
+            
+            .welcome-footer .elegant-checkbox {
+                width: 100%;
+            }
+            
+            .welcome-btn {
+                width: 100%;
+            }
+            
+            .language-selector {
+                grid-template-columns: repeat(3, 1fr);
+            }
+            
+            .todo-list {
+                flex-wrap: wrap;
+                gap: 12px;
+            }
+            
+            .todo-item {
+                max-width: 100px;
+            }
+            
+            .todo-item:not(:last-child)::after,
+            .todo-item:not(:last-child)::before {
+                display: none;
+            }
+            
+            .todo-text {
+                font-size: 10px;
+            }
         }
         #preview-toolbar {
             width: 100%; background: #fff; padding: 18px 28px; 
@@ -1309,59 +1941,142 @@
 </head>
 <body>
 
-    <!-- LANDING PAGE -->
-    <div id="landing-page">
-        <div class="landing-content">
-            <p class="landing-subtitle">Select your language to continue</p>
+    <!-- WELCOME MODAL -->
+    <div id="welcome-modal">
+        <div class="welcome-container">
+            <div class="welcome-header">
+                <div class="welcome-title-wrapper">
+                    <p class="welcome-subtitle">Craft your professional CV with precision and elegance</p>
+                </div>
+            </div>
+            <div class="welcome-content">
+                <div class="welcome-perks">
+                    <h3 class="perks-title">Why Choose Us</h3>
+                    <div class="perks-list">
+                        <div class="perk-item">
+                            <p class="perk-text"><strong>No Registration Required</strong> — Completely free to use with no paywall, no watermarks, and no hidden costs</p>
+                        </div>
+                        <div class="perk-item">
+                            <p class="perk-text"><strong>Multiple Templates</strong> — Professional designs available for instant download</p>
+                        </div>
+                        <div class="perk-item">
+                            <p class="perk-text"><strong>Intuitive Interface</strong> — Simple to use while maintaining professional quality output</p>
+                        </div>
+                        <div class="perk-item">
+                            <p class="perk-text"><strong>Privacy First</strong> — Your data stays in your browser, nothing is stored on our servers</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="welcome-todo">
+                    <h3 class="todo-title">How It Works</h3>
+                    <div class="todo-list">
+                        <div class="todo-item active" style="--item-index: 0;">
+                            <div class="todo-dot"></div>
+                            <p class="todo-text">Complete the boxes</p>
+                        </div>
+                        <div class="todo-item" style="--item-index: 1;">
+                            <div class="todo-dot"></div>
+                            <p class="todo-text">Preview your CV</p>
+                        </div>
+                        <div class="todo-item" style="--item-index: 2;">
+                            <div class="todo-dot"></div>
+                            <p class="todo-text">Choose template</p>
+                        </div>
+                        <div class="todo-item" style="--item-index: 3;">
+                            <div class="todo-dot"></div>
+                            <p class="todo-text">Download</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="welcome-language">
+                    <h3 class="language-title">Select Language</h3>
             <div class="language-selector">
-                <button type="button" class="language-btn available" onclick="selectLanguage('en')">
+                        <button type="button" class="language-btn available" data-lang="en" onclick="selectLanguageInWelcomeModal('en')">
                     <span class="language-flag">EN</span>
                     <span class="language-name">English</span>
                 </button>
-                <button type="button" class="language-btn unavailable">
+                        <button type="button" class="language-btn available" data-lang="it" onclick="selectLanguageInWelcomeModal('it')">
                     <span class="language-flag">IT</span>
                     <span class="language-name">Italiano</span>
-                    <span class="coming-soon">Coming Soon</span>
                 </button>
-                <button type="button" class="language-btn unavailable">
+                        <button type="button" class="language-btn available" data-lang="ro" onclick="selectLanguageInWelcomeModal('ro')">
                     <span class="language-flag">RO</span>
                     <span class="language-name">Română</span>
-                    <span class="coming-soon">Coming Soon</span>
                 </button>
-                <button type="button" class="language-btn unavailable">
+                        <button type="button" class="language-btn available" data-lang="ru" onclick="selectLanguageInWelcomeModal('ru')">
                     <span class="language-flag">RU</span>
                     <span class="language-name">Русский</span>
-                    <span class="coming-soon">Coming Soon</span>
                 </button>
-                <button type="button" class="language-btn unavailable">
+                        <button type="button" class="language-btn available" data-lang="uk" onclick="selectLanguageInWelcomeModal('uk')">
                     <span class="language-flag">UA</span>
                     <span class="language-name">Українська</span>
-                    <span class="coming-soon">Coming Soon</span>
                 </button>
+                    </div>
+                </div>
+            </div>
+            <div class="welcome-footer">
+                <label class="elegant-checkbox">
+                    <input type="checkbox" id="dont-show-again" checked>
+                    <span class="elegant-checkbox-box"></span>
+                    <span class="elegant-checkbox-label">Don't show this again</span>
+                </label>
+                <button type="button" class="welcome-btn" onclick="closeWelcomeModal()"><span>Get Started</span></button>
             </div>
         </div>
     </div>
+    
+    <!-- LANGUAGE SELECTOR IN HEADER -->
+    <div class="header-language-selector" id="header-language-selector">
+        <button type="button" class="lang-select-btn" onclick="openLanguageModal()">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="10"></circle>
+                <line x1="2" y1="12" x2="22" y2="12"></line>
+                <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
+            </svg>
+            <span id="current-lang-display">EN</span>
+        </button>
+    </div>
 
     <datalist id="degree-types">
-        <option value="BA">Bachelor of Arts</option>
-        <option value="BS">Bachelor of Science</option>
-        <option value="BCS">Bachelor of Computer Science</option>
-        <option value="BE">Bachelor of Engineering</option>
-        <option value="BEng">Bachelor of Engineering (BEng)</option>
-        <option value="BSc">Bachelor of Science (BSc)</option>
-        <option value="BCom">Bachelor of Commerce</option>
-        <option value="BBA">Bachelor of Business Administration</option>
-        <option value="MA">Master of Arts</option>
-        <option value="MS">Master of Science</option>
-        <option value="MBA">Master of Business Administration</option>
-        <option value="MEng">Master of Engineering</option>
-        <option value="MSc">Master of Science (MSc)</option>
-        <option value="MCS">Master of Computer Science</option>
-        <option value="PhD">Doctor of Philosophy</option>
-        <option value="MD">Doctor of Medicine</option>
-        <option value="DDS">Doctor of Dental Surgery</option>
-        <option value="JD">Juris Doctor</option>
-        <option value="LLM">Master of Laws</option>
+        <option value="Bachelor of Arts">Bachelor of Arts</option>
+        <option value="Bachelor of Science">Bachelor of Science</option>
+        <option value="Bachelor of Computer Science">Bachelor of Computer Science</option>
+        <option value="Bachelor of Engineering">Bachelor of Engineering</option>
+        <option value="Bachelor of Engineering (BEng)">Bachelor of Engineering (BEng)</option>
+        <option value="Bachelor of Science (BSc)">Bachelor of Science (BSc)</option>
+        <option value="Bachelor of Commerce">Bachelor of Commerce</option>
+        <option value="Bachelor of Business Administration">Bachelor of Business Administration</option>
+        <option value="Bachelor of Fine Arts">Bachelor of Fine Arts</option>
+        <option value="Bachelor of Architecture">Bachelor of Architecture</option>
+        <option value="Bachelor of Nursing">Bachelor of Nursing</option>
+        <option value="Bachelor of Pharmacy">Bachelor of Pharmacy</option>
+        <option value="Bachelor of Veterinary Science">Bachelor of Veterinary Science</option>
+        <option value="Bachelor of Laws">Bachelor of Laws</option>
+        <option value="Master of Arts">Master of Arts</option>
+        <option value="Master of Science">Master of Science</option>
+        <option value="Master of Business Administration">Master of Business Administration</option>
+        <option value="Master of Engineering">Master of Engineering</option>
+        <option value="Master of Science (MSc)">Master of Science (MSc)</option>
+        <option value="Master of Computer Science">Master of Computer Science</option>
+        <option value="Master of Fine Arts">Master of Fine Arts</option>
+        <option value="Master of Architecture">Master of Architecture</option>
+        <option value="Master of Public Health">Master of Public Health</option>
+        <option value="Master of Education">Master of Education</option>
+        <option value="Master of Social Work">Master of Social Work</option>
+        <option value="Master of Philosophy">Master of Philosophy</option>
+        <option value="Doctor of Philosophy">Doctor of Philosophy</option>
+        <option value="Doctor of Medicine">Doctor of Medicine</option>
+        <option value="Doctor of Dental Surgery">Doctor of Dental Surgery</option>
+        <option value="Juris Doctor">Juris Doctor</option>
+        <option value="Master of Laws">Master of Laws</option>
+        <option value="Doctor of Veterinary Medicine">Doctor of Veterinary Medicine</option>
+        <option value="Doctor of Pharmacy">Doctor of Pharmacy</option>
+        <option value="Doctor of Education">Doctor of Education</option>
+        <option value="Doctor of Business Administration">Doctor of Business Administration</option>
+        <option value="Doctor of Physical Therapy">Doctor of Physical Therapy</option>
+        <option value="Doctor of Psychology">Doctor of Psychology</option>
     </datalist>
 
     <!-- Floating Progress Widget -->
@@ -1402,45 +2117,45 @@
                                 </svg>
                             </div>
                         </div>
-                        <span class="tooltip-icon" title="CVs with a professional photo are 40% more likely to attract recruiter attention">?
-                            <div class="tooltip-text" style="white-space:normal; width:180px; left:50%; transform:translateX(-50%);">CVs with a professional photo are 40% more likely to attract recruiter attention</div>
+                        <span class="tooltip-icon" data-title="tooltips.photo" title="CVs with a professional photo are 40% more likely to attract recruiter attention">?
+                            <div class="tooltip-text" style="white-space:normal; width:180px; left:50%; transform:translateX(-50%);" data-i18n="tooltips.photo">CVs with a professional photo are 40% more likely to attract recruiter attention</div>
                         </span>
                     </div>
                     <input type="file" id="photoInput" hidden accept="image/*">
                 </div>
 
                 <div class="section-title">
-                    <h2>Personal Profile</h2>
+                    <h2 data-i18n="sections.personalProfile">Personal Profile</h2>
                 </div>
 
                 <div class="grid-2">
                     <div class="form-group">
-                        <label>Full Name</label>
-                        <input type="text" id="fullName" class="req" onblur="validate(this)">
+                        <label data-i18n="labels.fullName">Full Name</label>
+                        <input type="text" id="fullName" class="req" oninput="updateProgress()" onblur="validate(this)">
                     </div>
                     <div class="form-group">
-                        <label>Target Role</label>
-                        <input type="text" id="jobTitle" class="req" onblur="validate(this)">
+                        <label data-i18n="labels.targetRole">Target Role</label>
+                        <input type="text" id="jobTitle" class="req" oninput="updateProgress()" onblur="validate(this)">
                     </div>
                 </div>
 
                 <div class="form-group">
-                    <label>Summary</label>
-                    <textarea id="summary" placeholder="Brief professional intro..."></textarea>
+                    <label data-i18n="labels.summary">Summary</label>
+                    <textarea id="summary" data-placeholder="placeholders.summary" placeholder="Brief professional intro..." oninput="updateProgress()"></textarea>
                 </div>
 
                 <div class="grid-3">
                     <div class="form-group">
-                        <label>Email</label>
-                        <input type="email" id="email" class="req" onblur="validate(this)">
+                        <label data-i18n="labels.email">Email</label>
+                        <input type="email" id="email" class="req" oninput="updateProgress()" onblur="validate(this)">
                     </div>
                     <div class="form-group">
-                        <label>Phone</label>
-                        <input type="tel" id="phone">
+                        <label data-i18n="labels.phone">Phone</label>
+                        <input type="tel" id="phone" oninput="updateProgress()">
                     </div>
                     <div class="form-group">
-                        <label>Location</label>
-                        <input type="text" id="location" placeholder="City, Country">
+                        <label data-i18n="labels.location">Location</label>
+                        <input type="text" id="location" data-placeholder="placeholders.location" placeholder="City, Country" oninput="updateProgress()">
                     </div>
                 </div>
 
@@ -1448,7 +2163,7 @@
                     <label class="elegant-checkbox" style="margin-bottom: 0;">
                         <input type="checkbox" id="openToRelocate">
                         <span class="elegant-checkbox-box"></span>
-                        <span class="elegant-checkbox-label">Open to relocate</span>
+                        <span class="elegant-checkbox-label" data-i18n="labels.openToRelocate">Open to relocate</span>
                     </label>
                 </div>
 
@@ -1456,13 +2171,13 @@
                 
                 <div class="form-group" style="text-align:center; margin-top:20px;">
                     <div class="social-buttons-container">
-                        <button type="button" class="social-btn" title="Add LinkedIn" onclick="addSocial('linkedin')">
+                        <button type="button" class="social-btn" data-title="social.addLinkedIn" title="Add LinkedIn" onclick="addSocial('linkedin')">
                             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path><rect x="2" y="9" width="4" height="12"></rect><circle cx="4" cy="4" r="2"></circle></svg>
                         </button>
-                        <button type="button" class="social-btn" title="Add GitHub" onclick="addSocial('github')">
+                        <button type="button" class="social-btn" data-title="social.addGitHub" title="Add GitHub" onclick="addSocial('github')">
                             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path></svg>
                         </button>
-                        <button type="button" class="social-btn" title="Add Website" onclick="addSocial('website')">
+                        <button type="button" class="social-btn" data-title="social.addWebsite" title="Add Website" onclick="addSocial('website')">
                             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1 4-10z"></path></svg>
                         </button>
                     </div>
@@ -1472,10 +2187,10 @@
             <!-- Card 2: Work Experience -->
             <div class="card">
                 <div class="section-title">
-                    <h2>Work Experience</h2>
+                    <h2 data-i18n="sections.workExperience">Work Experience</h2>
                 </div>
                 <div id="experienceList"></div>
-                <button type="button" class="btn-add" onclick="addExperience()">
+                <button type="button" class="btn-add" onclick="addExperience()" data-i18n="buttons.addPosition">
                     + Add Position
                 </button>
             </div>
@@ -1483,10 +2198,10 @@
             <!-- Card 3: Education -->
             <div class="card">
                 <div class="section-title">
-                    <h2>Education</h2>
+                    <h2 data-i18n="sections.education">Education</h2>
                 </div>
                 <div id="educationList"></div>
-                <button type="button" class="btn-add" onclick="addEducation()">
+                <button type="button" class="btn-add" onclick="addEducation()" data-i18n="buttons.addEducation">
                     + Add Education
                 </button>
             </div>
@@ -1495,14 +2210,14 @@
             <div class="card">
                 <div class="section-title">
                     <div style="display:flex; align-items:center; gap:10px;">
-                        <h2 style="margin:0;">Certifications</h2>
-                        <span class="tooltip-icon" title="Adding the link to your certification will display a verified badge in your CV">?
-                            <div class="tooltip-text" style="white-space:normal; width:180px; left:50%; transform:translateX(-50%);">Adding the link to your certification will display a verified badge in your CV</div>
+                        <h2 style="margin:0;" data-i18n="sections.certifications">Certifications</h2>
+                        <span class="tooltip-icon" data-title="tooltips.certification" title="Adding the link to your certification will display a verified badge in your CV">?
+                            <div class="tooltip-text" style="white-space:normal; width:180px; left:50%; transform:translateX(-50%);" data-i18n="tooltips.certification">Adding the link to your certification will display a verified badge in your CV</div>
                         </span>
                     </div>
                 </div>
                 <div id="certList"></div>
-                <button type="button" class="btn-add" onclick="addCertification()">
+                <button type="button" class="btn-add" onclick="addCertification()" data-i18n="buttons.addCertificate">
                     + Add Certificate
                 </button>
             </div>
@@ -1511,14 +2226,14 @@
             <div class="card">
                 <div class="section-title">
                     <div style="display:flex; align-items:center; gap:10px;">
-                        <h2 style="margin:0;">Skills</h2>
-                        <span class="tooltip-icon" title="Click a level segment to show it. Click again to remove it.">?
-                            <div class="tooltip-text">Click a level segment to show it. Click again to remove it.</div>
+                        <h2 style="margin:0;" data-i18n="sections.skills">Skills</h2>
+                        <span class="tooltip-icon" data-title="tooltips.skills" title="Click a level segment to show it. Click again to remove it.">?
+                            <div class="tooltip-text" data-i18n="tooltips.skills">Click a level segment to show it. Click again to remove it.</div>
                         </span>
                     </div>
                 </div>
                 <div id="skillsList"></div>
-                <button type="button" class="btn-add" onclick="addSkillCategory()">
+                <button type="button" class="btn-add" onclick="addSkillCategory()" data-i18n="buttons.addSkill">
                     + Add Skill
                 </button>
             </div>
@@ -1526,16 +2241,16 @@
             <!-- Card 6: Languages -->
             <div class="card">
                 <div class="section-title">
-                    <h2>Languages</h2>
+                    <h2 data-i18n="sections.languages">Languages</h2>
                 </div>
                 <div id="languageList"></div>
-                <button type="button" class="btn-add" onclick="addLanguage()">
+                <button type="button" class="btn-add" onclick="addLanguage()" data-i18n="buttons.addLanguage">
                     + Add Language
                 </button>
             </div>
             
             <div class="action-container">
-                <button type="button" class="btn-generate" onclick="generateCV()">Generate PDF</button>
+                <button type="button" class="btn-generate" onclick="generateCV()" data-i18n="buttons.generatePDF">Generate PDF</button>
             </div>
         </form>
     </div>
@@ -1543,14 +2258,14 @@
     <!-- LOADING MODAL -->
     <div id="loading-modal">
         <div class="loading-container">
-            <h2 class="loading-title">Generating Your CV</h2>
-            <p class="loading-subtitle">Please wait while we prepare your document</p>
+            <h2 class="loading-title" data-i18n="loading.title">Generating Your CV</h2>
+            <p class="loading-subtitle" data-i18n="loading.subtitle">Please wait while we prepare your document</p>
             <div class="progress-bar-container">
                 <div class="progress-bar-fill" id="progressBarFill"></div>
             </div>
             <div class="progress-percentage" id="progressPercentage">0%</div>
             <div class="future-space"></div>
-            <button type="button" class="btn-show-result" id="btnShowResult" onclick="showFinalResult()" style="display:none;">Show Final Result</button>
+            <button type="button" class="btn-show-result" id="btnShowResult" onclick="showFinalResult()" style="display:none;" data-i18n="buttons.showFinalResult">Show Final Result</button>
         </div>
     </div>
 
@@ -1558,16 +2273,16 @@
     <div id="preview-modal">
         <div id="preview-toolbar">
             <div class="toolbar-group">
-                <button class="tool-btn" onclick="closePreview()">Back</button>
+                <button class="tool-btn" onclick="closePreview()" data-i18n="buttons.back">Back</button>
             </div>
             <div class="toolbar-group">
-                <button class="tool-btn active" onclick="setTemplate('minimal', this)">Modern</button>
-                <button class="tool-btn" onclick="setTemplate('exec', this)">Serif</button>
-                <button class="tool-btn" onclick="setTemplate('jakarta', this)">Jakarta</button>
-                <button class="tool-btn" onclick="setTemplate('robotic', this)">Robotic</button>
+                <button class="tool-btn active" onclick="setTemplate('minimal', this)" data-i18n="preview.modern">Modern</button>
+                <button class="tool-btn" onclick="setTemplate('exec', this)" data-i18n="preview.serif">Serif</button>
+                <button class="tool-btn" onclick="setTemplate('jakarta', this)" data-i18n="preview.jakarta">Jakarta</button>
+                <button class="tool-btn" onclick="setTemplate('robotic', this)" data-i18n="preview.robotic">Robotic</button>
             </div>
             <div class="toolbar-group">
-                <button class="tool-btn primary" onclick="downloadPDF()">Download PDF</button>
+                <button class="tool-btn primary" onclick="downloadPDF()" data-i18n="buttons.downloadPDF">Download PDF</button>
             </div>
         </div>
         <div id="paper-scroll">
@@ -1576,42 +2291,271 @@
     </div>
 
     <script>
-        let currentLanguage = null;
+        let currentLanguage = 'en'; // Default to English
         
-        function selectLanguage(lang) {
-            if(lang !== 'en') return; // Solo English disponibile
+        // Helper function to get current language
+        function getCurrentLanguage() {
+            return currentLanguage || 'en';
+        }
+        
+        // Initialize language from URL parameter, localStorage, or default to English
+        function initLanguage() {
+            // Check URL parameter first
+            const urlParams = new URLSearchParams(window.location.search);
+            const urlLang = urlParams.get('lang');
+            const validLanguages = ['en', 'it', 'ro', 'ru', 'uk'];
+            
+            if (urlLang && validLanguages.includes(urlLang)) {
+                currentLanguage = urlLang;
+                localStorage.setItem('cv-language', urlLang);
+            } else {
+                // Fall back to localStorage or default
+                const savedLang = localStorage.getItem('cv-language');
+                if (savedLang && validLanguages.includes(savedLang)) {
+                    currentLanguage = savedLang;
+                } else {
+                    currentLanguage = 'en';
+                    localStorage.setItem('cv-language', 'en');
+                }
+            }
+            // Update HTML lang attribute
+            document.documentElement.lang = currentLanguage;
+            updateLanguageDisplay();
+            applyTranslations();
+        }
+        
+        // Apply translations to all elements with data-i18n attribute
+        function applyTranslations() {
+            // Update all elements with data-i18n attribute
+            document.querySelectorAll('[data-i18n]').forEach(el => {
+                const key = el.getAttribute('data-i18n');
+                if (key) {
+                    el.textContent = t(key);
+                }
+            });
+            
+            // Update all placeholders with data-placeholder attribute
+            document.querySelectorAll('[data-placeholder]').forEach(el => {
+                const key = el.getAttribute('data-placeholder');
+                if (key) {
+                    el.setAttribute('placeholder', t(key));
+                }
+            });
+            
+            // Update all titles with data-title attribute
+            document.querySelectorAll('[data-title]').forEach(el => {
+                const key = el.getAttribute('data-title');
+                if (key) {
+                    el.setAttribute('title', t(key));
+                }
+            });
+            
+            // Update ATS button text if it exists
+            const atsButton = document.getElementById('ats-checker-btn');
+            if (atsButton) {
+                const atsTextSpan = atsButton.querySelector('.ats-text');
+                if (atsTextSpan) {
+                    atsTextSpan.textContent = t('ats.button');
+                }
+            }
+            
+            // Refresh ATS modal if it's currently open
+            const atsModal = document.getElementById('ats-modal');
+            if (atsModal && atsModal.classList.contains('show')) {
+                // Recalculate and refresh modal content with new language
+                if (typeof showATSScore === 'function') {
+                    showATSScore();
+                }
+            }
+        }
+        
+        // Update language display in header
+        function updateLanguageDisplay() {
+            const langDisplay = document.getElementById('current-lang-display');
+            if (langDisplay) {
+                const langMap = {
+                    'en': 'EN',
+                    'it': 'IT',
+                    'ro': 'RO',
+                    'ru': 'RU',
+                    'uk': 'UA'
+                };
+                langDisplay.textContent = langMap[currentLanguage] || 'EN';
+            }
+        }
+        
+        // Show welcome modal on first visit
+        function checkWelcomeModal() {
+            const hasSeenWelcome = localStorage.getItem('cv-welcome-seen');
+            if (!hasSeenWelcome) {
+                const modal = document.getElementById('welcome-modal');
+                if (modal) {
+                    // Set the selected state based on current language - scope to welcome modal only
+                    modal.querySelectorAll('.language-btn').forEach(btn => {
+                        btn.classList.remove('selected');
+                    });
+                    const currentBtn = modal.querySelector(`.language-btn[data-lang="${currentLanguage}"]`);
+                    if (currentBtn) {
+                        currentBtn.classList.add('selected');
+                    }
+                    
+                    modal.classList.add('show');
+                    // Start animation when modal is shown
+                    setTimeout(() => {
+                        animateProgressSteps();
+                    }, 300);
+                }
+            } else {
+                // If already seen, just initialize the app
+                initApp();
+            }
+        }
+        
+        // Select language in welcome modal
+        function selectLanguageInWelcomeModal(lang) {
+            if (lang !== 'en' && lang !== 'it' && lang !== 'ro' && lang !== 'ru' && lang !== 'uk') return; // Only English, Italian, Romanian, Russian, and Ukrainian available
+            
             currentLanguage = lang;
-            const landingPage = document.getElementById('landing-page');
+            localStorage.setItem('cv-language', lang);
+            
+            // Update HTML lang attribute
+            document.documentElement.lang = lang;
+            
+            // Update selected state - scope to welcome modal only
+            const welcomeModal = document.getElementById('welcome-modal');
+            if (welcomeModal) {
+                welcomeModal.querySelectorAll('.language-btn').forEach(btn => {
+                    btn.classList.remove('selected');
+                });
+                const selectedBtn = welcomeModal.querySelector(`.language-btn[data-lang="${lang}"]`);
+                if (selectedBtn) {
+                    selectedBtn.classList.add('selected');
+                }
+            }
+            
+            // Also update header language selector if it exists
+            const headerLangSelector = document.getElementById('header-language-selector');
+            if (headerLangSelector) {
+                headerLangSelector.querySelectorAll('.language-btn').forEach(btn => {
+                    btn.classList.remove('selected');
+                });
+                const headerSelectedBtn = headerLangSelector.querySelector(`.language-btn[data-lang="${lang}"]`);
+                if (headerSelectedBtn) {
+                    headerSelectedBtn.classList.add('selected');
+                }
+            }
+            
+            updateLanguageDisplay();
+            applyTranslations();
+        }
+        
+        // Close welcome modal
+        function closeWelcomeModal() {
+            const modal = document.getElementById('welcome-modal');
+            const dontShowAgain = document.getElementById('dont-show-again');
+            
+            if (dontShowAgain && dontShowAgain.checked) {
+                localStorage.setItem('cv-welcome-seen', 'true');
+            }
+            
+            // Clear progress animation interval to prevent memory leak
+            if (progressAnimationInterval) {
+                clearInterval(progressAnimationInterval);
+                progressAnimationInterval = null;
+            }
+            
+            // Always restore checkbox visibility when closing
+            restoreCheckboxVisibility();
+            
+            if (modal) {
+                modal.classList.remove('show');
+                setTimeout(() => {
+                    modal.style.display = 'none';
+                }, 400);
+            }
+            
+            initApp();
+        }
+        
+        // Initialize app after language selection
+        function initApp() {
             const appName = document.querySelector('.app-name');
             const footer = document.getElementById('app-footer');
             const footerNav = document.getElementById('app-footer-nav');
-            landingPage.style.opacity = '0';
-            landingPage.style.pointerEvents = 'none';
+            const headerLangSelector = document.getElementById('header-language-selector');
+            
+            if (appName) appName.style.display = 'none';
+            if (footer) footer.style.display = 'flex';
+            if (footerNav) footerNav.style.display = 'none';
+            if (headerLangSelector) headerLangSelector.classList.add('show');
+        }
+        
+        // Open language modal from header
+        function openLanguageModal() {
+            const modal = document.getElementById('welcome-modal');
+            if (modal) {
+                // Pre-select current language - scope to welcome modal only
+                modal.querySelectorAll('.language-btn').forEach(btn => {
+                    btn.classList.remove('selected');
+                });
+                const currentBtn = modal.querySelector(`.language-btn[data-lang="${currentLanguage}"]`);
+                if (currentBtn) {
+                    currentBtn.classList.add('selected');
+                }
+                
+                // Hide the "don't show again" checkbox when opened from header
+                const checkboxWrapper = document.getElementById('dont-show-again')?.closest('.elegant-checkbox');
+                if (checkboxWrapper) {
+                    checkboxWrapper.style.display = 'none';
+                }
+                
+                modal.classList.add('show');
+                modal.style.display = 'flex';
+                
+                // Start animation when modal is opened
             setTimeout(() => {
-                landingPage.style.display = 'none';
-                appName.style.display = 'none';
-                footer.style.display = 'flex';
-                footerNav.style.display = 'none';
+                    animateProgressSteps();
             }, 300);
+            }
+        }
+        
+        // Restore checkbox visibility when closing modal opened from header
+        function restoreCheckboxVisibility() {
+            const checkboxWrapper = document.getElementById('dont-show-again')?.closest('.elegant-checkbox');
+            if (checkboxWrapper) {
+                checkboxWrapper.style.display = 'flex';
+            }
+        }
+        
+        // Legacy function for compatibility
+        function selectLanguage(lang) {
+            if (lang !== 'en' && lang !== 'it' && lang !== 'ro' && lang !== 'ru' && lang !== 'uk') return;
+            currentLanguage = lang;
+            localStorage.setItem('cv-language', lang);
+            updateLanguageDisplay();
+            applyTranslations();
         }
 
         function goHome() {
-            const landingPage = document.getElementById('landing-page');
+            // Reset to welcome modal if user wants to go home
+            const hasSeenWelcome = localStorage.getItem('cv-welcome-seen');
+            if (!hasSeenWelcome) {
+                const modal = document.getElementById('welcome-modal');
+                if (modal) {
+                    modal.classList.add('show');
+                    modal.style.display = 'flex';
+                }
+            }
+            
             const appName = document.querySelector('.app-name');
             const footer = document.getElementById('app-footer');
             const footerNav = document.getElementById('app-footer-nav');
-            const form = document.getElementById('form-container');
+            const headerLangSelector = document.getElementById('header-language-selector');
             
-            appName.style.display = 'none';
-            footer.style.display = 'none';
-            footerNav.style.display = 'none';
-            landingPage.style.display = 'flex';
-            landingPage.style.opacity = '0';
-            landingPage.style.pointerEvents = 'auto';
-            
-            setTimeout(() => {
-                landingPage.style.opacity = '1';
-            }, 50);
+            if (appName) appName.style.display = 'none';
+            if (footer) footer.style.display = 'none';
+            if (footerNav) footerNav.style.display = 'none';
+            if (headerLangSelector) headerLangSelector.classList.remove('show');
         }
 
         // --- STATE ---
@@ -1620,8 +2564,56 @@
         let currentTemplate = 'minimal';
 
         // --- INIT ---
+        // Animate progress steps in loop
+        let progressAnimationInterval = null;
+        
+        function animateProgressSteps() {
+            const todoItems = document.querySelectorAll('.todo-item');
+            if (todoItems.length === 0) return;
+            
+            // Clear existing interval if any
+            if (progressAnimationInterval) {
+                clearInterval(progressAnimationInterval);
+            }
+            
+            let currentStep = 0;
+            
+            function updateActiveStep() {
+                todoItems.forEach((item, index) => {
+                    if (index === currentStep) {
+                        item.classList.add('active');
+                    } else {
+                        item.classList.remove('active');
+                    }
+                });
+                
+                currentStep = (currentStep + 1) % todoItems.length;
+            }
+            
+            // Start with first step active
+            updateActiveStep();
+            
+            // Update every 2 seconds
+            progressAnimationInterval = setInterval(updateActiveStep, 2000);
+        }
+        
         window.onload = function() {
+            // Initialize language and welcome modal
+            initLanguage();
+            checkWelcomeModal();
+            
+            // Initialize premium modals
+            initModals();
+            
             updateProgress();
+            
+            // Initialize progress widget as interactive health score button
+            initProgressWidget();
+            
+            // Apply translations after a short delay to ensure all elements are loaded
+            setTimeout(() => {
+                applyTranslations();
+            }, 100);
             
             // --- DROPDOWN LOGIC ---
             document.addEventListener('click', function(e) {
@@ -1659,23 +2651,48 @@
             updateProgress();
         }
 
-        function updateProgress() {
-            const reqInputs = document.querySelectorAll('.req');
-            const dynamicInputs = document.querySelectorAll('.dynamic-item input:not([type=hidden]):not([type=checkbox])');
-            let total = reqInputs.length + dynamicInputs.length;
-            let filled = 0;
-            reqInputs.forEach(i => { if(i.value.trim()) filled++; });
-            dynamicInputs.forEach(i => { if(i.value.trim()) filled++; });
-            if(total === 0) total = 1;
-            const pct = Math.min(100, Math.round((filled / total) * 100));
-            document.getElementById('progress-text').innerText = pct + "%";
-            document.getElementById('progress-circle').style.strokeDashoffset = 94.2 - (94.2 * pct / 100);
+        // --- PROGRESS WIDGET AS INTERACTIVE HEALTH SCORE BUTTON ---
+        function initProgressWidget() {
+            const progressWidget = document.getElementById('progress-widget');
+            if (!progressWidget) return;
+            
+            // Add click handler to open health score dashboard
+            progressWidget.addEventListener('click', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                // Call the function - it should be available from validation.js
+                if (typeof showHealthScoreDashboard === 'function') {
+                    showHealthScoreDashboard();
+                } else if (typeof window.showHealthScoreDashboard === 'function') {
+                    window.showHealthScoreDashboard();
+                } else {
+                    console.warn('showHealthScoreDashboard function not found');
+                }
+            });
+            
+            // Update tooltip text based on current language
+            function updateProgressWidgetTooltip() {
+                const tooltipText = typeof t === 'function' ? t('healthScore.tooltip') : 'Click to view detailed CV health analysis';
+                progressWidget.setAttribute('data-tooltip', tooltipText);
+            }
+            
+            // Initialize tooltip
+            updateProgressWidgetTooltip();
+            
+            // Update tooltip when language changes - hook into applyTranslations
+            if (typeof applyTranslations === 'function') {
+                const originalApplyTranslations = applyTranslations;
+                window.applyTranslations = function() {
+                    originalApplyTranslations.apply(this, arguments);
+                    updateProgressWidgetTooltip();
+                };
+            }
         }
 
         // --- DATE PICKER ---
         function createModernPickerHTML(prefix, allowFuture = true) {
             let monthOptions = '';
-            const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+            const months = TRANSLATIONS[getCurrentLanguage()].months;
             months.forEach((m, idx) => {
                 monthOptions += `<div class="custom-option" data-value="${idx+1}">${m}</div>`;
             });
@@ -1692,13 +2709,13 @@
                 <div class="date-container-modern">
                     <div class="date-half custom-select-wrapper">
                         <input type="hidden" class="${prefix}-month" value="">
-                        <div class="custom-select-trigger"><span style="color:var(--text-tertiary)">Month</span><div class="custom-arrow"></div></div>
+                        <div class="custom-select-trigger"><span style="color:var(--text-tertiary)">${t('datePicker.month')}</span><div class="custom-arrow"></div></div>
                         <div class="custom-options">${monthOptions}</div>
                     </div>
                     <div style="width:1px; height:16px; background:#D1D1D6;"></div>
                     <div class="date-half custom-select-wrapper">
                         <input type="hidden" class="${prefix}-year" value="">
-                        <div class="custom-select-trigger"><span style="color:var(--text-tertiary)">Year</span><div class="custom-arrow"></div></div>
+                        <div class="custom-select-trigger"><span style="color:var(--text-tertiary)">${t('datePicker.year')}</span><div class="custom-arrow"></div></div>
                         <div class="custom-options">${yearOptions}</div>
                     </div>
                 </div>
@@ -1714,22 +2731,26 @@
                 if(checkbox.checked) {
                     picker.classList.add('disabled');
                     hiddenInput.value = ""; 
-                    picker.querySelector('.custom-select-trigger span').textContent = picker.querySelector('input').className.includes('year') ? 'Year' : 'Month';
+                    picker.querySelector('.custom-select-trigger span').textContent = picker.querySelector('input').className.includes('year') ? t('datePicker.year') : t('datePicker.month');
                     picker.querySelector('.custom-select-trigger span').style.color = '#C7C7CC';
                 } else {
                     picker.classList.remove('disabled');
                 }
             });
+            // Update progress when toggling "currently working"
+            updateProgress();
         }
 
         // --- SEGMENTED CONTROL LOGIC (UPDATED FOR 3 LEVELS) ---
         function getProficiencyLabel(val, isLanguage = false) {
-            if(val === '0' || val === 0) return 'No Level';
-            const langLevels = ["Basic User", "Independent User", "Proficient User"];
-            const skillLevels = ["Beginner", "Competent", "Expert"];
-            const arr = isLanguage ? langLevels : skillLevels;
-            // Val is 1-based, array is 0-based
-            return arr[val - 1] || arr[1];
+            if(val === '0' || val === 0) return t('proficiency.noLevel');
+            if (isLanguage) {
+                const langLevels = [t('proficiency.basicUser'), t('proficiency.independentUser'), t('proficiency.proficientUser')];
+                return langLevels[val - 1] || langLevels[1];
+            } else {
+                const skillLevels = [t('proficiency.beginner'), t('proficiency.competent'), t('proficiency.expert')];
+                return skillLevels[val - 1] || skillLevels[1];
+            }
         }
 
         function createCheckboxProficiencyHTML(inputClass, isLanguage, maxSegments = 3) {
@@ -1740,7 +2761,7 @@
                                       onmouseleave="resetSegment(this)"
                                       onclick="setSegment(this, ${i}, ${isLanguage})"></div>`;
             }
-            const label = 'No Level';
+            const label = t('proficiency.noLevel');
 
             return `
                 <div class="segmented-control-container">
@@ -1801,7 +2822,7 @@
 
             // Update Text
             if(newValue === 0) {
-                labelDiv.innerText = 'No Level';
+                labelDiv.innerText = t('proficiency.noLevel');
             } else {
                 labelDiv.innerText = getProficiencyLabel(newValue, isLanguage);
             }
@@ -1820,7 +2841,7 @@
         function createRemoveBtn() {
             // Updated smaller professional button
             return `
-            <button type="button" class="btn-remove" title="Remove" onclick="removeDynamicItem(this)">
+            <button type="button" class="btn-remove" title="${t('buttons.remove')}" onclick="removeDynamicItem(this)">
                 <svg viewBox="0 0 24 24" fill="none"><path d="M18 6L6 18M6 6l12 12"></path></svg>
             </button>`;
         }
@@ -1831,18 +2852,65 @@
             setTimeout(() => { item.remove(); updateProgress(); }, 300);
         }
 
+        function validateSocialLink(input) {
+            const value = input.value.trim();
+            const type = input.getAttribute('data-type');
+            
+            if (!value) {
+                input.style.borderColor = '';
+                input.setCustomValidity('');
+                return true;
+            }
+            
+            let isValid = false;
+            let errorMessage = '';
+            
+            if (type === 'linkedin') {
+                // LinkedIn: linkedin.com/in/username or linkedin.com/company/companyname
+                isValid = /^(https?:\/\/)?(www\.)?linkedin\.com\/(in|company)\/[\w-]+\/?$/.test(value) ||
+                          /^[\w-]+$/.test(value); // Allow just username
+                errorMessage = isValid ? '' : 'Enter a valid LinkedIn URL (e.g., linkedin.com/in/username) or username';
+            } else if (type === 'github') {
+                // GitHub: github.com/username
+                isValid = /^(https?:\/\/)?(www\.)?github\.com\/[\w-]+\/?$/.test(value) ||
+                          /^[\w-]+$/.test(value); // Allow just username
+                errorMessage = isValid ? '' : 'Enter a valid GitHub URL (e.g., github.com/username) or username';
+            } else if (type === 'website') {
+                // Website: any valid URL
+                try {
+                    const url = value.startsWith('http') ? value : `https://${value}`;
+                    new URL(url);
+                    isValid = true;
+                } catch {
+                    isValid = false;
+                }
+                errorMessage = isValid ? '' : 'Enter a valid website URL (e.g., www.example.com)';
+            }
+            
+            if (isValid) {
+                input.style.borderColor = '';
+                input.setCustomValidity('');
+            } else {
+                input.style.borderColor = '#F43F5E';
+                input.setCustomValidity(errorMessage);
+            }
+            
+            return isValid;
+        }
+
         function addSocial(type) {
             const container = document.getElementById('socialLinksContainer');
             const div = document.createElement('div');
             div.className = 'dynamic-item';
             div.style.marginBottom = "15px";
             div.style.borderBottom = "none";
-            let placeholder = type === 'linkedin' ? "linkedin.com/in/..." : (type === 'github' ? "github.com/..." : "www.portfolio.com");
+            let placeholder = type === 'linkedin' ? t('placeholders.linkedin') : (type === 'github' ? t('placeholders.github') : t('placeholders.website'));
+            const label = t(`social.${type}`);
             div.innerHTML = `
                 ${createRemoveBtn()}
                 <div class="form-group" style="margin-bottom:0;">
-                    <label>${type}</label>
-                    <input type="text" class="social-input" data-type="${type}" placeholder="${placeholder}">
+                    <label>${label}</label>
+                    <input type="text" class="social-input" data-type="${type}" placeholder="${placeholder}" oninput="validateSocialLink(this); updateProgress();" onblur="validateSocialLink(this);">
                 </div>
             `;
             container.appendChild(div);
@@ -1854,12 +2922,12 @@
             div.innerHTML = `
                 ${createRemoveBtn()}
                 <div class="grid-3">
-                    <div class="form-group"><label>Job Title</label><input class="exp-title" onkeyup="updateProgress()"></div>
-                    <div class="form-group"><label>Company</label><input class="exp-company"></div>
-                    <div class="form-group"><label>Location</label><input class="exp-loc" placeholder="City, Country"></div>
+                    <div class="form-group"><label>${t('labels.jobTitle')}</label><input class="exp-title" oninput="updateProgress()"></div>
+                    <div class="form-group"><label>${t('labels.company')}</label><input class="exp-company" oninput="updateProgress()"></div>
+                    <div class="form-group"><label>${t('labels.location')}</label><input class="exp-loc" placeholder="${t('placeholders.location')}" oninput="updateProgress()"></div>
                 </div>
                 <div class="form-group">
-                    <label>Timeline</label>
+                    <label>${t('labels.timeline')}</label>
                     <div class="timeline-row">
                         <div class="timeline-inputs">
                             ${createModernPickerHTML('start', false)}
@@ -1870,11 +2938,11 @@
                         <label class="elegant-checkbox">
                             <input type="checkbox" class="is-current" onchange="toggleEndDate(this)">
                             <span class="elegant-checkbox-box"></span>
-                            <span class="elegant-checkbox-label">Currently working</span>
+                            <span class="elegant-checkbox-label">${t('labels.currentlyWorking')}</span>
                         </label>
                     </div>
                 </div>
-                <div class="form-group"><label>Description</label><textarea class="exp-desc"></textarea></div>
+                <div class="form-group"><label>${t('labels.description')}</label><textarea class="exp-desc" oninput="updateProgress()"></textarea></div>
             `;
             document.getElementById('experienceList').appendChild(div);
         }
@@ -1885,12 +2953,12 @@
             div.innerHTML = `
                 ${createRemoveBtn()}
                 <div class="grid-2">
-                    <div class="form-group"><label>Degree</label><input class="edu-degree" list="degree-types" onkeyup="updateProgress()"></div>
-                    <div class="form-group"><label>School</label><input class="edu-school"></div>
+                    <div class="form-group"><label>${t('labels.degree')}</label><input class="edu-degree" list="degree-types" oninput="updateProgress()"></div>
+                    <div class="form-group"><label>${t('labels.school')}</label><input class="edu-school" oninput="updateProgress()"></div>
                 </div>
                 <div class="grid-2">
-                    <div class="form-group"><label>Graduation</label>${createModernPickerHTML('grad', true)}</div>
-                     <div class="form-group"><label>Location</label><input class="edu-loc"></div>
+                    <div class="form-group"><label>${t('labels.graduation')}</label>${createModernPickerHTML('grad', true)}</div>
+                     <div class="form-group"><label>${t('labels.location')}</label><input class="edu-loc" oninput="updateProgress()"></div>
                 </div>
             `;
             document.getElementById('educationList').appendChild(div);
@@ -1906,12 +2974,12 @@
                 ${createRemoveBtn()}
                 <div class="grid-skill-detailed">
                     <div class="form-group">
-                        ${isFirstSkill ? '<label>Category</label>' : '<label style="opacity:0; height:20px; pointer-events:none;"></label>'}
-                        <input class="skill-cat" placeholder="e.g. Design" onkeyup="updateProgress()">
+                        ${isFirstSkill ? `<label>${t('labels.category')}</label>` : '<label style="opacity:0; height:20px; pointer-events:none;"></label>'}
+                        <input class="skill-cat" placeholder="${t('placeholders.skillCategory')}" oninput="updateProgress()">
                     </div>
                     <div class="form-group">
-                        ${isFirstSkill ? '<label>Skill</label>' : '<label style="opacity:0; height:20px; pointer-events:none;"></label>'}
-                        <input class="skill-name" placeholder="e.g. Figma">
+                        ${isFirstSkill ? `<label>${t('labels.skill')}</label>` : '<label style="opacity:0; height:20px; pointer-events:none;"></label>'}
+                        <input class="skill-name" placeholder="${t('placeholders.skillName')}">
                     </div>
                 </div>
                 <div class="form-group" style="margin-bottom:0;">
@@ -1928,12 +2996,12 @@
             div.innerHTML = `
                 ${createRemoveBtn()}
                 <div class="grid-2">
-                    <div class="form-group"><label>Name</label><input class="cert-name"></div>
-                    <div class="form-group"><label>Issuer</label><input class="cert-issuer"></div>
+                    <div class="form-group"><label>${t('labels.name')}</label><input class="cert-name" oninput="updateProgress()"></div>
+                    <div class="form-group"><label>${t('labels.issuer')}</label><input class="cert-issuer" oninput="updateProgress()"></div>
                 </div>
                 <div class="grid-2">
-                    <div class="form-group"><label>Date</label>${createModernPickerHTML('cert', false)}</div>
-                    <div class="form-group"><label>URL</label><input class="cert-url"></div>
+                    <div class="form-group"><label>${t('labels.date')}</label>${createModernPickerHTML('cert', false)}</div>
+                    <div class="form-group"><label>${t('labels.url')}</label><input class="cert-url" oninput="updateProgress()"></div>
                 </div>
             `;
             document.getElementById('certList').appendChild(div);
@@ -1945,7 +3013,7 @@
             div.innerHTML = `
                 ${createRemoveBtn()}
                 <div class="form-group" style="margin-bottom:0;">
-                    <input class="lang-name" placeholder="e.g. English" style="margin-bottom:8px;">
+                    <input class="lang-name" placeholder="${t('placeholders.languageName')}" style="margin-bottom:8px;" oninput="updateProgress()">
                     <!-- SEGMENTED BARS FOR LANGUAGES -->
                     ${createCheckboxProficiencyHTML('lang-level-val', true, 3)}
                 </div>
@@ -1971,7 +3039,7 @@
         // --- GENERATE ---
         function formatModernDate(m, y) {
             if(!m || !y) return "";
-            const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+            const months = TRANSLATIONS[getCurrentLanguage()].months;
             return `${months[parseInt(m) - 1]} ${y}`;
         }
 
@@ -2107,7 +3175,7 @@
             
             let html = '';
             const imgHTML = cvData.photo ? `<img src="${cvData.photo}" style="width:110px; height:110px; border-radius:50%; object-fit:cover; display:block;">` : '';
-            const verifiedIcon = `<svg viewBox="0 0 24 24" style="width:14px; height:14px; fill:#0071E3; margin-left:6px;"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01" style="stroke:white; stroke-width:3; fill:none;"></polyline></svg>`;
+            const verifiedIcon = `<svg viewBox="0 0 24 24" style="width:16px; height:16px; margin-left:6px; vertical-align:middle; display:inline-block;"><circle cx="12" cy="12" r="10" fill="#10B981" stroke="#10B981" stroke-width="1"></circle><path d="M9 12l2 2 4-4" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" fill="none"></path></svg>`;
 
             const socialHTML = cvData.socials.map(s => `<span style="display:inline-flex; align-items:center; margin-right:12px; color:#555;">${s.val}</span>`).join('');
 
@@ -2129,7 +3197,7 @@
                     
                     ${cvData.summary ? `<div style="margin-bottom:30px; font-size:14px; line-height:1.5; color:#333;">${cvData.summary.replace(/\n/g, '<br>')}</div>` : ''}
 
-                    ${cvData.exp.length > 0 ? `<div style="font-size:14px; font-weight:700; text-transform:uppercase; margin-bottom:15px; border-bottom:1px solid #ddd; padding-bottom:5px;">Experience</div>` : ''}
+                    ${cvData.exp.length > 0 ? `<div style="font-size:14px; font-weight:700; text-transform:uppercase; margin-bottom:15px; border-bottom:1px solid #ddd; padding-bottom:5px;">${typeof t === 'function' ? t('sections.workExperience') : 'Experience'}</div>` : ''}
                     ${cvData.exp.map(e => `
                         <div style="margin-bottom:20px;">
                             <div style="display:flex; justify-content:space-between; margin-bottom:2px;">
@@ -2141,7 +3209,7 @@
                         </div>
                     `).join('')}
 
-                    ${cvData.edu.length > 0 ? `<div style="font-size:14px; font-weight:700; text-transform:uppercase; margin:25px 0 15px; border-bottom:1px solid #ddd; padding-bottom:5px;">Education</div>` : ''}
+                    ${cvData.edu.length > 0 ? `<div style="font-size:14px; font-weight:700; text-transform:uppercase; margin:25px 0 15px; border-bottom:1px solid #ddd; padding-bottom:5px;">${typeof t === 'function' ? t('sections.education') : 'Education'}</div>` : ''}
                     ${cvData.edu.map(e => `
                         <div style="margin-bottom:15px;">
                             <div style="display:flex; justify-content:space-between;">
@@ -2152,18 +3220,23 @@
                         </div>
                     `).join('')}
 
-                    ${cvData.certs.length > 0 ? `<div style="font-size:14px; font-weight:700; text-transform:uppercase; margin:25px 0 15px; border-bottom:1px solid #ddd; padding-bottom:5px;">Certifications</div>` : ''}
-                    ${cvData.certs.map(c => `
+                    ${cvData.certs.length > 0 ? `<div style="font-size:14px; font-weight:700; text-transform:uppercase; margin:25px 0 15px; border-bottom:1px solid #ddd; padding-bottom:5px;">${typeof t === 'function' ? t('sections.certifications') : 'Certifications'}</div>` : ''}
+                    ${cvData.certs.map(c => {
+                        const certUrl = c.url ? (c.url.startsWith('http') ? c.url : `https://${c.url}`) : null;
+                        return `
                          <div style="margin-bottom:10px;">
-                            <div style="display:flex; justify-content:space-between;">
-                                <span style="font-weight:600; font-size:14px;">${c.name} ${c.url ? verifiedIcon : ''}</span>
+                            <div style="display:flex; justify-content:space-between; align-items:center;">
+                                <span style="font-weight:600; font-size:14px; display:inline-flex; align-items:center; gap:6px;">
+                                    ${c.name} ${certUrl ? verifiedIcon : ''}
+                                </span>
                                 <span style="font-size:13px; color:#666;">${c.date}</span>
                             </div>
-                            <div style="font-size:13px; color:#555;">${c.issuer}</div>
+                            <div style="font-size:13px; color:#555;">${c.issuer}${certUrl ? ` • <a href="${certUrl}" target="_blank" rel="noopener noreferrer" style="color:#0071E3; text-decoration:none; border-bottom:1px solid rgba(0,113,227,0.3);">View Certificate</a>` : ''}</div>
                         </div>
-                    `).join('')}
+                    `;
+                    }).join('')}
 
-                    ${cvData.skills.length ? `<div style="font-size:14px; font-weight:700; text-transform:uppercase; margin:25px 0 15px; border-bottom:1px solid #ddd; padding-bottom:5px;">Skills</div>
+                    ${cvData.skills.length ? `<div style="font-size:14px; font-weight:700; text-transform:uppercase; margin:25px 0 15px; border-bottom:1px solid #ddd; padding-bottom:5px;">${typeof t === 'function' ? t('sections.skills') : 'Skills'}</div>
                     <div style="display:grid; grid-template-columns:1fr; gap:15px;">
                         ${cvData.skills.map(cat => `
                             <div>
@@ -2179,7 +3252,7 @@
                         `).join('')}
                     </div>` : ''}
 
-                    ${cvData.languages.length ? `<div style="font-size:14px; font-weight:700; text-transform:uppercase; margin:25px 0 15px; border-bottom:1px solid #ddd; padding-bottom:5px;">Languages</div>
+                    ${cvData.languages.length ? `<div style="font-size:14px; font-weight:700; text-transform:uppercase; margin:25px 0 15px; border-bottom:1px solid #ddd; padding-bottom:5px;">${typeof t === 'function' ? t('sections.languages') : 'Languages'}</div>
                     <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
                         ${cvData.languages.map(l => `<div style="font-size:13px;"><strong>${l.name}</strong> <span style="color:#666;">— ${l.level}</span></div>`).join('')}
                     </div>` : ''}
@@ -2195,7 +3268,7 @@
                         </div>
                     </div>
                     ${cvData.summary ? `<div style="margin-bottom:30px; font-size:14px; line-height:1.6;">${cvData.summary}</div>` : ''}
-                    <h3 style="font-size:13px; font-weight:bold; text-transform:uppercase; border-bottom:2px solid #333; padding-bottom:5px;">Experience</h3>
+                    <h3 style="font-size:13px; font-weight:bold; text-transform:uppercase; border-bottom:2px solid #333; padding-bottom:5px;">${typeof t === 'function' ? t('sections.workExperience') : 'Experience'}</h3>
                     ${cvData.exp.map(e => `
                         <div style="margin-bottom:20px;">
                             <div style="display:flex; justify-content:space-between; align-items:baseline;">
@@ -2206,7 +3279,7 @@
                             <div style="font-size:14px; line-height:1.6;">${e.desc}</div>
                         </div>
                     `).join('')}
-                     <h3 style="font-size:13px; font-weight:bold; text-transform:uppercase; border-bottom:2px solid #333; padding-bottom:5px; margin-top:30px;">Education</h3>
+                     <h3 style="font-size:13px; font-weight:bold; text-transform:uppercase; border-bottom:2px solid #333; padding-bottom:5px; margin-top:30px;">${typeof t === 'function' ? t('sections.education') : 'Education'}</h3>
                     ${cvData.edu.map(e => `<div style="margin-bottom:10px;"><div style="display:flex; justify-content:space-between;"><span style="font-weight:bold; font-size:14px;">${e.school}${e.loc ? `, ${e.loc}` : ''}</span><span style="font-size:13px;">${e.date}</span></div><div style="font-size:14px;">${e.degree}</div></div>`).join('')}
                 `;
             } else if(currentTemplate === 'jakarta') {
@@ -2229,7 +3302,7 @@
                     
                     ${cvData.summary ? `<div style="margin-bottom:32px; font-size:14px; line-height:1.7; color:#333;">${cvData.summary.replace(/\n/g, '<br>')}</div>` : ''}
 
-                    ${cvData.exp.length > 0 ? `<h3 style="font-size:13px; text-transform:uppercase; font-weight:700; letter-spacing:1.5px; margin-top:28px; margin-bottom:16px; padding-bottom:12px; border-bottom:2px solid #2C3E50; color:#1a1a1a;">Experience</h3>` : ''}
+                    ${cvData.exp.length > 0 ? `<h3 style="font-size:13px; text-transform:uppercase; font-weight:700; letter-spacing:1.5px; margin-top:28px; margin-bottom:16px; padding-bottom:12px; border-bottom:2px solid #2C3E50; color:#1a1a1a;">${typeof t === 'function' ? t('sections.workExperience') : 'Experience'}</h3>` : ''}
                     ${cvData.exp.map(e => `
                         <div style="margin-bottom:22px;">
                             <div style="display:flex; justify-content:space-between; margin-bottom:4px;">
@@ -2241,7 +3314,7 @@
                         </div>
                     `).join('')}
 
-                    ${cvData.edu.length > 0 ? `<h3 style="font-size:13px; text-transform:uppercase; font-weight:700; letter-spacing:1.5px; margin-top:28px; margin-bottom:16px; padding-bottom:12px; border-bottom:2px solid #2C3E50; color:#1a1a1a;">Education</h3>` : ''}
+                    ${cvData.edu.length > 0 ? `<h3 style="font-size:13px; text-transform:uppercase; font-weight:700; letter-spacing:1.5px; margin-top:28px; margin-bottom:16px; padding-bottom:12px; border-bottom:2px solid #2C3E50; color:#1a1a1a;">${typeof t === 'function' ? t('sections.education') : 'Education'}</h3>` : ''}
                     ${cvData.edu.map(e => `
                         <div style="margin-bottom:16px;">
                             <div style="display:flex; justify-content:space-between; margin-bottom:2px;">
@@ -2252,18 +3325,21 @@
                         </div>
                     `).join('')}
 
-                    ${cvData.certs.length > 0 ? `<h3 style="font-size:13px; text-transform:uppercase; font-weight:700; letter-spacing:1.5px; margin-top:28px; margin-bottom:16px; padding-bottom:12px; border-bottom:2px solid #2C3E50; color:#1a1a1a;">Certifications</h3>` : ''}
-                    ${cvData.certs.map(c => `
+                    ${cvData.certs.length > 0 ? `<h3 style="font-size:13px; text-transform:uppercase; font-weight:700; letter-spacing:1.5px; margin-top:28px; margin-bottom:16px; padding-bottom:12px; border-bottom:2px solid #2C3E50; color:#1a1a1a;">${typeof t === 'function' ? t('sections.certifications') : 'Certifications'}</h3>` : ''}
+                    ${cvData.certs.map(c => {
+                        const certUrl = c.url ? (c.url.startsWith('http') ? c.url : `https://${c.url}`) : null;
+                        return `
                          <div style="margin-bottom:12px;">
-                            <div style="display:flex; justify-content:space-between; margin-bottom:2px;">
-                                <span style="font-weight:600; font-size:13px; color:#1a1a1a;">${c.name}</span>
+                            <div style="display:flex; justify-content:space-between; margin-bottom:2px; align-items:center;">
+                                <span style="font-weight:600; font-size:13px; color:#1a1a1a; display:inline-flex; align-items:center; gap:6px;">${c.name} ${certUrl ? verifiedIcon : ''}</span>
                                 <span style="font-size:12px; color:#888;">${c.date}</span>
                             </div>
-                            <div style="font-size:12px; color:#666;">${c.issuer}</div>
+                            <div style="font-size:12px; color:#666;">${c.issuer}${certUrl ? ` • <a href="${certUrl}" target="_blank" rel="noopener noreferrer" style="color:#2C3E50; text-decoration:none; border-bottom:1px solid rgba(44,62,80,0.3);">View Certificate</a>` : ''}</div>
                         </div>
-                    `).join('')}
+                    `;
+                    }).join('')}
 
-                    ${cvData.skills.length ? `<h3 style="font-size:13px; text-transform:uppercase; font-weight:700; letter-spacing:1.5px; margin-top:28px; margin-bottom:16px; padding-bottom:12px; border-bottom:2px solid #2C3E50; color:#1a1a1a;">Skills</h3>
+                    ${cvData.skills.length ? `<h3 style="font-size:13px; text-transform:uppercase; font-weight:700; letter-spacing:1.5px; margin-top:28px; margin-bottom:16px; padding-bottom:12px; border-bottom:2px solid #2C3E50; color:#1a1a1a;">${typeof t === 'function' ? t('sections.skills') : 'Skills'}</h3>
                     <div style="display:grid; grid-template-columns:1fr; gap:16px;">
                         ${cvData.skills.map(cat => `
                             <div>
@@ -2279,7 +3355,7 @@
                         `).join('')}
                     </div>` : ''}
 
-                    ${cvData.languages.length ? `<h3 style="font-size:13px; text-transform:uppercase; font-weight:700; letter-spacing:1.5px; margin-top:28px; margin-bottom:16px; padding-bottom:12px; border-bottom:2px solid #2C3E50; color:#1a1a1a;">Languages</h3>
+                    ${cvData.languages.length ? `<h3 style="font-size:13px; text-transform:uppercase; font-weight:700; letter-spacing:1.5px; margin-top:28px; margin-bottom:16px; padding-bottom:12px; border-bottom:2px solid #2C3E50; color:#1a1a1a;">${typeof t === 'function' ? t('sections.languages') : 'Languages'}</h3>
                     <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
                         ${cvData.languages.map(l => `<div style="font-size:13px;"><strong style="color:#1a1a1a;">${l.name}</strong> <span style="color:#888; font-size:12px;">— ${l.level}</span></div>`).join('')}
                     </div>` : ''}
@@ -2299,7 +3375,7 @@
                     
                     ${cvData.summary ? `<div style="margin-bottom:24px; font-size:12px; line-height:1.6; color:#333; border-left:3px solid #E8EEF5; padding-left:12px;">${cvData.summary.replace(/\n/g, '<br>')}</div>` : ''}
 
-                    ${cvData.exp.length > 0 ? `<h3 style="font-size:12px; text-transform:uppercase; font-weight:700; letter-spacing:2px; margin-top:24px; margin-bottom:14px; padding-bottom:10px; border-bottom:2px solid #E8EEF5; color:#1A3A52;">Experience</h3>` : ''}
+                    ${cvData.exp.length > 0 ? `<h3 style="font-size:12px; text-transform:uppercase; font-weight:700; letter-spacing:2px; margin-top:24px; margin-bottom:14px; padding-bottom:10px; border-bottom:2px solid #E8EEF5; color:#1A3A52;">${typeof t === 'function' ? t('sections.workExperience') : 'Experience'}</h3>` : ''}
                     ${cvData.exp.map(e => `
                         <div style="margin-bottom:18px;">
                             <div style="display:flex; justify-content:space-between; margin-bottom:4px;">
@@ -2311,7 +3387,7 @@
                         </div>
                     `).join('')}
 
-                    ${cvData.edu.length > 0 ? `<h3 style="font-size:12px; text-transform:uppercase; font-weight:700; letter-spacing:2px; margin-top:24px; margin-bottom:14px; padding-bottom:10px; border-bottom:2px solid #E8EEF5; color:#1A3A52;">Education</h3>` : ''}
+                    ${cvData.edu.length > 0 ? `<h3 style="font-size:12px; text-transform:uppercase; font-weight:700; letter-spacing:2px; margin-top:24px; margin-bottom:14px; padding-bottom:10px; border-bottom:2px solid #E8EEF5; color:#1A3A52;">${typeof t === 'function' ? t('sections.education') : 'Education'}</h3>` : ''}
                     ${cvData.edu.map(e => `
                         <div style="margin-bottom:12px;">
                             <div style="display:flex; justify-content:space-between; margin-bottom:2px;">
@@ -2322,16 +3398,19 @@
                         </div>
                     `).join('')}
 
-                    ${cvData.certs.length > 0 ? `<h3 style="font-size:12px; text-transform:uppercase; font-weight:700; letter-spacing:2px; margin-top:24px; margin-bottom:14px; padding-bottom:10px; border-bottom:2px solid #E8EEF5; color:#1A3A52;">Certifications</h3>` : ''}
-                    ${cvData.certs.map(c => `
+                    ${cvData.certs.length > 0 ? `<h3 style="font-size:12px; text-transform:uppercase; font-weight:700; letter-spacing:2px; margin-top:24px; margin-bottom:14px; padding-bottom:10px; border-bottom:2px solid #E8EEF5; color:#1A3A52;">${typeof t === 'function' ? t('sections.certifications') : 'Certifications'}</h3>` : ''}
+                    ${cvData.certs.map(c => {
+                        const certUrl = c.url ? (c.url.startsWith('http') ? c.url : `https://${c.url}`) : null;
+                        return `
                          <div style="margin-bottom:10px;">
-                            <div style="display:flex; justify-content:space-between; margin-bottom:2px;">
-                                <span style="font-weight:600; font-size:11px; color:#1A3A52;">${c.name}</span>
+                            <div style="display:flex; justify-content:space-between; margin-bottom:2px; align-items:center;">
+                                <span style="font-weight:600; font-size:11px; color:#1A3A52; display:inline-flex; align-items:center; gap:4px;">${c.name} ${certUrl ? verifiedIcon : ''}</span>
                                 <span style="font-size:11px; color:#888;">${c.date}</span>
                             </div>
-                            <div style="font-size:11px; color:#666;">${c.issuer}</div>
+                            <div style="font-size:11px; color:#666;">${c.issuer}${certUrl ? ` • <a href="${certUrl}" target="_blank" rel="noopener noreferrer" style="color:#1A3A52; text-decoration:none; border-bottom:1px solid rgba(26,58,82,0.3);">View Certificate</a>` : ''}</div>
                         </div>
-                    `).join('')}
+                    `;
+                    }).join('')}
 
                     ${cvData.skills.length ? `<h3 style="font-size:12px; text-transform:uppercase; font-weight:700; letter-spacing:2px; margin-top:24px; margin-bottom:14px; padding-bottom:10px; border-bottom:2px solid #E8EEF5; color:#1A3A52;">Skills</h3>
                     <div style="display:grid; grid-template-columns:1fr; gap:12px;">
@@ -2402,34 +3481,363 @@
             document.getElementById('tos-modal').style.display = 'none';
         }
         
-        document.getElementById('tos-modal').addEventListener('click', function(e) {
+        // --- FOOTER LINKS ---
+        function openContact() {
+            const modal = document.getElementById('contact-modal');
+            if (modal) {
+                modal.classList.add('show');
+            }
+        }
+        
+        function closeContact() {
+            const modal = document.getElementById('contact-modal');
+            if (modal) {
+                modal.classList.remove('show');
+            }
+        }
+        
+        function openOtherTools() {
+            const modal = document.getElementById('other-tools-modal');
+            if (modal) {
+                modal.classList.add('show');
+            }
+        }
+        
+        function closeOtherTools() {
+            const modal = document.getElementById('other-tools-modal');
+            if (modal) {
+                modal.classList.remove('show');
+            }
+        }
+        
+        function openChangelog() {
+            const modal = document.getElementById('changelog-modal');
+            if (modal) {
+                modal.classList.add('show');
+            }
+        }
+        
+        function closeChangelog() {
+            const modal = document.getElementById('changelog-modal');
+            if (modal) {
+                modal.classList.remove('show');
+            }
+        }
+        
+        // --- LANGUAGE MODAL ---
+        let pendingLanguageChange = null;
+        
+        function openLanguageModal() {
+            const modal = document.getElementById('language-modal');
+            if (modal) {
+                // Reset to selection view
+                document.getElementById('language-selection-view').style.display = 'block';
+                document.getElementById('language-warning-view').style.display = 'none';
+                
+                // Update active language buttons
+                updateModalLanguageButtons();
+                
+                modal.classList.add('show');
+            }
+        }
+        
+        function closeLanguageModal() {
+            const modal = document.getElementById('language-modal');
+            if (modal) {
+                modal.classList.remove('show');
+            }
+            // Reset views
+            document.getElementById('language-selection-view').style.display = 'block';
+            document.getElementById('language-warning-view').style.display = 'none';
+            pendingLanguageChange = null;
+        }
+        
+        function updateModalLanguageButtons() {
+            document.querySelectorAll('.language-option-btn').forEach(btn => {
+                btn.classList.remove('active');
+                if (btn.getAttribute('data-lang') === currentLanguage) {
+                    btn.classList.add('active');
+                }
+            });
+        }
+        
+        function selectLanguageInModal(lang) {
+            if (lang === currentLanguage) {
+                closeLanguageModal();
+                return; // Already selected
+            }
+            
+            // Check if form has any data
+            if (hasFormData()) {
+                pendingLanguageChange = lang;
+                showLanguageChangeWarning();
+            } else {
+                // No data, change immediately
+                changeLanguage(lang);
+                closeLanguageModal();
+            }
+        }
+        
+        function hasFormData() {
+            // Check main form fields
+            const mainFields = ['fullName', 'jobTitle', 'summary', 'email', 'phone', 'location'];
+            for (const fieldId of mainFields) {
+                const field = document.getElementById(fieldId);
+                if (field && field.value.trim()) return true;
+            }
+            
+            // Check photo
+            if (photoData) return true;
+            
+            // Check social links
+            const socialInputs = document.querySelectorAll('#socialLinksContainer .social-input');
+            for (const input of socialInputs) {
+                if (input.value.trim()) return true;
+            }
+            
+            // Check dynamic items (experience, education, skills, certifications, languages)
+            const dynamicItems = document.querySelectorAll('.dynamic-item');
+            if (dynamicItems.length > 0) {
+                for (const item of dynamicItems) {
+                    const inputs = item.querySelectorAll('input:not([type=hidden]):not([type=checkbox]), textarea');
+                    for (const input of inputs) {
+                        if (input.value.trim()) return true;
+                    }
+                }
+            }
+            
+            return false;
+        }
+        
+        function clearFormData() {
+            // Clear main form fields
+            const mainFields = ['fullName', 'jobTitle', 'summary', 'email', 'phone', 'location'];
+            mainFields.forEach(fieldId => {
+                const field = document.getElementById(fieldId);
+                if (field) field.value = '';
+            });
+            
+            // Clear photo
+            photoData = null;
+            const photoInput = document.getElementById('photoInput');
+            if (photoInput) photoInput.value = '';
+            const photoPreview = document.getElementById('photoPreview');
+            if (photoPreview) {
+                photoPreview.style.display = 'none';
+                photoPreview.src = '';
+            }
+            
+            // Clear social links
+            document.querySelectorAll('#socialLinksContainer .social-input').forEach(input => {
+                input.value = '';
+            });
+            
+            // Clear dynamic items
+            document.querySelectorAll('.dynamic-item').forEach(item => {
+                item.remove();
+            });
+            
+            // Clear checkboxes
+            const relocateCheckbox = document.getElementById('relocate');
+            if (relocateCheckbox) relocateCheckbox.checked = false;
+            
+            // Reset progress
+            updateProgress();
+        }
+        
+        function showLanguageChangeWarning() {
+            // Switch to warning view
+            document.getElementById('language-selection-view').style.display = 'none';
+            document.getElementById('language-warning-view').style.display = 'block';
+            
+            // Update translations
+            document.getElementById('lang-change-warning-message').textContent = t('languageChange.message');
+            document.getElementById('lang-change-confirm-btn').textContent = t('languageChange.confirm');
+            document.getElementById('lang-change-cancel-btn').textContent = t('languageChange.cancel');
+        }
+        
+        function cancelLanguageChange() {
+            // Switch back to selection view
+            document.getElementById('language-selection-view').style.display = 'block';
+            document.getElementById('language-warning-view').style.display = 'none';
+            pendingLanguageChange = null;
+        }
+        
+        function confirmLanguageChange() {
+            if (pendingLanguageChange) {
+                clearFormData();
+                changeLanguage(pendingLanguageChange);
+                closeLanguageModal();
+                pendingLanguageChange = null;
+            }
+        }
+        
+        function changeLanguage(lang) {
+            if (lang !== 'en' && lang !== 'it' && lang !== 'ro' && lang !== 'ru' && lang !== 'uk') return;
+            
+            currentLanguage = lang;
+            localStorage.setItem('cv-language', lang);
+            
+            // Update URL parameter without page reload
+            const url = new URL(window.location);
+            if (lang === 'en') {
+                url.searchParams.delete('lang');
+            } else {
+                url.searchParams.set('lang', lang);
+            }
+            window.history.pushState({}, '', url);
+            
+            // Update HTML lang attribute
+            document.documentElement.lang = lang;
+            
+            // Update language display
+            updateLanguageDisplay();
+            
+            // Apply translations
+            applyTranslations();
+        }
+        
+        // Close modals when clicking backdrop
+        function initModals() {
+            const modals = ['contact-modal', 'other-tools-modal', 'changelog-modal', 'language-modal'];
+            modals.forEach(modalId => {
+                const modal = document.getElementById(modalId);
+                if (modal) {
+                    modal.addEventListener('click', function(e) {
+                        if (e.target === this) {
+                            this.classList.remove('show');
+                        }
+                    });
+                }
+            });
+        }
+        
+        // Initialize TOS modal click handler
+        const tosModal = document.getElementById('tos-modal');
+        if (tosModal) {
+            tosModal.addEventListener('click', function(e) {
             if(e.target === this) closeToS();
         });
+        }
         
         // --- PDF DOWNLOAD ---
         function downloadPDF() {
             const element = document.getElementById('cvSheet');
-            const filename = cvData.name ? cvData.name.replace(/\s+/g, '_') + '_CV.pdf' : 'CV.pdf';
+            const previewModal = document.getElementById('preview-modal');
             
+            // Check if cvSheet content exists and is rendered
+            if (!element || !element.innerHTML || element.innerHTML.trim() === '') {
+                console.error('CV sheet content is empty. Please generate CV first.');
+                alert('Please generate your CV before downloading.');
+                return;
+            }
+            
+            // Get full name from cvData
+            const fullName = cvData && cvData.name ? cvData.name.replace(/\s+/g, '_') : 'CV';
+            
+            // Get current date in YYYY-MM-DD format
+            const today = new Date();
+            const year = today.getFullYear();
+            const month = String(today.getMonth() + 1).padStart(2, '0');
+            const day = String(today.getDate()).padStart(2, '0');
+            const dateStr = `${year}-${month}-${day}`;
+            
+            // Get current language code
+            const lang = currentLanguage || 'en';
+            
+            // Create filename: {fullName}_CV_{YYYY-MM-DD}_{LANG}.pdf
+            const filename = `${fullName}_CV_${dateStr}_${lang}.pdf`;
+            
+            // Ensure preview modal is visible and element is in viewport
+            if (previewModal) {
+                previewModal.style.display = 'flex';
+            }
+            
+            // Scroll element into view to ensure it's rendered
+            element.scrollIntoView({ behavior: 'instant', block: 'start' });
+            
+            // Store original backdrop-filter to temporarily remove it (can interfere with html2canvas)
+            const originalBackdropFilter = previewModal ? previewModal.style.backdropFilter : '';
+            if (previewModal) {
+                previewModal.style.backdropFilter = 'none';
+            }
+            
+            // Improved html2pdf settings to fix blank PDF bug
             const opt = {
-                margin: 0,
+                margin: [0, 0, 0, 0],
                 filename: filename,
-                image: { type: 'jpeg', quality: 0.98 },
-                html2canvas: { scale: 2 },
-                jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+                image: { 
+                    type: 'jpeg', 
+                    quality: 0.98 
+                },
+                html2canvas: { 
+                    scale: 2,
+                    useCORS: true,
+                    logging: false,
+                    letterRendering: true,
+                    allowTaint: false,
+                    backgroundColor: '#ffffff',
+                    removeContainer: false,
+                    width: element.scrollWidth,
+                    height: element.scrollHeight,
+                    x: 0,
+                    y: 0,
+                    scrollX: 0,
+                    scrollY: 0
+                },
+                jsPDF: { 
+                    unit: 'mm', 
+                    format: 'a4', 
+                    orientation: 'portrait',
+                    compress: true
+                },
+                pagebreak: { 
+                    mode: ['avoid-all', 'css', 'legacy'] 
+                }
             };
             
-            html2pdf().set(opt).from(element).save();
+            // Wait for rendering to complete
+            setTimeout(() => {
+                // Double-check element still exists and has content
+                if (!element || !element.innerHTML || element.innerHTML.trim() === '') {
+                    console.error('CV sheet content disappeared before PDF generation.');
+                    // Restore backdrop filter
+                    if (previewModal) {
+                        previewModal.style.backdropFilter = originalBackdropFilter;
+                    }
+                    return;
+                }
+                
+                // Generate PDF
+                const worker = html2pdf().set(opt).from(element);
+                
+                worker.save()
+                    .then(() => {
+                        // Restore backdrop filter after successful generation
+                        if (previewModal) {
+                            previewModal.style.backdropFilter = originalBackdropFilter;
+                        }
+                    })
+                    .catch(err => {
+                        console.error('Error generating PDF:', err);
+                        console.error('Error details:', err.message);
+                        alert('Error generating PDF. Please try again. Check console for details.');
+                        // Restore backdrop filter on error
+                        if (previewModal) {
+                            previewModal.style.backdropFilter = originalBackdropFilter;
+                        }
+                    });
+            }, 300);
         }
         
         // --- SHOW APP NAME AFTER LANGUAGE SELECTION ---
         function updateAppNameVisibility() {
             const appName = document.querySelector('.app-name');
-            const landingPage = document.getElementById('landing-page');
-            if(landingPage.style.display === 'none') {
-                appName.style.display = 'flex';
+            const welcomeModal = document.getElementById('welcome-modal');
+            if(welcomeModal && !welcomeModal.classList.contains('show')) {
+                if(appName) appName.style.display = 'flex';
             } else {
-                appName.style.display = 'none';
+                if(appName) appName.style.display = 'none';
             }
         }
     </script>
@@ -2482,11 +3890,198 @@
         </div>
     </div>
     
+    <!-- CONTACT MODAL -->
+    <div id="contact-modal" class="premium-modal">
+        <div class="premium-modal-container">
+            <div class="premium-modal-header">
+                <button class="premium-modal-close" onclick="closeContact()" aria-label="Close">×</button>
+                <p class="premium-modal-subtitle">Get in touch with us</p>
+            </div>
+            <div class="premium-modal-content">
+                <div class="premium-modal-body">
+                    <div style="display: flex; flex-direction: column; gap: 20px; padding: 24px 0;">
+                        <a href="https://www.facebook.com" target="_blank" rel="noopener noreferrer" style="display: flex; align-items: center; gap: 16px; padding: 20px; background: linear-gradient(135deg, #1877F2 0%, #0D5FDB 100%); border-radius: 12px; text-decoration: none; transition: all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1); box-shadow: 0 4px 12px rgba(24, 119, 242, 0.2);" onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 8px 20px rgba(24, 119, 242, 0.3)'" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 12px rgba(24, 119, 242, 0.2)'">
+                            <svg width="32" height="32" viewBox="0 0 24 24" fill="white" style="flex-shrink: 0;">
+                                <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+                            </svg>
+                            <div style="flex: 1;">
+                                <div style="font-size: 16px; font-weight: 600; color: white; margin-bottom: 4px;">Facebook</div>
+                                <div style="font-size: 13px; color: rgba(255, 255, 255, 0.9);">Connect with us on Facebook</div>
+                            </div>
+                        </a>
+                        
+                        <a href="mailto:contact@example.com" style="display: flex; align-items: center; gap: 16px; padding: 20px; background: linear-gradient(135deg, #6366F1 0%, #4F46E5 100%); border-radius: 12px; text-decoration: none; transition: all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1); box-shadow: 0 4px 12px rgba(99, 102, 241, 0.2);" onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 8px 20px rgba(99, 102, 241, 0.3)'" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 12px rgba(99, 102, 241, 0.2)'">
+                            <svg width="32" height="32" viewBox="0 0 24 24" fill="white" style="flex-shrink: 0;">
+                                <path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/>
+                            </svg>
+                            <div style="flex: 1;">
+                                <div style="font-size: 16px; font-weight: 600; color: white; margin-bottom: 4px;">Email</div>
+                                <div style="font-size: 13px; color: rgba(255, 255, 255, 0.9);">contact@example.com</div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- OTHER TOOLS MODAL -->
+    <div id="other-tools-modal" class="premium-modal">
+        <div class="premium-modal-container">
+            <div class="premium-modal-header">
+                <button class="premium-modal-close" onclick="closeOtherTools()" aria-label="Close">×</button>
+                <p class="premium-modal-subtitle">More resources and tools</p>
+            </div>
+            <div class="premium-modal-content">
+                <div class="premium-modal-body">
+                    <div style="display: flex; flex-direction: column; gap: 20px; padding: 24px 0;">
+                        <a href="https://qr-generator-app.com" target="_blank" rel="noopener noreferrer" style="display: flex; align-items: center; gap: 16px; padding: 20px; background: linear-gradient(135deg, #10B981 0%, #059669 100%); border-radius: 12px; text-decoration: none; transition: all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1); box-shadow: 0 4px 12px rgba(16, 185, 129, 0.2);" onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 8px 20px rgba(16, 185, 129, 0.3)'" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 12px rgba(16, 185, 129, 0.2)'">
+                            <div style="flex: 1;">
+                                <div style="font-size: 16px; font-weight: 600; color: white; margin-bottom: 4px;">QR Generator App</div>
+                                <div style="font-size: 13px; color: rgba(255, 255, 255, 0.9);">Generate QR codes instantly</div>
+                            </div>
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="white" style="flex-shrink: 0; opacity: 0.8;">
+                                <path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"/>
+                            </svg>
+                        </a>
+                        
+                        <a href="https://pocket-engineer.com" target="_blank" rel="noopener noreferrer" style="display: flex; align-items: center; gap: 16px; padding: 20px; background: linear-gradient(135deg, #F59E0B 0%, #D97706 100%); border-radius: 12px; text-decoration: none; transition: all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1); box-shadow: 0 4px 12px rgba(245, 158, 11, 0.2);" onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 8px 20px rgba(245, 158, 11, 0.3)'" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 12px rgba(245, 158, 11, 0.2)'">
+                            <div style="flex: 1;">
+                                <div style="font-size: 16px; font-weight: 600; color: white; margin-bottom: 4px;">Pocket Engineer</div>
+                                <div style="font-size: 13px; color: rgba(255, 255, 255, 0.9);">Engineering tools and resources</div>
+                            </div>
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="white" style="flex-shrink: 0; opacity: 0.8;">
+                                <path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"/>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- CHANGELOG MODAL -->
+    <div id="changelog-modal" class="premium-modal">
+        <div class="premium-modal-container">
+            <div class="premium-modal-header">
+                <button class="premium-modal-close" onclick="closeChangelog()" aria-label="Close">×</button>
+                <p class="premium-modal-subtitle">What's new and updated</p>
+            </div>
+            <div class="premium-modal-content">
+                <div class="premium-modal-body">
+                    <div style="padding: 24px 0;">
+                        <div style="margin-bottom: 32px;">
+                            <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 16px;">
+                                <div style="width: 8px; height: 8px; background: #10B981; border-radius: 50%;"></div>
+                                <h3 style="font-size: 18px; font-weight: 700; color: #111827; margin: 0;">Prerelease 1.0</h3>
+                            </div>
+                            <div style="padding-left: 20px; border-left: 2px solid #E5E7EB;">
+                                <ul style="list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 12px;">
+                                    <li style="display: flex; align-items: start; gap: 12px;">
+                                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#10B981" stroke-width="2" style="flex-shrink: 0; margin-top: 2px;">
+                                            <polyline points="20 6 9 17 4 12"></polyline>
+                                        </svg>
+                                        <span style="font-size: 14px; color: #374151; line-height: 1.6;">App launched with full functionality</span>
+                                    </li>
+                                    <li style="display: flex; align-items: start; gap: 12px;">
+                                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#10B981" stroke-width="2" style="flex-shrink: 0; margin-top: 2px;">
+                                            <polyline points="20 6 9 17 4 12"></polyline>
+                                        </svg>
+                                        <span style="font-size: 14px; color: #374151; line-height: 1.6;">Supports 5 languages (English, Italian, Romanian, Russian, Ukrainian)</span>
+                                    </li>
+                                    <li style="display: flex; align-items: start; gap: 12px;">
+                                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#10B981" stroke-width="2" style="flex-shrink: 0; margin-top: 2px;">
+                                            <polyline points="20 6 9 17 4 12"></polyline>
+                                        </svg>
+                                        <span style="font-size: 14px; color: #374151; line-height: 1.6;">4 different CV templates (Modern, Serif, Jakarta, Robotic)</span>
+                                    </li>
+                                    <li style="display: flex; align-items: start; gap: 12px;">
+                                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#10B981" stroke-width="2" style="flex-shrink: 0; margin-top: 2px;">
+                                            <polyline points="20 6 9 17 4 12"></polyline>
+                                        </svg>
+                                        <span style="font-size: 14px; color: #374151; line-height: 1.6;">PDF download functionality</span>
+                                    </li>
+                                    <li style="display: flex; align-items: start; gap: 12px;">
+                                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#10B981" stroke-width="2" style="flex-shrink: 0; margin-top: 2px;">
+                                            <polyline points="20 6 9 17 4 12"></polyline>
+                                        </svg>
+                                        <span style="font-size: 14px; color: #374151; line-height: 1.6;">CV Health Score analysis</span>
+                                    </li>
+                                    <li style="display: flex; align-items: start; gap: 12px;">
+                                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#10B981" stroke-width="2" style="flex-shrink: 0; margin-top: 2px;">
+                                            <polyline points="20 6 9 17 4 12"></polyline>
+                                        </svg>
+                                        <span style="font-size: 14px; color: #374151; line-height: 1.6;">ATS compatibility checker</span>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- LANGUAGE SELECTION MODAL -->
+    <div id="language-modal" class="premium-modal">
+        <div class="premium-modal-container">
+            <div class="premium-modal-header">
+                <button class="premium-modal-close" onclick="closeLanguageModal()" aria-label="Close">×</button>
+                <p class="premium-modal-subtitle">Select Language</p>
+            </div>
+            <div class="premium-modal-content">
+                <div class="premium-modal-body" style="padding: 40px;">
+                    <div id="language-selection-view" style="display: block;">
+                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 16px; margin-bottom: 32px;">
+                            <button type="button" class="language-option-btn" data-lang="en" onclick="selectLanguageInModal('en')" id="modal-lang-en" style="padding: 24px; border: 2px solid var(--surface-border); border-radius: 12px; background: white; cursor: pointer; transition: all 0.2s; text-align: center;">
+                                <div style="font-size: 32px; font-weight: 700; margin-bottom: 8px;">EN</div>
+                                <div style="font-size: 14px; color: var(--text-secondary);">English</div>
+                            </button>
+                            <button type="button" class="language-option-btn" data-lang="it" onclick="selectLanguageInModal('it')" id="modal-lang-it" style="padding: 24px; border: 2px solid var(--surface-border); border-radius: 12px; background: white; cursor: pointer; transition: all 0.2s; text-align: center;">
+                                <div style="font-size: 32px; font-weight: 700; margin-bottom: 8px;">IT</div>
+                                <div style="font-size: 14px; color: var(--text-secondary);">Italiano</div>
+                            </button>
+                            <button type="button" class="language-option-btn" data-lang="ro" onclick="selectLanguageInModal('ro')" id="modal-lang-ro" style="padding: 24px; border: 2px solid var(--surface-border); border-radius: 12px; background: white; cursor: pointer; transition: all 0.2s; text-align: center;">
+                                <div style="font-size: 32px; font-weight: 700; margin-bottom: 8px;">RO</div>
+                                <div style="font-size: 14px; color: var(--text-secondary);">Română</div>
+                            </button>
+                            <button type="button" class="language-option-btn" data-lang="ru" onclick="selectLanguageInModal('ru')" id="modal-lang-ru" style="padding: 24px; border: 2px solid var(--surface-border); border-radius: 12px; background: white; cursor: pointer; transition: all 0.2s; text-align: center;">
+                                <div style="font-size: 32px; font-weight: 700; margin-bottom: 8px;">RU</div>
+                                <div style="font-size: 14px; color: var(--text-secondary);">Русский</div>
+                            </button>
+                            <button type="button" class="language-option-btn" data-lang="uk" onclick="selectLanguageInModal('uk')" id="modal-lang-uk" style="padding: 24px; border: 2px solid var(--surface-border); border-radius: 12px; background: white; cursor: pointer; transition: all 0.2s; text-align: center;">
+                                <div style="font-size: 32px; font-weight: 700; margin-bottom: 8px;">UA</div>
+                                <div style="font-size: 14px; color: var(--text-secondary);">Українська</div>
+                            </button>
+                        </div>
+                    </div>
+                    <div id="language-warning-view" style="display: none; text-align: center;">
+                        <p style="font-size: 15px; color: var(--text-primary); line-height: 1.6; margin-bottom: 32px;" id="lang-change-warning-message">
+                            If you choose to change the language now, all inserted information will be lost.
+                        </p>
+                        <div style="display: flex; gap: 12px; justify-content: center;">
+                            <button type="button" class="btn-generate" onclick="confirmLanguageChange()" id="lang-change-confirm-btn" style="min-width: 160px;">Change Language</button>
+                            <button type="button" class="btn-generate" onclick="cancelLanguageChange()" id="lang-change-cancel-btn" style="min-width: 160px; background: white; color: var(--text-primary); border: 2px solid var(--surface-border); box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);">Cancel</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
     <!-- FOOTER -->
     <div id="app-footer" style="display:none;">
-        <span style="color: var(--text-secondary); font-size: 12px;">© 2025 Sartor CV - Tailored by your needs</span>
-        <div style="display: flex; gap: 24px; align-items: center;">
+        <div style="display: flex; flex-direction: column; gap: 16px; width: 100%; align-items: center;">
+            <div style="text-align: center;">
+                <span style="color: var(--text-secondary); font-size: 12px;">© 2025 Sartor CV - Tailored by your needs, Proudly made in EU</span>
+            </div>
+            <div style="display: flex; gap: 24px; align-items: center; flex-wrap: wrap; justify-content: center;">
             <button class="footer-link" onclick="openToS()" data-subtitle="Our policies">Terms of Service</button>
+                <button class="footer-link" onclick="openContact()" data-subtitle="Get in touch">Contact</button>
+                <button class="footer-link" onclick="openOtherTools()" data-subtitle="More resources">Other Tools</button>
+                <button class="footer-link" onclick="openChangelog()" data-subtitle="What's new">Changelog</button>
+                <button class="footer-link" onclick="openLanguageModal()" data-subtitle="Change language">Language</button>
+            </div>
         </div>
     </div>
 </html>
