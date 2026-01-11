@@ -455,8 +455,16 @@ function addATSCheckerButton() {
     const actionContainer = document.querySelector('.action-container');
     if (!actionContainer) return;
     
-    // Check if button already exists
-    if (document.getElementById('ats-checker-btn')) return;
+    // Check if button already exists - more robust check
+    const existingButton = document.getElementById('ats-checker-btn');
+    if (existingButton) {
+        // Button already exists, just update its text if needed
+        const atsTextSpan = existingButton.querySelector('.ats-text');
+        if (atsTextSpan && typeof t === 'function') {
+            atsTextSpan.textContent = t('ats.button');
+        }
+        return;
+    }
     
     // Create button
     const button = document.createElement('button');

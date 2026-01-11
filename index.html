@@ -40,7 +40,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Outfit:wght@400;500;600&family=Plus+Jakarta+Sans:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
     
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="translations.js"></script>
     <script src="validation.js"></script>
 
@@ -1768,6 +1768,10 @@
         }
         
         @media (max-width: 768px) {
+            .header-language-selector {
+                display: none !important;
+            }
+            
             .welcome-container {
                 max-width: 100%;
                 border-radius: 20px;
@@ -2324,6 +2328,43 @@
             applyTranslations();
         }
         
+        // Update date picker month names when language changes
+        function updateDatePickerMonths() {
+            const months = TRANSLATIONS[getCurrentLanguage()].months;
+            
+            // Update all existing date picker month options
+            document.querySelectorAll('.date-container-modern .custom-options').forEach(optionsContainer => {
+                const monthOptions = optionsContainer.querySelectorAll('.custom-option');
+                if (monthOptions.length === 12) {
+                    // This is a month picker (12 options)
+                    monthOptions.forEach((option, idx) => {
+                        option.textContent = months[idx];
+                    });
+                }
+            });
+            
+            // Update month trigger text
+            document.querySelectorAll('.date-container-modern .custom-select-trigger span').forEach(trigger => {
+                const hiddenInput = trigger.closest('.custom-select-wrapper').querySelector('input[type="hidden"]');
+                if (hiddenInput && hiddenInput.className.includes('-month')) {
+                    const currentValue = hiddenInput.value;
+                    if (currentValue && !isNaN(currentValue)) {
+                        const monthIndex = parseInt(currentValue) - 1;
+                        if (monthIndex >= 0 && monthIndex < 12) {
+                            trigger.textContent = months[monthIndex];
+                            trigger.style.color = '#1D1D1F';
+                        } else {
+                            trigger.textContent = t('datePicker.month');
+                            trigger.style.color = 'var(--text-tertiary)';
+                        }
+                    } else {
+                        trigger.textContent = t('datePicker.month');
+                        trigger.style.color = 'var(--text-tertiary)';
+                    }
+                }
+            });
+        }
+        
         // Apply translations to all elements with data-i18n attribute
         function applyTranslations() {
             // Update all elements with data-i18n attribute
@@ -2349,6 +2390,9 @@
                     el.setAttribute('title', t(key));
                 }
             });
+            
+            // Update date picker month names
+            updateDatePickerMonths();
             
             // Update ATS button text if it exists
             const atsButton = document.getElementById('ats-checker-btn');
@@ -2449,6 +2493,14 @@
             applyTranslations();
         }
         
+        // Clear progress animation interval helper
+        function clearProgressAnimation() {
+            if (progressAnimationInterval) {
+                clearInterval(progressAnimationInterval);
+                progressAnimationInterval = null;
+            }
+        }
+        
         // Close welcome modal
         function closeWelcomeModal() {
             const modal = document.getElementById('welcome-modal');
@@ -2459,10 +2511,7 @@
             }
             
             // Clear progress animation interval to prevent memory leak
-            if (progressAnimationInterval) {
-                clearInterval(progressAnimationInterval);
-                progressAnimationInterval = null;
-            }
+            clearProgressAnimation();
             
             // Always restore checkbox visibility when closing
             restoreCheckboxVisibility();
@@ -2572,9 +2621,7 @@
             if (todoItems.length === 0) return;
             
             // Clear existing interval if any
-            if (progressAnimationInterval) {
-                clearInterval(progressAnimationInterval);
-            }
+            clearProgressAnimation();
             
             let currentStep = 0;
             
@@ -2596,6 +2643,28 @@
             // Update every 2 seconds
             progressAnimationInterval = setInterval(updateActiveStep, 2000);
         }
+        
+        // Cleanup on page unload to prevent memory leaks
+        window.addEventListener('beforeunload', function() {
+            clearProgressAnimation();
+        });
+        
+        // Cleanup when welcome modal is closed via backdrop click or ESC
+        document.addEventListener('click', function(e) {
+            const welcomeModal = document.getElementById('welcome-modal');
+            if (welcomeModal && e.target === welcomeModal && welcomeModal.classList.contains('show')) {
+                clearProgressAnimation();
+            }
+        });
+        
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                const welcomeModal = document.getElementById('welcome-modal');
+                if (welcomeModal && welcomeModal.classList.contains('show')) {
+                    clearProgressAnimation();
+                }
+            }
+        });
         
         window.onload = function() {
             // Initialize language and welcome modal
@@ -3024,16 +3093,54 @@
         // --- PHOTO HANDLER ---
         document.getElementById('photoInput').addEventListener('change', function(e) {
             const file = e.target.files[0];
-            if(file) {
-                const reader = new FileReader();
-                reader.onload = function(evt) {
+            if(!file) return;
+            
+            // Validate file type
+            const validTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp'];
+            if (!validTypes.includes(file.type)) {
+                alert('Please select a valid image file (JPEG, PNG, or WebP).');
+                e.target.value = '';
+                return;
+            }
+            
+            // Validate file size (max 5MB)
+            const maxSize = 5 * 1024 * 1024; // 5MB in bytes
+            if (file.size > maxSize) {
+                alert('Image file is too large. Please select an image smaller than 5MB.');
+                e.target.value = '';
+                return;
+            }
+            
+            const reader = new FileReader();
+            reader.onload = function(evt) {
+                const img = new Image();
+                img.onload = function() {
+                    // Validate image dimensions (max 2000x2000px)
+                    const maxDimension = 2000;
+                    if (this.width > maxDimension || this.height > maxDimension) {
+                        alert(`Image dimensions are too large. Maximum size is ${maxDimension}x${maxDimension} pixels.`);
+                        e.target.value = '';
+                        return;
+                    }
+                    
+                    // All validations passed, set the photo
                     photoData = evt.target.result;
                     document.getElementById('avatarImg').src = photoData;
                     document.getElementById('avatarImg').style.display = 'block';
-                    document.querySelector('.placeholder-icon').style.display = 'none';
+                    const placeholderIcon = document.querySelector('.placeholder-icon');
+                    if (placeholderIcon) placeholderIcon.style.display = 'none';
                 };
-                reader.readAsDataURL(file);
-            }
+                img.onerror = function() {
+                    alert('Error loading image. Please try a different file.');
+                    e.target.value = '';
+                };
+                img.src = evt.target.result;
+            };
+            reader.onerror = function() {
+                alert('Error reading file. Please try again.');
+                e.target.value = '';
+            };
+            reader.readAsDataURL(file);
         });
 
         // --- GENERATE ---
@@ -3103,7 +3210,8 @@
                 const sm = el.querySelector('.start-month').value, sy = el.querySelector('.start-year').value;
                 const em = el.querySelector('.end-month').value, ey = el.querySelector('.end-year').value;
                 const isCurrent = el.querySelector('.is-current').checked;
-                let dateString = (sm && sy) ? formatModernDate(sm, sy) + " — " + (isCurrent ? "Present" : (formatModernDate(em, ey) || "")) : "";
+                const presentText = typeof t === 'function' ? t('labels.present') : 'Present';
+                let dateString = (sm && sy) ? formatModernDate(sm, sy) + " — " + (isCurrent ? presentText : (formatModernDate(em, ey) || "")) : "";
 
                 const expLoc = el.querySelector('.exp-loc') ? el.querySelector('.exp-loc').value : '';
 
@@ -3720,20 +3828,1195 @@
         });
         }
         
-        // --- PDF DOWNLOAD ---
-        function downloadPDF() {
-            const element = document.getElementById('cvSheet');
-            const previewModal = document.getElementById('preview-modal');
+        // --- PDF DOWNLOAD (Pure jsPDF Implementation) ---
+        
+        /**
+         * PDF Helper Functions
+         */
+        function wrapText(doc, text, maxWidth, lineHeight) {
+            const words = text.split(' ');
+            const lines = [];
+            let currentLine = '';
             
-            // Check if cvSheet content exists and is rendered
-            if (!element || !element.innerHTML || element.innerHTML.trim() === '') {
-                console.error('CV sheet content is empty. Please generate CV first.');
+            for (let i = 0; i < words.length; i++) {
+                const word = words[i];
+                const testLine = currentLine + (currentLine ? ' ' : '') + word;
+                const testWidth = doc.getTextWidth(testLine);
+                
+                if (testWidth > maxWidth && currentLine) {
+                    lines.push(currentLine);
+                    currentLine = word;
+                } else {
+                    currentLine = testLine;
+                }
+            }
+            
+            if (currentLine) {
+                lines.push(currentLine);
+            }
+            
+            return lines;
+        }
+        
+        function addNewPageIfNeeded(doc, currentY, requiredHeight, pageHeight, margin) {
+            if (currentY + requiredHeight > pageHeight - margin) {
+                doc.addPage();
+                return margin;
+            }
+            return currentY;
+        }
+        
+        function hexToRgb(hex) {
+            const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+            return result ? {
+                r: parseInt(result[1], 16),
+                g: parseInt(result[2], 16),
+                b: parseInt(result[3], 16)
+            } : null;
+        }
+        
+        function addImageToPDF(doc, imageData, x, y, width, height) {
+            if (!imageData) {
+                return false;
+            }
+            
+            try {
+                // Handle data URL (data:image/jpeg;base64,... or data:image/png;base64,...)
+                let imageFormat = 'JPEG';
+                if (imageData.startsWith('data:image/png')) {
+                    imageFormat = 'PNG';
+                } else if (imageData.startsWith('data:image/jpeg') || imageData.startsWith('data:image/jpg')) {
+                    imageFormat = 'JPEG';
+                }
+                
+                doc.addImage(imageData, imageFormat, x, y, width, height);
+                return true;
+            } catch (error) {
+                // If image fails, continue without it
+                console.warn('Could not add image to PDF:', error);
+                return false;
+            }
+        }
+        
+        function drawRoundedRect(doc, x, y, w, h, r, mode) {
+            // Check if roundedRect method exists (available in jsPDF 2.0+)
+            if (typeof doc.roundedRect === 'function') {
+                doc.roundedRect(x, y, w, h, r, r, mode);
+            } else {
+                // Fallback to regular rectangle
+                if (mode === 'F' || mode === 'FD') {
+                    doc.rect(x, y, w, h, 'F');
+                }
+                if (mode === 'D' || mode === 'FD') {
+                    doc.rect(x, y, w, h, 'D');
+                }
+            }
+        }
+        
+        /**
+         * Render Minimal Template PDF
+         */
+        function renderMinimalPDF(doc, cvData, pageWidth, pageHeight, margin, lineHeight) {
+            let yPos = margin;
+            
+            // Header Section
+            const headerStartY = yPos;
+            doc.setFontSize(32);
+            doc.setFont('helvetica', 'bold');
+            doc.setTextColor(17, 17, 17); // #111
+            doc.text(cvData.name.toUpperCase(), margin, yPos);
+            yPos += 12;
+            
+            if (cvData.title) {
+                doc.setFontSize(16);
+                doc.setFont('helvetica', 'bold');
+                doc.setTextColor(0, 113, 227); // #0071E3
+                doc.text(cvData.title, margin, yPos);
+                yPos += 8;
+            }
+            
+            // Contact info
+            doc.setFontSize(13);
+            doc.setFont('helvetica', 'normal');
+            doc.setTextColor(85, 85, 85); // #555
+            const contactInfo = [cvData.email, cvData.phone, cvData.loc].filter(Boolean).join(' • ');
+            if (contactInfo) {
+                doc.text(contactInfo, margin, yPos);
+                yPos += 6;
+            }
+            
+            // Social links
+            if (cvData.socials && cvData.socials.length > 0) {
+                const socialText = cvData.socials.map(s => s.val).join(' ');
+                if (socialText) {
+                    doc.text(socialText, margin, yPos);
+                    yPos += 6;
+                }
+            }
+            
+            // Photo (right side of header)
+            if (cvData.photo) {
+                const photoSize = 30; // mm
+                const photoX = pageWidth - margin - photoSize;
+                addImageToPDF(doc, cvData.photo, photoX, headerStartY, photoSize, photoSize);
+            }
+            
+            // Header bottom border
+            yPos += 5;
+            doc.setDrawColor(17, 17, 17); // #111
+            doc.setLineWidth(0.5);
+            doc.line(margin, yPos, pageWidth - margin, yPos);
+            yPos += 15;
+            
+            // Summary
+            if (cvData.summary) {
+                doc.setFontSize(14);
+                doc.setFont('helvetica', 'normal');
+                doc.setTextColor(51, 51, 51); // #333
+                const summaryLines = wrapText(doc, cvData.summary.replace(/\n/g, ' '), pageWidth - 2 * margin, lineHeight);
+                summaryLines.forEach(line => {
+                    yPos = addNewPageIfNeeded(doc, yPos, lineHeight, pageHeight, margin);
+                    doc.text(line, margin, yPos);
+                    yPos += lineHeight;
+                });
+                yPos += 10;
+            }
+            
+            // Work Experience
+            if (cvData.exp && cvData.exp.length > 0) {
+                yPos = addNewPageIfNeeded(doc, yPos, 20, pageHeight, margin);
+                doc.setFontSize(14);
+                doc.setFont('helvetica', 'bold');
+                doc.setTextColor(17, 17, 17);
+                const expTitle = typeof t === 'function' ? t('sections.workExperience') : 'Experience';
+                doc.text(expTitle.toUpperCase(), margin, yPos);
+                yPos += 3;
+                doc.setDrawColor(221, 221, 221); // #ddd
+                doc.setLineWidth(0.2);
+                doc.line(margin, yPos, pageWidth - margin, yPos);
+                yPos += 8;
+                
+                cvData.exp.forEach(exp => {
+                    yPos = addNewPageIfNeeded(doc, yPos, 30, pageHeight, margin);
+                    
+                    // Title and date on same line
+                    doc.setFontSize(15);
+                    doc.setFont('helvetica', 'bold');
+                    doc.setTextColor(17, 17, 17);
+                    const titleWidth = doc.getTextWidth(exp.title);
+                    doc.text(exp.title, margin, yPos);
+                    
+                    if (exp.date) {
+                        doc.setFontSize(13);
+                        doc.setFont('helvetica', 'normal');
+                        doc.setTextColor(102, 102, 102); // #666
+                        doc.text(exp.date, pageWidth - margin - doc.getTextWidth(exp.date), yPos);
+                    }
+                    yPos += 6;
+                    
+                    // Company and location
+                    if (exp.company) {
+                        doc.setFontSize(14);
+                        doc.setFont('helvetica', 'italic');
+                        doc.setTextColor(68, 68, 68); // #444
+                        const companyText = exp.company + (exp.location ? `, ${exp.location}` : '');
+                        doc.text(companyText, margin, yPos);
+                        yPos += 6;
+                    }
+                    
+                    // Description
+                    if (exp.desc) {
+                        doc.setFontSize(13);
+                        doc.setFont('helvetica', 'normal');
+                        doc.setTextColor(51, 51, 51);
+                        const descLines = wrapText(doc, exp.desc.replace(/\n/g, ' '), pageWidth - 2 * margin, lineHeight);
+                        descLines.forEach(line => {
+                            yPos = addNewPageIfNeeded(doc, yPos, lineHeight, pageHeight, margin);
+                            doc.text(line, margin, yPos);
+                            yPos += lineHeight;
+                        });
+                    }
+                    yPos += 8;
+                });
+            }
+            
+            // Education
+            if (cvData.edu && cvData.edu.length > 0) {
+                yPos = addNewPageIfNeeded(doc, yPos, 20, pageHeight, margin);
+                yPos += 5;
+                doc.setFontSize(14);
+                doc.setFont('helvetica', 'bold');
+                doc.setTextColor(17, 17, 17);
+                const eduTitle = typeof t === 'function' ? t('sections.education') : 'Education';
+                doc.text(eduTitle.toUpperCase(), margin, yPos);
+                yPos += 3;
+                doc.setDrawColor(221, 221, 221);
+                doc.setLineWidth(0.2);
+                doc.line(margin, yPos, pageWidth - margin, yPos);
+                yPos += 8;
+                
+                cvData.edu.forEach(edu => {
+                    yPos = addNewPageIfNeeded(doc, yPos, 20, pageHeight, margin);
+                    
+                    doc.setFontSize(14);
+                    doc.setFont('helvetica', 'bold');
+                    doc.setTextColor(17, 17, 17);
+                    const degreeWidth = doc.getTextWidth(edu.degree);
+                    doc.text(edu.degree, margin, yPos);
+                    
+                    if (edu.date) {
+                        doc.setFontSize(13);
+                        doc.setFont('helvetica', 'normal');
+                        doc.setTextColor(102, 102, 102);
+                        doc.text(edu.date, pageWidth - margin - doc.getTextWidth(edu.date), yPos);
+                    }
+                    yPos += 6;
+                    
+                    if (edu.school) {
+                        doc.setFontSize(13);
+                        doc.setFont('helvetica', 'normal');
+                        doc.setTextColor(85, 85, 85);
+                        const schoolText = edu.school + (edu.loc ? `, ${edu.loc}` : '');
+                        doc.text(schoolText, margin, yPos);
+                        yPos += 8;
+                    }
+                });
+            }
+            
+            // Certifications
+            if (cvData.certs && cvData.certs.length > 0) {
+                yPos = addNewPageIfNeeded(doc, yPos, 20, pageHeight, margin);
+                yPos += 5;
+                doc.setFontSize(14);
+                doc.setFont('helvetica', 'bold');
+                doc.setTextColor(17, 17, 17);
+                const certTitle = typeof t === 'function' ? t('sections.certifications') : 'Certifications';
+                doc.text(certTitle.toUpperCase(), margin, yPos);
+                yPos += 3;
+                doc.setDrawColor(221, 221, 221);
+                doc.setLineWidth(0.2);
+                doc.line(margin, yPos, pageWidth - margin, yPos);
+                yPos += 8;
+                
+                cvData.certs.forEach(cert => {
+                    yPos = addNewPageIfNeeded(doc, yPos, 15, pageHeight, margin);
+                    
+                    doc.setFontSize(14);
+                    doc.setFont('helvetica', 'bold');
+                    doc.setTextColor(17, 17, 17);
+                    doc.text(cert.name, margin, yPos);
+                    
+                    if (cert.date) {
+                        doc.setFontSize(13);
+                        doc.setFont('helvetica', 'normal');
+                        doc.setTextColor(102, 102, 102);
+                        doc.text(cert.date, pageWidth - margin - doc.getTextWidth(cert.date), yPos);
+                    }
+                    yPos += 5;
+                    
+                    if (cert.issuer) {
+                        doc.setFontSize(13);
+                        doc.setFont('helvetica', 'normal');
+                        doc.setTextColor(85, 85, 85);
+                        doc.text(cert.issuer, margin, yPos);
+                        yPos += 8;
+                    }
+                });
+            }
+            
+            // Skills
+            if (cvData.skills && cvData.skills.length > 0) {
+                yPos = addNewPageIfNeeded(doc, yPos, 25, pageHeight, margin);
+                yPos += 5;
+                doc.setFontSize(14);
+                doc.setFont('helvetica', 'bold');
+                doc.setTextColor(17, 17, 17);
+                const skillsTitle = typeof t === 'function' ? t('sections.skills') : 'Skills';
+                doc.text(skillsTitle.toUpperCase(), margin, yPos);
+                yPos += 3;
+                doc.setDrawColor(221, 221, 221);
+                doc.setLineWidth(0.2);
+                doc.line(margin, yPos, pageWidth - margin, yPos);
+                yPos += 10;
+                
+                cvData.skills.forEach(skillCat => {
+                    yPos = addNewPageIfNeeded(doc, yPos, 15, pageHeight, margin);
+                    
+                    doc.setFontSize(13);
+                    doc.setFont('helvetica', 'bold');
+                    doc.setTextColor(0, 113, 227); // #0071E3
+                    doc.text(skillCat.cat, margin, yPos);
+                    yPos += 6;
+                    
+                    // Skills in category
+                    let xPos = margin;
+                    skillCat.items.forEach((skill, idx) => {
+                        const skillText = skill.name + (skill.level ? ` • ${getProficiencyLabel(skill.level, false)}` : '');
+                        const textWidth = doc.getTextWidth(skillText) + 4;
+                        
+                        if (xPos + textWidth > pageWidth - margin) {
+                            yPos += 6;
+                            xPos = margin;
+                        }
+                        
+                        // Background box
+                        doc.setFillColor(242, 242, 247); // #F2F2F7
+                        drawRoundedRect(doc, xPos - 2, yPos - 4, textWidth, 5, 1, 'F');
+                        
+                        doc.setFontSize(12);
+                        doc.setFont('helvetica', 'normal');
+                        doc.setTextColor(51, 51, 51);
+                        doc.text(skillText, xPos, yPos);
+                        xPos += textWidth + 3;
+                    });
+                    yPos += 10;
+                });
+            }
+            
+            // Languages
+            if (cvData.languages && cvData.languages.length > 0) {
+                yPos = addNewPageIfNeeded(doc, yPos, 25, pageHeight, margin);
+                yPos += 5;
+                doc.setFontSize(14);
+                doc.setFont('helvetica', 'bold');
+                doc.setTextColor(17, 17, 17);
+                const langTitle = typeof t === 'function' ? t('sections.languages') : 'Languages';
+                doc.text(langTitle.toUpperCase(), margin, yPos);
+                yPos += 3;
+                doc.setDrawColor(221, 221, 221);
+                doc.setLineWidth(0.2);
+                doc.line(margin, yPos, pageWidth - margin, yPos);
+                yPos += 8;
+                
+                const langPerRow = 2;
+                const langColWidth = (pageWidth - 2 * margin) / langPerRow;
+                
+                cvData.languages.forEach((lang, idx) => {
+                    const col = idx % langPerRow;
+                    const row = Math.floor(idx / langPerRow);
+                    
+                    if (col === 0 && idx > 0) {
+                        yPos += 6;
+                    }
+                    
+                    const langX = margin + col * langColWidth;
+                    doc.setFontSize(13);
+                    doc.setFont('helvetica', 'bold');
+                    doc.setTextColor(17, 17, 17);
+                    doc.text(lang.name, langX, yPos);
+                    
+                    doc.setFont('helvetica', 'normal');
+                    doc.setTextColor(102, 102, 102);
+                    doc.text(`— ${lang.level}`, langX + doc.getTextWidth(lang.name) + 2, yPos);
+                });
+            }
+            
+            return yPos;
+        }
+        
+        /**
+         * Render Exec Template PDF
+         */
+        function renderExecPDF(doc, cvData, pageWidth, pageHeight, margin, lineHeight) {
+            let yPos = margin;
+            
+            // Centered header
+            doc.setFontSize(24);
+            doc.setFont('helvetica', 'bold');
+            doc.setTextColor(17, 17, 17);
+            const nameWidth = doc.getTextWidth(cvData.name || '');
+            doc.text(cvData.name || '', (pageWidth - nameWidth) / 2, yPos);
+            yPos += 8;
+            
+            if (cvData.title) {
+                doc.setFontSize(12);
+                doc.setFont('helvetica', 'normal');
+                doc.setTextColor(85, 85, 85);
+                const titleText = cvData.title.toUpperCase();
+                const titleWidth = doc.getTextWidth(titleText);
+                doc.text(titleText, (pageWidth - titleWidth) / 2, yPos);
+                yPos += 5;
+            }
+            
+            // Contact bar with borders
+            const contactBar = [cvData.email, cvData.phone, cvData.loc].filter(Boolean);
+            if (cvData.socials && cvData.socials.length > 0) {
+                contactBar.push(...cvData.socials.map(s => s.val));
+            }
+            
+            if (contactBar.length > 0) {
+                yPos += 5;
+                doc.setDrawColor(238, 238, 238); // #eee
+                doc.setLineWidth(0.2);
+                doc.line(margin, yPos, pageWidth - margin, yPos);
+                yPos += 5;
+                
+                doc.setFontSize(12);
+                doc.setFont('helvetica', 'normal');
+                doc.setTextColor(68, 68, 68);
+                const contactText = contactBar.join(' | ');
+                const contactWidth = doc.getTextWidth(contactText);
+                doc.text(contactText, (pageWidth - contactWidth) / 2, yPos);
+                yPos += 5;
+                
+                doc.line(margin, yPos, pageWidth - margin, yPos);
+                yPos += 15;
+            }
+            
+            // Summary
+            if (cvData.summary) {
+                doc.setFontSize(14);
+                doc.setFont('helvetica', 'normal');
+                doc.setTextColor(51, 51, 51);
+                const summaryLines = wrapText(doc, cvData.summary, pageWidth - 2 * margin, lineHeight);
+                summaryLines.forEach(line => {
+                    yPos = addNewPageIfNeeded(doc, yPos, lineHeight, pageHeight, margin);
+                    doc.text(line, margin, yPos);
+                    yPos += lineHeight;
+                });
+                yPos += 10;
+            }
+            
+            // Work Experience
+            if (cvData.exp && cvData.exp.length > 0) {
+                yPos = addNewPageIfNeeded(doc, yPos, 20, pageHeight, margin);
+                doc.setFontSize(13);
+                doc.setFont('helvetica', 'bold');
+                doc.setTextColor(17, 17, 17);
+                const expTitle = typeof t === 'function' ? t('sections.workExperience') : 'Experience';
+                doc.text(expTitle.toUpperCase(), margin, yPos);
+                yPos += 2;
+                doc.setDrawColor(51, 51, 51); // #333
+                doc.setLineWidth(0.5);
+                doc.line(margin, yPos, pageWidth - margin, yPos);
+                yPos += 8;
+                
+                cvData.exp.forEach(exp => {
+                    yPos = addNewPageIfNeeded(doc, yPos, 30, pageHeight, margin);
+                    
+                    // Company first
+                    doc.setFontSize(15);
+                    doc.setFont('helvetica', 'bold');
+                    doc.setTextColor(17, 17, 17);
+                    const companyText = exp.company + (exp.location ? `, ${exp.location}` : '');
+                    const companyWidth = doc.getTextWidth(companyText);
+                    doc.text(companyText, margin, yPos);
+                    
+                    if (exp.date) {
+                        doc.setFontSize(13);
+                        doc.setFont('helvetica', 'normal');
+                        doc.setTextColor(68, 68, 68);
+                        doc.text(exp.date, pageWidth - margin - doc.getTextWidth(exp.date), yPos);
+                    }
+                    yPos += 6;
+                    
+                    // Title (italic)
+                    if (exp.title) {
+                        doc.setFontSize(14);
+                        doc.setFont('helvetica', 'italic');
+                        doc.setTextColor(51, 51, 51);
+                        doc.text(exp.title, margin, yPos);
+                        yPos += 6;
+                    }
+                    
+                    // Description
+                    if (exp.desc) {
+                        doc.setFontSize(14);
+                        doc.setFont('helvetica', 'normal');
+                        doc.setTextColor(51, 51, 51);
+                        const descLines = wrapText(doc, exp.desc.replace(/\n/g, ' '), pageWidth - 2 * margin, lineHeight);
+                        descLines.forEach(line => {
+                            yPos = addNewPageIfNeeded(doc, yPos, lineHeight, pageHeight, margin);
+                            doc.text(line, margin, yPos);
+                            yPos += lineHeight;
+                        });
+                    }
+                    yPos += 8;
+                });
+            }
+            
+            // Education
+            if (cvData.edu && cvData.edu.length > 0) {
+                yPos = addNewPageIfNeeded(doc, yPos, 25, pageHeight, margin);
+                yPos += 10;
+                doc.setFontSize(13);
+                doc.setFont('helvetica', 'bold');
+                doc.setTextColor(17, 17, 17);
+                const eduTitle = typeof t === 'function' ? t('sections.education') : 'Education';
+                doc.text(eduTitle.toUpperCase(), margin, yPos);
+                yPos += 2;
+                doc.setDrawColor(51, 51, 51);
+                doc.setLineWidth(0.5);
+                doc.line(margin, yPos, pageWidth - margin, yPos);
+                yPos += 8;
+                
+                cvData.edu.forEach(edu => {
+                    yPos = addNewPageIfNeeded(doc, yPos, 18, pageHeight, margin);
+                    
+                    const schoolText = edu.school + (edu.loc ? `, ${edu.loc}` : '');
+                    doc.setFontSize(14);
+                    doc.setFont('helvetica', 'bold');
+                    doc.setTextColor(17, 17, 17);
+                    const schoolWidth = doc.getTextWidth(schoolText);
+                    doc.text(schoolText, margin, yPos);
+                    
+                    if (edu.date) {
+                        doc.setFontSize(13);
+                        doc.setFont('helvetica', 'normal');
+                        doc.setTextColor(51, 51, 51);
+                        doc.text(edu.date, pageWidth - margin - doc.getTextWidth(edu.date), yPos);
+                    }
+                    yPos += 5;
+                    
+                    if (edu.degree) {
+                        doc.setFontSize(14);
+                        doc.setFont('helvetica', 'normal');
+                        doc.setTextColor(51, 51, 51);
+                        doc.text(edu.degree, margin, yPos);
+                        yPos += 8;
+                    }
+                });
+            }
+            
+            return yPos;
+        }
+        
+        /**
+         * Render Jakarta Template PDF
+         */
+        function renderJakartaPDF(doc, cvData, pageWidth, pageHeight, margin, lineHeight) {
+            let yPos = margin;
+            
+            // Header with photo
+            const headerStartY = yPos;
+            let textStartX = margin;
+            
+            if (cvData.photo) {
+                const photoSize = 28;
+                addImageToPDF(doc, cvData.photo, margin, yPos, photoSize, photoSize);
+                textStartX = margin + 30;
+            }
+            
+            doc.setFontSize(40);
+            doc.setFont('helvetica', 'bold');
+            doc.setTextColor(26, 26, 26); // #1a1a1a
+            doc.text(cvData.name || '', textStartX, yPos + 12);
+            yPos += 15;
+            
+            if (cvData.title) {
+                doc.setFontSize(16);
+                doc.setFont('helvetica', 'bold');
+                doc.setTextColor(44, 62, 80); // #2C3E50
+                doc.text(cvData.title, textStartX, yPos);
+                yPos += 8;
+            }
+            
+            // Contact info
+            doc.setFontSize(13);
+            doc.setFont('helvetica', 'normal');
+            doc.setTextColor(85, 85, 85);
+            const contactInfo = [cvData.email, cvData.phone, cvData.loc].filter(Boolean).join(' • ');
+            if (contactInfo) {
+                doc.text(contactInfo, textStartX, yPos);
+                yPos += 6;
+            }
+            
+            // Social links
+            if (cvData.socials && cvData.socials.length > 0) {
+                const socialText = cvData.socials.map(s => s.val).join(' ');
+                if (socialText) {
+                    doc.text(socialText, textStartX, yPos);
+                    yPos += 6;
+                }
+            }
+            
+            // Header border
+            yPos = Math.max(yPos, headerStartY + 30);
+            yPos += 5;
+            doc.setDrawColor(44, 62, 80); // #2C3E50
+            doc.setLineWidth(0.5);
+            doc.line(margin, yPos, pageWidth - margin, yPos);
+            yPos += 15;
+            
+            // Summary
+            if (cvData.summary) {
+                doc.setFontSize(14);
+                doc.setFont('helvetica', 'normal');
+                doc.setTextColor(51, 51, 51);
+                const summaryLines = wrapText(doc, cvData.summary.replace(/\n/g, ' '), pageWidth - 2 * margin, lineHeight);
+                summaryLines.forEach(line => {
+                    yPos = addNewPageIfNeeded(doc, yPos, lineHeight, pageHeight, margin);
+                    doc.text(line, margin, yPos);
+                    yPos += lineHeight;
+                });
+                yPos += 10;
+            }
+            
+            // Work Experience
+            if (cvData.exp && cvData.exp.length > 0) {
+                yPos = addNewPageIfNeeded(doc, yPos, 25, pageHeight, margin);
+                yPos += 5;
+                doc.setFontSize(13);
+                doc.setFont('helvetica', 'bold');
+                doc.setTextColor(26, 26, 26);
+                const expTitle = typeof t === 'function' ? t('sections.workExperience') : 'Experience';
+                doc.text(expTitle.toUpperCase(), margin, yPos);
+                yPos += 3;
+                doc.setDrawColor(44, 62, 80);
+                doc.setLineWidth(0.5);
+                doc.line(margin, yPos, pageWidth - margin, yPos);
+                yPos += 8;
+                
+                cvData.exp.forEach(exp => {
+                    yPos = addNewPageIfNeeded(doc, yPos, 30, pageHeight, margin);
+                    
+                    doc.setFontSize(15);
+                    doc.setFont('helvetica', 'bold');
+                    doc.setTextColor(26, 26, 26);
+                    const titleWidth = doc.getTextWidth(exp.title);
+                    doc.text(exp.title, margin, yPos);
+                    
+                    if (exp.date) {
+                        doc.setFontSize(12);
+                        doc.setFont('helvetica', 'normal');
+                        doc.setTextColor(136, 136, 136); // #888
+                        doc.text(exp.date, pageWidth - margin - doc.getTextWidth(exp.date), yPos);
+                    }
+                    yPos += 6;
+                    
+                    if (exp.company) {
+                        doc.setFontSize(14);
+                        doc.setFont('helvetica', 'bold');
+                        doc.setTextColor(44, 62, 80);
+                        const companyText = exp.company + (exp.location ? ` • ${exp.location}` : '');
+                        doc.text(companyText, margin, yPos);
+                        yPos += 6;
+                    }
+                    
+                    if (exp.desc) {
+                        doc.setFontSize(13);
+                        doc.setFont('helvetica', 'normal');
+                        doc.setTextColor(85, 85, 85);
+                        const descLines = wrapText(doc, exp.desc.replace(/\n/g, ' '), pageWidth - 2 * margin, lineHeight);
+                        descLines.forEach(line => {
+                            yPos = addNewPageIfNeeded(doc, yPos, lineHeight, pageHeight, margin);
+                            doc.text(line, margin, yPos);
+                            yPos += lineHeight;
+                        });
+                    }
+                    yPos += 8;
+                });
+            }
+            
+            // Education
+            if (cvData.edu && cvData.edu.length > 0) {
+                yPos = addNewPageIfNeeded(doc, yPos, 25, pageHeight, margin);
+                yPos += 5;
+                doc.setFontSize(13);
+                doc.setFont('helvetica', 'bold');
+                doc.setTextColor(26, 26, 26);
+                const eduTitle = typeof t === 'function' ? t('sections.education') : 'Education';
+                doc.text(eduTitle.toUpperCase(), margin, yPos);
+                yPos += 3;
+                doc.setDrawColor(44, 62, 80);
+                doc.setLineWidth(0.5);
+                doc.line(margin, yPos, pageWidth - margin, yPos);
+                yPos += 8;
+                
+                cvData.edu.forEach(edu => {
+                    yPos = addNewPageIfNeeded(doc, yPos, 20, pageHeight, margin);
+                    
+                    doc.setFontSize(14);
+                    doc.setFont('helvetica', 'bold');
+                    doc.setTextColor(26, 26, 26);
+                    const degreeWidth = doc.getTextWidth(edu.degree);
+                    doc.text(edu.degree, margin, yPos);
+                    
+                    if (edu.date) {
+                        doc.setFontSize(12);
+                        doc.setFont('helvetica', 'normal');
+                        doc.setTextColor(136, 136, 136);
+                        doc.text(edu.date, pageWidth - margin - doc.getTextWidth(edu.date), yPos);
+                    }
+                    yPos += 5;
+                    
+                    if (edu.school) {
+                        doc.setFontSize(13);
+                        doc.setFont('helvetica', 'bold');
+                        doc.setTextColor(44, 62, 80);
+                        const schoolText = edu.school + (edu.loc ? ` • ${edu.loc}` : '');
+                        doc.text(schoolText, margin, yPos);
+                        yPos += 8;
+                    }
+                });
+            }
+            
+            // Certifications
+            if (cvData.certs && cvData.certs.length > 0) {
+                yPos = addNewPageIfNeeded(doc, yPos, 20, pageHeight, margin);
+                yPos += 5;
+                doc.setFontSize(13);
+                doc.setFont('helvetica', 'bold');
+                doc.setTextColor(26, 26, 26);
+                const certTitle = typeof t === 'function' ? t('sections.certifications') : 'Certifications';
+                doc.text(certTitle.toUpperCase(), margin, yPos);
+                yPos += 3;
+                doc.setDrawColor(44, 62, 80);
+                doc.setLineWidth(0.5);
+                doc.line(margin, yPos, pageWidth - margin, yPos);
+                yPos += 8;
+                
+                cvData.certs.forEach(cert => {
+                    yPos = addNewPageIfNeeded(doc, yPos, 15, pageHeight, margin);
+                    
+                    doc.setFontSize(13);
+                    doc.setFont('helvetica', 'bold');
+                    doc.setTextColor(26, 26, 26);
+                    doc.text(cert.name, margin, yPos);
+                    
+                    if (cert.date) {
+                        doc.setFontSize(12);
+                        doc.setFont('helvetica', 'normal');
+                        doc.setTextColor(136, 136, 136);
+                        doc.text(cert.date, pageWidth - margin - doc.getTextWidth(cert.date), yPos);
+                    }
+                    yPos += 5;
+                    
+                    if (cert.issuer) {
+                        doc.setFontSize(12);
+                        doc.setFont('helvetica', 'normal');
+                        doc.setTextColor(102, 102, 102);
+                        doc.text(cert.issuer, margin, yPos);
+                        yPos += 8;
+                    }
+                });
+            }
+            
+            // Skills
+            if (cvData.skills && cvData.skills.length > 0) {
+                yPos = addNewPageIfNeeded(doc, yPos, 25, pageHeight, margin);
+                yPos += 5;
+                doc.setFontSize(13);
+                doc.setFont('helvetica', 'bold');
+                doc.setTextColor(26, 26, 26);
+                const skillsTitle = typeof t === 'function' ? t('sections.skills') : 'Skills';
+                doc.text(skillsTitle.toUpperCase(), margin, yPos);
+                yPos += 3;
+                doc.setDrawColor(44, 62, 80);
+                doc.setLineWidth(0.5);
+                doc.line(margin, yPos, pageWidth - margin, yPos);
+                yPos += 10;
+                
+                cvData.skills.forEach(skillCat => {
+                    yPos = addNewPageIfNeeded(doc, yPos, 15, pageHeight, margin);
+                    
+                    doc.setFontSize(12);
+                    doc.setFont('helvetica', 'bold');
+                    doc.setTextColor(44, 62, 80);
+                    doc.text(skillCat.cat.toUpperCase(), margin, yPos);
+                    yPos += 6;
+                    
+                    let xPos = margin;
+                    skillCat.items.forEach(skill => {
+                        const skillText = skill.name + (skill.level ? ` • ${getProficiencyLabel(skill.level, false)}` : '');
+                        const textWidth = doc.getTextWidth(skillText) + 4;
+                        
+                        if (xPos + textWidth > pageWidth - margin) {
+                            yPos += 6;
+                            xPos = margin;
+                        }
+                        
+                        doc.setFillColor(240, 245, 250); // #F0F5FA
+                        doc.setDrawColor(212, 224, 240); // #D4E0F0
+                        doc.setLineWidth(0.2);
+                        drawRoundedRect(doc, xPos - 2, yPos - 4, textWidth, 5, 1.5, 'FD');
+                        
+                        doc.setFontSize(12);
+                        doc.setFont('helvetica', 'normal');
+                        doc.setTextColor(51, 51, 51);
+                        doc.text(skillText, xPos, yPos);
+                        xPos += textWidth + 2;
+                    });
+                    yPos += 10;
+                });
+            }
+            
+            // Languages
+            if (cvData.languages && cvData.languages.length > 0) {
+                yPos = addNewPageIfNeeded(doc, yPos, 25, pageHeight, margin);
+                yPos += 5;
+                doc.setFontSize(13);
+                doc.setFont('helvetica', 'bold');
+                doc.setTextColor(26, 26, 26);
+                const langTitle = typeof t === 'function' ? t('sections.languages') : 'Languages';
+                doc.text(langTitle.toUpperCase(), margin, yPos);
+                yPos += 3;
+                doc.setDrawColor(44, 62, 80);
+                doc.setLineWidth(0.5);
+                doc.line(margin, yPos, pageWidth - margin, yPos);
+                yPos += 8;
+                
+                const langColWidth = (pageWidth - 2 * margin) / 2;
+                cvData.languages.forEach((lang, idx) => {
+                    const col = idx % 2;
+                    if (col === 0 && idx > 0) yPos += 6;
+                    
+                    const langX = margin + col * langColWidth;
+                    doc.setFontSize(13);
+                    doc.setFont('helvetica', 'bold');
+                    doc.setTextColor(26, 26, 26);
+                    doc.text(lang.name, langX, yPos);
+                    
+                    doc.setFont('helvetica', 'normal');
+                    doc.setTextColor(136, 136, 136);
+                    doc.setFontSize(12);
+                    doc.text(`— ${lang.level}`, langX + doc.getTextWidth(lang.name) + 2, yPos);
+                });
+            }
+            
+            return yPos;
+        }
+        
+        /**
+         * Render Robotic Template PDF
+         */
+        function renderRoboticPDF(doc, cvData, pageWidth, pageHeight, margin, lineHeight) {
+            let yPos = margin;
+            
+            // Header
+            doc.setFontSize(28);
+            doc.setFont('helvetica', 'bold');
+            doc.setTextColor(26, 58, 82); // #1A3A52
+            doc.text(cvData.name.toUpperCase() || '', margin, yPos);
+            yPos += 8;
+            
+            if (cvData.title) {
+                doc.setFontSize(12);
+                doc.setFont('helvetica', 'bold');
+                doc.setTextColor(26, 58, 82);
+                doc.text(cvData.title.toUpperCase(), margin, yPos);
+                yPos += 6;
+            }
+            
+            // Contact info
+            doc.setFontSize(11);
+            doc.setFont('helvetica', 'normal');
+            doc.setTextColor(85, 85, 85);
+            const contactInfo = [cvData.email, cvData.phone, cvData.loc].filter(Boolean).join(' • ');
+            if (contactInfo) {
+                doc.text(contactInfo, margin, yPos);
+                yPos += 5;
+            }
+            
+            if (cvData.socials && cvData.socials.length > 0) {
+                const socialText = cvData.socials.map(s => s.val).join(' ');
+                if (socialText) {
+                    doc.text(socialText, margin, yPos);
+                    yPos += 5;
+                }
+            }
+            
+            // Header border
+            yPos += 3;
+            doc.setDrawColor(232, 238, 245); // #E8EEF5
+            doc.setLineWidth(0.5);
+            doc.line(margin, yPos, pageWidth - margin, yPos);
+            yPos += 10;
+            
+            // Summary with left border
+            if (cvData.summary) {
+                doc.setFillColor(232, 238, 245);
+                doc.rect(margin, yPos - 3, 1, 15, 'F');
+                
+                doc.setFontSize(12);
+                doc.setFont('helvetica', 'normal');
+                doc.setTextColor(51, 51, 51);
+                const summaryLines = wrapText(doc, cvData.summary.replace(/\n/g, ' '), pageWidth - 2 * margin - 5, lineHeight);
+                summaryLines.forEach(line => {
+                    yPos = addNewPageIfNeeded(doc, yPos, lineHeight, pageHeight, margin);
+                    doc.text(line, margin + 4, yPos);
+                    yPos += lineHeight;
+                });
+                yPos += 8;
+            }
+            
+            // Work Experience
+            if (cvData.exp && cvData.exp.length > 0) {
+                yPos = addNewPageIfNeeded(doc, yPos, 25, pageHeight, margin);
+                yPos += 2;
+                doc.setFontSize(12);
+                doc.setFont('helvetica', 'bold');
+                doc.setTextColor(26, 58, 82);
+                const expTitle = typeof t === 'function' ? t('sections.workExperience') : 'Experience';
+                doc.text(expTitle.toUpperCase(), margin, yPos);
+                yPos += 3;
+                doc.setDrawColor(232, 238, 245);
+                doc.setLineWidth(0.5);
+                doc.line(margin, yPos, pageWidth - margin, yPos);
+                yPos += 7;
+                
+                cvData.exp.forEach(exp => {
+                    yPos = addNewPageIfNeeded(doc, yPos, 30, pageHeight, margin);
+                    
+                    doc.setFontSize(12);
+                    doc.setFont('helvetica', 'bold');
+                    doc.setTextColor(26, 58, 82);
+                    const titleText = exp.title.toUpperCase();
+                    const titleWidth = doc.getTextWidth(titleText);
+                    doc.text(titleText, margin, yPos);
+                    
+                    if (exp.date) {
+                        doc.setFontSize(11);
+                        doc.setFont('helvetica', 'normal');
+                        doc.setTextColor(136, 136, 136);
+                        doc.text(exp.date, pageWidth - margin - doc.getTextWidth(exp.date), yPos);
+                    }
+                    yPos += 5;
+                    
+                    if (exp.company) {
+                        doc.setFontSize(11);
+                        doc.setFont('helvetica', 'bold');
+                        doc.setTextColor(51, 51, 51);
+                        const companyText = exp.company + (exp.location ? ` • ${exp.location}` : '');
+                        doc.text(companyText, margin, yPos);
+                        yPos += 5;
+                    }
+                    
+                    if (exp.desc) {
+                        doc.setFontSize(11);
+                        doc.setFont('helvetica', 'normal');
+                        doc.setTextColor(102, 102, 102);
+                        const descLines = wrapText(doc, exp.desc.replace(/\n/g, ' '), pageWidth - 2 * margin, lineHeight);
+                        descLines.forEach(line => {
+                            yPos = addNewPageIfNeeded(doc, yPos, lineHeight, pageHeight, margin);
+                            doc.text(line, margin, yPos);
+                            yPos += lineHeight;
+                        });
+                    }
+                    yPos += 6;
+                });
+            }
+            
+            // Education
+            if (cvData.edu && cvData.edu.length > 0) {
+                yPos = addNewPageIfNeeded(doc, yPos, 25, pageHeight, margin);
+                yPos += 2;
+                doc.setFontSize(12);
+                doc.setFont('helvetica', 'bold');
+                doc.setTextColor(26, 58, 82);
+                const eduTitle = typeof t === 'function' ? t('sections.education') : 'Education';
+                doc.text(eduTitle.toUpperCase(), margin, yPos);
+                yPos += 3;
+                doc.setDrawColor(232, 238, 245);
+                doc.setLineWidth(0.5);
+                doc.line(margin, yPos, pageWidth - margin, yPos);
+                yPos += 7;
+                
+                cvData.edu.forEach(edu => {
+                    yPos = addNewPageIfNeeded(doc, yPos, 18, pageHeight, margin);
+                    
+                    doc.setFontSize(11);
+                    doc.setFont('helvetica', 'bold');
+                    doc.setTextColor(26, 58, 82);
+                    const degreeText = edu.degree.toUpperCase();
+                    const degreeWidth = doc.getTextWidth(degreeText);
+                    doc.text(degreeText, margin, yPos);
+                    
+                    if (edu.date) {
+                        doc.setFontSize(11);
+                        doc.setFont('helvetica', 'normal');
+                        doc.setTextColor(136, 136, 136);
+                        doc.text(edu.date, pageWidth - margin - doc.getTextWidth(edu.date), yPos);
+                    }
+                    yPos += 5;
+                    
+                    if (edu.school) {
+                        doc.setFontSize(11);
+                        doc.setFont('helvetica', 'bold');
+                        doc.setTextColor(85, 85, 85);
+                        const schoolText = edu.school + (edu.loc ? ` • ${edu.loc}` : '');
+                        doc.text(schoolText, margin, yPos);
+                        yPos += 6;
+                    }
+                });
+            }
+            
+            // Certifications
+            if (cvData.certs && cvData.certs.length > 0) {
+                yPos = addNewPageIfNeeded(doc, yPos, 20, pageHeight, margin);
+                yPos += 2;
+                doc.setFontSize(12);
+                doc.setFont('helvetica', 'bold');
+                doc.setTextColor(26, 58, 82);
+                const certTitle = typeof t === 'function' ? t('sections.certifications') : 'Certifications';
+                doc.text(certTitle.toUpperCase(), margin, yPos);
+                yPos += 3;
+                doc.setDrawColor(232, 238, 245);
+                doc.setLineWidth(0.5);
+                doc.line(margin, yPos, pageWidth - margin, yPos);
+                yPos += 7;
+                
+                cvData.certs.forEach(cert => {
+                    yPos = addNewPageIfNeeded(doc, yPos, 15, pageHeight, margin);
+                    
+                    doc.setFontSize(11);
+                    doc.setFont('helvetica', 'bold');
+                    doc.setTextColor(26, 58, 82);
+                    doc.text(cert.name.toUpperCase(), margin, yPos);
+                    
+                    if (cert.date) {
+                        doc.setFontSize(11);
+                        doc.setFont('helvetica', 'normal');
+                        doc.setTextColor(136, 136, 136);
+                        doc.text(cert.date, pageWidth - margin - doc.getTextWidth(cert.date), yPos);
+                    }
+                    yPos += 5;
+                    
+                    if (cert.issuer) {
+                        doc.setFontSize(11);
+                        doc.setFont('helvetica', 'normal');
+                        doc.setTextColor(102, 102, 102);
+                        doc.text(cert.issuer, margin, yPos);
+                        yPos += 6;
+                    }
+                });
+            }
+            
+            // Skills with progress bars
+            if (cvData.skills && cvData.skills.length > 0) {
+                yPos = addNewPageIfNeeded(doc, yPos, 25, pageHeight, margin);
+                yPos += 2;
+                doc.setFontSize(12);
+                doc.setFont('helvetica', 'bold');
+                doc.setTextColor(26, 58, 82);
+                const skillsTitle = typeof t === 'function' ? t('sections.skills') : 'Skills';
+                doc.text(skillsTitle.toUpperCase(), margin, yPos);
+                yPos += 3;
+                doc.setDrawColor(232, 238, 245);
+                doc.setLineWidth(0.5);
+                doc.line(margin, yPos, pageWidth - margin, yPos);
+                yPos += 7;
+                
+                cvData.skills.forEach(skillCat => {
+                    yPos = addNewPageIfNeeded(doc, yPos, skillCat.items.length * 8 + 10, pageHeight, margin);
+                    
+                    doc.setFontSize(11);
+                    doc.setFont('helvetica', 'bold');
+                    doc.setTextColor(26, 58, 82);
+                    doc.text(skillCat.cat.toUpperCase(), margin, yPos);
+                    yPos += 6;
+                    
+                    skillCat.items.forEach(skill => {
+                        yPos = addNewPageIfNeeded(doc, yPos, 8, pageHeight, margin);
+                        
+                        doc.setFontSize(11);
+                        doc.setFont('helvetica', 'normal');
+                        doc.setTextColor(51, 51, 51);
+                        const skillName = skill.name;
+                        const skillNameWidth = doc.getTextWidth(skillName);
+                        doc.text(skillName, margin, yPos);
+                        
+                        // Progress bar
+                        const barX = margin + 25;
+                        const barWidth = pageWidth - barX - margin - 40;
+                        const barY = yPos - 2;
+                        const barHeight = 1.5;
+                        
+                        // Background bar
+                        doc.setFillColor(232, 238, 245);
+                        doc.rect(barX, barY, barWidth, barHeight, 'F');
+                        
+                        // Filled bar
+                        const levelPercent = skill.level ? (skill.level * 33.33) : 0;
+                        const fillWidth = (barWidth * levelPercent) / 100;
+                        
+                        doc.setFillColor(46, 80, 144); // #2E5090
+                        doc.rect(barX, barY, fillWidth, barHeight, 'F');
+                        
+                        // Level label
+                        if (skill.level) {
+                            doc.setFontSize(10);
+                            doc.setFont('helvetica', 'bold');
+                            doc.setTextColor(46, 80, 144);
+                            const levelText = getProficiencyLabel(skill.level, false);
+                            doc.text(levelText, pageWidth - margin - doc.getTextWidth(levelText), yPos);
+                        }
+                        
+                        yPos += 5;
+                    });
+                    yPos += 3;
+                });
+            }
+            
+            // Languages with progress bars
+            if (cvData.languages && cvData.languages.length > 0) {
+                yPos = addNewPageIfNeeded(doc, yPos, cvData.languages.length * 8 + 15, pageHeight, margin);
+                yPos += 2;
+                doc.setFontSize(12);
+                doc.setFont('helvetica', 'bold');
+                doc.setTextColor(26, 58, 82);
+                const langTitle = typeof t === 'function' ? t('sections.languages') : 'Languages';
+                doc.text(langTitle.toUpperCase(), margin, yPos);
+                yPos += 3;
+                doc.setDrawColor(232, 238, 245);
+                doc.setLineWidth(0.5);
+                doc.line(margin, yPos, pageWidth - margin, yPos);
+                yPos += 7;
+                
+                cvData.languages.forEach(lang => {
+                    yPos = addNewPageIfNeeded(doc, yPos, 8, pageHeight, margin);
+                    
+                    doc.setFontSize(11);
+                    doc.setFont('helvetica', 'normal');
+                    doc.setTextColor(51, 51, 51);
+                    const langNameWidth = doc.getTextWidth(lang.name);
+                    doc.text(lang.name, margin, yPos);
+                    
+                    // Progress bar
+                    const barX = margin + 25;
+                    const barWidth = pageWidth - barX - margin - 40;
+                    const barY = yPos - 2;
+                    const barHeight = 1.5;
+                    
+                    // Background bar
+                    doc.setFillColor(232, 238, 245);
+                    doc.rect(barX, barY, barWidth, barHeight, 'F');
+                    
+                    // Filled bar based on level
+                    let levelPercent = 33;
+                    if (lang.level.includes('Independent')) levelPercent = 66;
+                    else if (lang.level.includes('Proficient')) levelPercent = 100;
+                    
+                    const fillWidth = (barWidth * levelPercent) / 100;
+                    
+                    doc.setFillColor(46, 80, 144);
+                    doc.rect(barX, barY, fillWidth, barHeight, 'F');
+                    
+                    // Level label
+                    doc.setFontSize(10);
+                    doc.setFont('helvetica', 'bold');
+                    doc.setTextColor(46, 80, 144);
+                    doc.text(lang.level, pageWidth - margin - doc.getTextWidth(lang.level), yPos);
+                    
+                    yPos += 5;
+                });
+            }
+            
+            return yPos;
+        }
+        
+        /**
+         * Main PDF Download Function - Pure jsPDF
+         */
+        function downloadPDF() {
+            // Validate cvData exists
+            if (!cvData || !cvData.name) {
                 alert('Please generate your CV before downloading.');
                 return;
             }
             
             // Get full name from cvData
-            const fullName = cvData && cvData.name ? cvData.name.replace(/\s+/g, '_') : 'CV';
+            const fullName = cvData.name.replace(/\s+/g, '_');
             
             // Get current date in YYYY-MM-DD format
             const today = new Date();
@@ -3748,86 +5031,44 @@
             // Create filename: {fullName}_CV_{YYYY-MM-DD}_{LANG}.pdf
             const filename = `${fullName}_CV_${dateStr}_${lang}.pdf`;
             
-            // Ensure preview modal is visible and element is in viewport
-            if (previewModal) {
-                previewModal.style.display = 'flex';
-            }
-            
-            // Scroll element into view to ensure it's rendered
-            element.scrollIntoView({ behavior: 'instant', block: 'start' });
-            
-            // Store original backdrop-filter to temporarily remove it (can interfere with html2canvas)
-            const originalBackdropFilter = previewModal ? previewModal.style.backdropFilter : '';
-            if (previewModal) {
-                previewModal.style.backdropFilter = 'none';
-            }
-            
-            // Improved html2pdf settings to fix blank PDF bug
-            const opt = {
-                margin: [0, 0, 0, 0],
-                filename: filename,
-                image: { 
-                    type: 'jpeg', 
-                    quality: 0.98 
-                },
-                html2canvas: { 
-                    scale: 2,
-                    useCORS: true,
-                    logging: false,
-                    letterRendering: true,
-                    allowTaint: false,
-                    backgroundColor: '#ffffff',
-                    removeContainer: false,
-                    width: element.scrollWidth,
-                    height: element.scrollHeight,
-                    x: 0,
-                    y: 0,
-                    scrollX: 0,
-                    scrollY: 0
-                },
-                jsPDF: { 
+            try {
+                // Initialize jsPDF
+                const { jsPDF } = window.jspdf;
+                const doc = new jsPDF({
                     unit: 'mm', 
                     format: 'a4', 
                     orientation: 'portrait',
                     compress: true
-                },
-                pagebreak: { 
-                    mode: ['avoid-all', 'css', 'legacy'] 
-                }
-            };
-            
-            // Wait for rendering to complete
-            setTimeout(() => {
-                // Double-check element still exists and has content
-                if (!element || !element.innerHTML || element.innerHTML.trim() === '') {
-                    console.error('CV sheet content disappeared before PDF generation.');
-                    // Restore backdrop filter
-                    if (previewModal) {
-                        previewModal.style.backdropFilter = originalBackdropFilter;
-                    }
-                    return;
+                });
+                
+                // Page dimensions in mm (A4)
+                const pageWidth = 210;
+                const pageHeight = 297;
+                const margin = 15;
+                const lineHeight = 5;
+                
+                // Render based on template
+                let finalY;
+                if (currentTemplate === 'minimal') {
+                    finalY = renderMinimalPDF(doc, cvData, pageWidth, pageHeight, margin, lineHeight);
+                } else if (currentTemplate === 'exec') {
+                    finalY = renderExecPDF(doc, cvData, pageWidth, pageHeight, margin, lineHeight);
+                } else if (currentTemplate === 'jakarta') {
+                    finalY = renderJakartaPDF(doc, cvData, pageWidth, pageHeight, margin, lineHeight);
+                } else if (currentTemplate === 'robotic') {
+                    finalY = renderRoboticPDF(doc, cvData, pageWidth, pageHeight, margin, lineHeight);
+                } else {
+                    // Default to minimal
+                    finalY = renderMinimalPDF(doc, cvData, pageWidth, pageHeight, margin, lineHeight);
                 }
                 
-                // Generate PDF
-                const worker = html2pdf().set(opt).from(element);
+                // Save PDF
+                doc.save(filename);
                 
-                worker.save()
-                    .then(() => {
-                        // Restore backdrop filter after successful generation
-                        if (previewModal) {
-                            previewModal.style.backdropFilter = originalBackdropFilter;
-                        }
-                    })
-                    .catch(err => {
-                        console.error('Error generating PDF:', err);
-                        console.error('Error details:', err.message);
+            } catch (error) {
+                console.error('Error generating PDF:', error);
                         alert('Error generating PDF. Please try again. Check console for details.');
-                        // Restore backdrop filter on error
-                        if (previewModal) {
-                            previewModal.style.backdropFilter = originalBackdropFilter;
                         }
-                    });
-            }, 300);
         }
         
         // --- SHOW APP NAME AFTER LANGUAGE SELECTION ---

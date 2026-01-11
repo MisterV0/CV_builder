@@ -2,6 +2,9 @@
  * CV Builder Translations
  * Professional translations for CV-related content
  * Supported languages: English (en), Italian (it), Romanian (ro), Russian (ru), Ukrainian (uk)
+ * 
+ * IMPORTANT: This file must be saved with UTF-8 encoding to properly display
+ * Romanian and Cyrillic characters. Ensure your editor/IDE is set to UTF-8 encoding.
  */
 
 const TRANSLATIONS = {
@@ -30,6 +33,7 @@ const TRANSLATIONS = {
             timeline: "Timeline",
             description: "Description",
             currentlyWorking: "Currently working",
+            present: "Present",
             degree: "Degree",
             school: "School",
             graduation: "Graduation",
@@ -215,6 +219,7 @@ const TRANSLATIONS = {
             timeline: "Periodo",
             description: "Descrizione",
             currentlyWorking: "Attualmente in carica",
+            present: "Presente",
             degree: "Titolo di Studio",
             school: "Istituto",
             graduation: "Laurea",
@@ -400,6 +405,7 @@ const TRANSLATIONS = {
             timeline: "Perioadă",
             description: "Descriere",
             currentlyWorking: "În prezent activez",
+            present: "Prezent",
             degree: "Diplomă",
             school: "Instituție",
             graduation: "Absolvire",
@@ -585,6 +591,7 @@ const TRANSLATIONS = {
             timeline: "Период",
             description: "Описание",
             currentlyWorking: "Работаю в настоящее время",
+            present: "По настоящее время",
             degree: "Степень",
             school: "Учебное Заведение",
             graduation: "Окончание",
@@ -770,6 +777,7 @@ const TRANSLATIONS = {
             timeline: "Період",
             description: "Опис",
             currentlyWorking: "Працюю в даний час",
+            present: "Поточний час",
             degree: "Ступінь",
             school: "Навчальний Заклад",
             graduation: "Закінчення",
