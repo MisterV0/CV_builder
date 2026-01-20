@@ -1,5 +1,10 @@
+- Let's add not only the title, but also the field of study for education, also embed it in all needed templates (and of course PDFs)to look as professional as possible - DONE, the feature was already implemented.
+- Let's add the icons for Linkedin, Github, and web (elegant icons) in all templates,as now those links feel empty
+- In Jakarta template the name overflows with the text "working title"
 
-To verify:
-1) ATS Score Checker Button - Analyze CV against common ATS keywords - check if everything works fine
-2) Bug when downlaoding the PDF is blank, the preview is fine, but the downlaoded document isn't, also, the name is strange of the document, can we have name_profile_date_language?
-3) from the landing modal, when we select one language, if we click on it, it doesn't remain highlighted, despite the language seelction process works, can you check please and spot the Bug
+
+
+- On mobile, the preview page doesn't work very well, as there are too many items, firstly, on mobile, let's navigate trough the tempaltes via
+a dropdown, also, let's shrink the preview to fit into the screen, and in the upper part let's have just 3 buttons, back, <name of template> and download
+
+- Let's add the verified badge in all the templates if certification has been proved via a link, let's add the certification link in the templates as well

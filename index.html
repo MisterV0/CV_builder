@@ -1831,15 +1831,34 @@
         }
         .toolbar-group { display: flex; gap: 12px; }
         .tool-btn {
-            background: #F1F5F9; color: #0F172A; border: none;
-            padding: 10px 18px; border-radius: 8px; cursor: pointer; font-size: 13px; font-weight: 600;
+            background: var(--surface-card); 
+            color: var(--text-primary); 
+            border: 1px solid var(--surface-border);
+            padding: 8px 16px; 
+            border-radius: 12px; 
+            cursor: pointer; 
+            font-size: 13px; 
+            font-weight: 600;
             transition: all 0.2s var(--transition-smooth);
+            box-shadow: 0 1px 2px rgba(0,0,0,0.05);
         }
         .tool-btn:hover {
-            background: #E2E8F0;
+            background: var(--bg-body);
+            border-color: rgba(251, 113, 133, 0.4);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
         }
-        .tool-btn.active { background: #0F172A; color: #FFF; }
-        .tool-btn.primary { background: var(--brand-primary); color: white; }
+        .tool-btn:active {
+            transform: translateY(-1px);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+        }
+        .tool-btn.active { 
+            background: var(--brand-gradient); 
+            color: #FFF; 
+            border-color: transparent;
+            box-shadow: 0 4px 12px rgba(251, 113, 133, 0.3);
+        }
+        .tool-btn.primary { background: var(--brand-primary); color: white; border-color: transparent; }
         .tool-btn.primary:hover { background: var(--brand-hover); }
         #paper-scroll { flex: 1; overflow-y: auto; width: 100%; padding: 40px 0; display: flex; justify-content: center; }
         .cv-sheet { width: 210mm; min-height: 297mm; background: white; box-shadow: 0 24px 72px rgba(0,0,0,0.28); }
@@ -1934,6 +1953,56 @@
             #paper-scroll { padding: 0; display: block; overflow: visible; }
             .cv-sheet { box-shadow: none; margin: 0; width: 100%; }
             @page { margin: 0; }
+        }
+        
+        /* Mobile Preview Adjustments */
+        .mobile-template-select { display: none; }
+        
+        @media (max-width: 768px) {
+            #preview-toolbar {
+                padding: 10px 12px;
+                gap: 8px;
+            }
+            .toolbar-group {
+                gap: 8px;
+            }
+            .toolbar-group:nth-child(2) {
+                flex: 1;
+                min-width: 0;
+            }
+            .desktop-template-btns { display: none; }
+            .mobile-template-select { display: block; width: 100%; }
+            #templateSelect {
+                -webkit-appearance: none;
+                appearance: none;
+                background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='%231F2937' viewBox='0 0 16 16'%3E%3Cpath fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/%3E%3C/svg%3E");
+                background-repeat: no-repeat;
+                background-position: right 12px center;
+                background-size: 16px;
+                width: 100%;
+                padding: 0 36px;
+                height: 38px;
+                border-radius: 12px; 
+                border: 1px solid var(--surface-border);
+                background-color: var(--surface-card);
+                font-size: 13px; 
+                font-weight: 600; 
+                color: var(--text-primary);
+                box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+                transition: all 0.2s var(--transition-smooth);
+                text-align: center;
+            }
+            #templateSelect:hover, #templateSelect:focus {
+                border-color: rgba(251, 113, 133, 0.4);
+                box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+                outline: none;
+            }
+            .tool-btn { padding: 0 12px; height: 38px; font-size: 13px; white-space: nowrap; }
+            #cvSheet {
+                transform: scale(0.38);
+                transform-origin: top center;
+                margin-bottom: -165%; /* Compensate for scale */
+            }
         }
         
         .t-minimal { padding: 45px; font-family: 'Inter', sans-serif; color: #333; line-height: 1.5; }
@@ -2284,10 +2353,20 @@
                 <button class="tool-btn" onclick="closePreview()" data-i18n="buttons.back">Back</button>
             </div>
             <div class="toolbar-group">
-                <button class="tool-btn active" onclick="setTemplate('minimal', this)" data-i18n="preview.modern">Modern</button>
-                <button class="tool-btn" onclick="setTemplate('exec', this)" data-i18n="preview.serif">Serif</button>
-                <button class="tool-btn" onclick="setTemplate('jakarta', this)" data-i18n="preview.jakarta">Jakarta</button>
-                <button class="tool-btn" onclick="setTemplate('robotic', this)" data-i18n="preview.robotic">Robotic</button>
+                <div class="desktop-template-btns">
+                    <button class="tool-btn active" onclick="setTemplate('minimal', this)" data-i18n="preview.modern">Modern</button>
+                    <button class="tool-btn" onclick="setTemplate('exec', this)" data-i18n="preview.serif">Serif</button>
+                    <button class="tool-btn" onclick="setTemplate('jakarta', this)" data-i18n="preview.jakarta">Jakarta</button>
+                    <button class="tool-btn" onclick="setTemplate('robotic', this)" data-i18n="preview.robotic">Robotic</button>
+                </div>
+                <div class="mobile-template-select">
+                    <select id="templateSelect" onchange="setTemplate(this.value, null)">
+                        <option value="minimal" data-i18n="preview.modern">Modern</option>
+                        <option value="exec" data-i18n="preview.serif">Serif</option>
+                        <option value="jakarta" data-i18n="preview.jakarta">Jakarta</option>
+                        <option value="robotic" data-i18n="preview.robotic">Robotic</option>
+                    </select>
+                </div>
             </div>
             <div class="toolbar-group">
                 <button class="tool-btn primary" onclick="downloadPDF()" data-i18n="buttons.downloadPDF">Download PDF</button>
@@ -3027,11 +3106,11 @@
                 ${createRemoveBtn()}
                 <div class="grid-2">
                     <div class="form-group"><label>${t('labels.degree')}</label><input class="edu-degree" list="degree-types" oninput="updateProgress()"></div>
-                    <div class="form-group"><label>${t('labels.school')}</label><input class="edu-school" oninput="updateProgress()"></div>
+                    <div class="form-group"><label>${t('labels.fieldOfStudy')}</label><input class="edu-field" oninput="updateProgress()"></div>
                 </div>
                 <div class="grid-2">
+                    <div class="form-group"><label>${t('labels.school')}</label><input class="edu-school" oninput="updateProgress()"></div>
                     <div class="form-group"><label>${t('labels.graduation')}</label>${createModernPickerHTML('grad', true)}</div>
-                     <div class="form-group"><label>${t('labels.location')}</label><input class="edu-loc" oninput="updateProgress()"></div>
                 </div>
             `;
             document.getElementById('educationList').appendChild(div);
@@ -3052,7 +3131,10 @@
                     </div>
                     <div class="form-group">
                         ${isFirstSkill ? `<label>${t('labels.skill')}</label>` : '<label style="opacity:0; height:20px; pointer-events:none;"></label>'}
-                        <input class="skill-name" placeholder="${t('placeholders.skillName')}">
+                        <div style="position: relative;">
+                            <input class="skill-name" placeholder="${t('placeholders.skillName')}" oninput="updateSkillCounter(this); updateProgress()">
+                            <span class="skill-counter" style="position: absolute; right: 8px; top: 8px; font-size: 12px; color: #10B981;">0/15</span>
+                        </div>
                     </div>
                 </div>
                 <div class="form-group" style="margin-bottom:0;">
@@ -3061,6 +3143,15 @@
                 </div>
             `;
             skillsList.appendChild(div);
+        }
+
+        function updateSkillCounter(input) {
+            const counter = input.parentElement.querySelector('.skill-counter');
+            if (counter) {
+                const currentLength = input.value.length;
+                counter.textContent = currentLength + '/15';
+                counter.style.color = currentLength > 15 ? '#EF4444' : '#10B981';
+            }
         }
 
         function addCertification() {
@@ -3147,11 +3238,39 @@
             reader.readAsDataURL(file);
         });
 
+        // --- SOCIAL ICON HELPER ---
+        function getSocialIcon(type) {
+            const iconMap = {
+                linkedin: `<svg viewBox="0 0 24 24" style="width:16px; height:16px; fill:none; stroke:currentColor; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; margin-right:8px; vertical-align:middle;"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path><rect x="2" y="9" width="4" height="12"></rect><circle cx="4" cy="4" r="2"></circle></svg>`,
+                github: `<svg viewBox="0 0 24 24" style="width:16px; height:16px; fill:currentColor; margin-right:8px; vertical-align:middle;"><path d="M12 2C6.48 2 2 6.48 2 12c0 4.41 2.87 8.17 6.84 9.49.5.1.68-.22.68-.48v-1.7c-2.78.6-3.37-1.34-3.37-1.34-.46-1.16-1.11-1.47-1.11-1.47-.91-.62.07-.61.07-.61 1 .07 1.53 1.03 1.53 1.03.89 1.52 2.34 1.08 2.91.83.09-.65.35-1.09.63-1.34-2.22-.25-4.56-1.11-4.56-4.93 0-1.09.39-1.98 1.03-2.68-.1-.25-.45-1.27.1-2.64 0 0 .84-.27 2.75 1.02A9.6 9.6 0 0 1 12 6.8c.85 0 1.7.11 2.54.32 1.91-1.29 2.75-1.02 2.75-1.02.55 1.37.2 2.39.1 2.64.64.7 1.03 1.59 1.03 2.68 0 3.82-2.34 4.68-4.57 4.93.36.31.68.92.68 1.85v2.75c0 .26.18.58.69.48C19.14 20.16 22 16.42 22 12c0-5.52-4.48-10-10-10Z"/></svg>`,
+                website: `<svg viewBox="0 0 24 24" style="width:16px; height:16px; fill:none; stroke:currentColor; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; margin-right:8px; vertical-align:middle;"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg>`
+            };
+            return iconMap[type] || '';
+        }
+
         // --- GENERATE ---
         function formatModernDate(m, y) {
             if(!m || !y) return "";
             const months = TRANSLATIONS[getCurrentLanguage()].months;
             return `${months[parseInt(m) - 1]} ${y}`;
+        }
+
+        /**
+         * Format degree and field of study professionally
+         * Returns formatted string like "Bachelor of Science in Computer Science"
+         */
+        function formatDegreeWithField(degree, field) {
+            const deg = (degree || '').trim();
+            const fld = (field || '').trim();
+            
+            if (deg && fld) {
+                return `${deg} in ${fld}`;
+            } else if (deg) {
+                return deg;
+            } else if (fld) {
+                return fld;
+            }
+            return '';
         }
 
         let loadingProgress = 0;
@@ -3232,9 +3351,9 @@
                 const gm = el.querySelector('.grad-month').value, gy = el.querySelector('.grad-year').value;
                 cvData.edu.push({
                     degree: el.querySelector('.edu-degree').value,
+                    field: el.querySelector('.edu-field')?.value || '',
                     school: el.querySelector('.edu-school').value,
-                    date: formatModernDate(gm, gy),
-                    loc: el.querySelector('.edu-loc').value
+                    date: formatModernDate(gm, gy)
                 });
             });
 
@@ -3289,7 +3408,7 @@
             const imgHTML = cvData.photo ? `<img src="${cvData.photo}" style="width:110px; height:110px; border-radius:50%; object-fit:cover; display:block;">` : '';
             const verifiedIcon = `<svg viewBox="0 0 24 24" style="width:16px; height:16px; margin-left:6px; vertical-align:middle; display:inline-block;"><circle cx="12" cy="12" r="10" fill="#10B981" stroke="#10B981" stroke-width="1"></circle><path d="M9 12l2 2 4-4" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" fill="none"></path></svg>`;
 
-            const socialHTML = cvData.socials.map(s => `<span style="display:inline-flex; align-items:center; margin-right:12px; color:#555;">${s.val}</span>`).join('');
+            const socialHTML = cvData.socials.map(s => `<span style="display:inline-flex; align-items:center; margin-right:12px; color:#555;">${getSocialIcon(s.type)}${s.val}</span>`).join('');
 
             if(currentTemplate === 'minimal') {
                 html = `
@@ -3325,10 +3444,10 @@
                     ${cvData.edu.map(e => `
                         <div style="margin-bottom:15px;">
                             <div style="display:flex; justify-content:space-between;">
-                                <span style="font-weight:600; font-size:14px;">${e.degree}</span>
+                                <span style="font-weight:600; font-size:14px;">${formatDegreeWithField(e.degree, e.field)}</span>
                                 <span style="font-size:13px; color:#666;">${e.date}</span>
                             </div>
-                            <div style="font-size:13px; color:#555;">${e.school}${e.loc ? `, ${e.loc}` : ''}</div>
+                            <div style="font-size:13px; color:#555;">${e.school}</div>
                         </div>
                     `).join('')}
 
@@ -3391,19 +3510,34 @@
                             <div style="font-size:14px; line-height:1.6;">${e.desc}</div>
                         </div>
                     `).join('')}
-                     <h3 style="font-size:13px; font-weight:bold; text-transform:uppercase; border-bottom:2px solid #333; padding-bottom:5px; margin-top:30px;">${typeof t === 'function' ? t('sections.education') : 'Education'}</h3>
-                    ${cvData.edu.map(e => `<div style="margin-bottom:10px;"><div style="display:flex; justify-content:space-between;"><span style="font-weight:bold; font-size:14px;">${e.school}${e.loc ? `, ${e.loc}` : ''}</span><span style="font-size:13px;">${e.date}</span></div><div style="font-size:14px;">${e.degree}</div></div>`).join('')}
+                    <h3 style="font-size:13px; font-weight:bold; text-transform:uppercase; border-bottom:2px solid #333; padding-bottom:5px; margin-top:30px;">${typeof t === 'function' ? t('sections.education') : 'Education'}</h3>
+                    ${cvData.edu.map(e => `<div style="margin-bottom:10px;"><div style="display:flex; justify-content:space-between;"><span style="font-weight:bold; font-size:14px;">${e.school}</span><span style="font-size:13px;">${e.date}</span></div><div style="font-size:14px;">${formatDegreeWithField(e.degree, e.field)}</div></div>`).join('')}
+                    ${cvData.certs.length > 0 ? `<h3 style="font-size:13px; font-weight:bold; text-transform:uppercase; border-bottom:2px solid #333; padding-bottom:5px; margin-top:30px;">${typeof t === 'function' ? t('sections.certifications') : 'Certifications'}</h3>` : ''}
+                    ${cvData.certs.map(c => {
+                        const certUrl = c.url ? (c.url.startsWith('http') ? c.url : `https://${c.url}`) : null;
+                        return `
+                         <div style="margin-bottom:10px;">
+                            <div style="display:flex; justify-content:space-between; align-items:center;">
+                                <span style="font-weight:bold; font-size:14px; display:inline-flex; align-items:center; gap:6px;">
+                                    ${c.name} ${certUrl ? verifiedIcon : ''}
+                                </span>
+                                <span style="font-size:13px;">${c.date}</span>
+                            </div>
+                            <div style="font-size:14px;">${c.issuer}${certUrl ? ` • <a href="${certUrl}" target="_blank" rel="noopener noreferrer" style="color:#333; text-decoration:none; border-bottom:1px solid rgba(51,51,51,0.3);">View Certificate</a>` : ''}</div>
+                        </div>
+                    `;
+                    }).join('')}
                 `;
             } else if(currentTemplate === 'jakarta') {
                 // JAKARTA TEMPLATE - Modern, elegant with professional navy accent
-                const socialJakarta = cvData.socials.map(s => `<a href="#" style="color:#2C3E50; text-decoration:none; font-size:12px; margin-right:16px;">${s.val}</a>`).join('');
+                const socialJakarta = cvData.socials.map(s => `<span style="display:inline-flex; align-items:center; color:#2C3E50; font-size:12px; margin-right:16px;">${getSocialIcon(s.type)}${s.val}</span>`).join('');
                 html = `
                     <header style="margin-bottom:40px; padding-bottom:24px; border-bottom:2px solid #2C3E50;">
-                        <div style="display:grid; grid-template-columns:auto 1fr; gap:28px; align-items:start;">
-                            ${imgHTML ? `<div>${imgHTML}</div>` : ''}
+                        <div style="display:block; align-items:start;">
+                            ${imgHTML ? `<div style="margin-bottom: 20px;">${imgHTML}</div>` : ''}
                             <div>
-                                <h1 style="margin:0 0 8px; font-size:40px; color:#1a1a1a;">${cvData.name}</h1>
-                                <div style="font-size:16px; color:#2C3E50; font-weight:600; margin-bottom:12px;">${cvData.title}</div>
+                                <h1 style="margin:0 0 8px; font-size:40px; color:#1a1a1a; word-wrap: break-word;">${cvData.name}</h1>
+                                <div style="font-size:16px; color:#2C3E50; font-weight:600; margin-bottom:12px; word-wrap: break-word;">${cvData.title}</div>
                                 <div style="font-size:13px; color:#555; line-height:1.7;">
                                     ${[cvData.email, cvData.phone, cvData.loc].filter(Boolean).join(' • ')}
                                     <br>${socialJakarta}
@@ -3430,10 +3564,10 @@
                     ${cvData.edu.map(e => `
                         <div style="margin-bottom:16px;">
                             <div style="display:flex; justify-content:space-between; margin-bottom:2px;">
-                                <span style="font-weight:700; font-size:14px; color:#1a1a1a;">${e.degree}</span>
+                                <span style="font-weight:700; font-size:14px; color:#1a1a1a;">${formatDegreeWithField(e.degree, e.field)}</span>
                                 <span style="font-size:12px; color:#888;">${e.date}</span>
                             </div>
-                            <div style="font-size:13px; color:#2C3E50; font-weight:600;">${e.school}${e.loc ? ` • ${e.loc}` : ''}</div>
+                            <div style="font-size:13px; color:#2C3E50; font-weight:600;">${e.school}</div>
                         </div>
                     `).join('')}
 
@@ -3474,7 +3608,7 @@
                 `;
             } else if(currentTemplate === 'robotic') {
                 // ROBOTIC TEMPLATE - Professional/Technical style with progress bars
-                const socialRobotic = cvData.socials.map(s => `<span style="color:#2C3E50; font-size:11px; margin-right:14px;">${s.val}</span>`).join('');
+                const socialRobotic = cvData.socials.map(s => `<span style="display:inline-flex; align-items:center; color:#2C3E50; font-size:11px; margin-right:14px;">${getSocialIcon(s.type)}${s.val}</span>`).join('');
                 html = `
                     <header style="margin-bottom:32px; padding-bottom:20px; border-bottom:2px solid #E8EEF5;">
                         <h1 style="margin:0 0 6px; font-size:28px; color:#1A3A52; text-transform:uppercase; letter-spacing:0.5px;">${cvData.name}</h1>
@@ -3503,10 +3637,10 @@
                     ${cvData.edu.map(e => `
                         <div style="margin-bottom:12px;">
                             <div style="display:flex; justify-content:space-between; margin-bottom:2px;">
-                                <span style="font-weight:600; font-size:11px; color:#1A3A52; text-transform:uppercase;">${e.degree}</span>
+                                <span style="font-weight:600; font-size:11px; color:#1A3A52; text-transform:uppercase;">${formatDegreeWithField(e.degree, e.field)}</span>
                                 <span style="font-size:11px; color:#888;">${e.date}</span>
                             </div>
-                            <div style="font-size:11px; color:#555; font-weight:500;">${e.school}${e.loc ? ` • ${e.loc}` : ''}</div>
+                            <div style="font-size:11px; color:#555; font-weight:500;">${e.school}</div>
                         </div>
                     `).join('')}
 
@@ -3563,6 +3697,11 @@
             currentTemplate = name;
             document.querySelectorAll('.tool-btn').forEach(b => b.classList.remove('active'));
             if(btn) btn.classList.add('active');
+            
+            // Update mobile select if exists
+            const select = document.getElementById('templateSelect');
+            if(select) select.value = name;
+            
             render();
         }
 
@@ -3916,11 +4055,47 @@
                 }
             }
         }
+
+        // --- PDF ICON HELPERS ---
+        function svgToPngDataUrl(svgStr) {
+            return new Promise((resolve, reject) => {
+                const img = new Image();
+                img.onload = () => {
+                    const canvas = document.createElement('canvas');
+                    canvas.width = 64;
+                    canvas.height = 64;
+                    const ctx = canvas.getContext('2d');
+                    ctx.drawImage(img, 0, 0, 64, 64);
+                    resolve(canvas.toDataURL('image/png'));
+                };
+                img.onerror = reject;
+                img.src = 'data:image/svg+xml;base64,' + btoa(unescape(encodeURIComponent(svgStr)));
+            });
+        }
+
+        async function generateSocialIconsForPDF(socials) {
+            const icons = {};
+            const pdfSvgs = {
+                linkedin: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path><rect x="2" y="9" width="4" height="12"></rect><circle cx="4" cy="4" r="2"></circle></svg>`,
+                github: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="#000000"><path d="M12 2C6.48 2 2 6.48 2 12c0 4.41 2.87 8.17 6.84 9.49.5.1.68-.22.68-.48v-1.7c-2.78.6-3.37-1.34-3.37-1.34-.46-1.16-1.11-1.47-1.11-1.47-.91-.62.07-.61.07-.61 1 .07 1.53 1.03 1.53 1.03.89 1.52 2.34 1.08 2.91.83.09-.65.35-1.09.63-1.34-2.22-.25-4.56-1.11-4.56-4.93 0-1.09.39-1.98 1.03-2.68-.1-.25-.45-1.27.1-2.64 0 0 .84-.27 2.75 1.02A9.6 9.6 0 0 1 12 6.8c.85 0 1.7.11 2.54.32 1.91-1.29 2.75-1.02 2.75-1.02.55 1.37.2 2.39.1 2.64.64.7 1.03 1.59 1.03 2.68 0 3.82-2.34 4.68-4.57 4.93.36.31.68.92.68 1.85v2.75c0 .26.18.58.69.48C19.14 20.16 22 16.42 22 12c0-5.52-4.48-10-10-10Z"/></svg>`,
+                website: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg>`,
+                verified: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#10B981" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>`
+            };
+            for (const s of socials) {
+                if (!icons[s.type] && pdfSvgs[s.type]) {
+                    try { icons[s.type] = await svgToPngDataUrl(pdfSvgs[s.type]); } catch (e) { console.warn(e); }
+                }
+            }
+            // Always load verified icon
+            if (!icons.verified) try { icons.verified = await svgToPngDataUrl(pdfSvgs.verified); } catch (e) { console.warn(e); }
+            
+            return icons;
+        }
         
         /**
          * Render Minimal Template PDF
          */
-        function renderMinimalPDF(doc, cvData, pageWidth, pageHeight, margin, lineHeight) {
+        function renderMinimalPDF(doc, cvData, pageWidth, pageHeight, margin, lineHeight, socialIcons) {
             let yPos = margin;
             
             // Header Section
@@ -3951,9 +4126,21 @@
             
             // Social links
             if (cvData.socials && cvData.socials.length > 0) {
-                const socialText = cvData.socials.map(s => s.val).join(' ');
-                if (socialText) {
-                    doc.text(socialText, margin, yPos);
+                let currentX = margin;
+                for (const s of cvData.socials) {
+                    const iconData = socialIcons[s.type];
+                    const text = s.val;
+                    const textWidth = doc.getTextWidth(text);
+                    const iconSize = 4;
+                    const itemWidth = iconSize + 2 + textWidth + 6;
+                    
+                    if (currentX + itemWidth > pageWidth - margin) { currentX = margin; yPos += 6; }
+                    
+                    if (iconData) doc.addImage(iconData, 'PNG', currentX, yPos - 3, iconSize, iconSize);
+                    doc.text(text, currentX + iconSize + 2, yPos);
+                    currentX += itemWidth;
+                }
+                if (cvData.socials.length > 0) {
                     yPos += 6;
                 }
             }
@@ -4063,10 +4250,15 @@
                     yPos = addNewPageIfNeeded(doc, yPos, 20, pageHeight, margin);
                     
                     doc.setFontSize(14);
-                    doc.setFont('helvetica', 'bold');
+                    doc.setFont('helvetica', 'bold'); 
                     doc.setTextColor(17, 17, 17);
-                    const degreeWidth = doc.getTextWidth(edu.degree);
-                    doc.text(edu.degree, margin, yPos);
+                    
+                    const degreeText = formatDegreeWithField(edu.degree, edu.field);
+                    const degreeLines = doc.splitTextToSize(degreeText, pageWidth - margin - 50);
+                    doc.text(degreeLines, margin, yPos);
+                    
+                    // Adjust yPos if degree wrapped
+                    if (degreeLines.length > 1) yPos += (degreeLines.length - 1) * 5;
                     
                     if (edu.date) {
                         doc.setFontSize(13);
@@ -4080,8 +4272,7 @@
                         doc.setFontSize(13);
                         doc.setFont('helvetica', 'normal');
                         doc.setTextColor(85, 85, 85);
-                        const schoolText = edu.school + (edu.loc ? `, ${edu.loc}` : '');
-                        doc.text(schoolText, margin, yPos);
+                        doc.text(edu.school, margin, yPos);
                         yPos += 8;
                     }
                 });
@@ -4108,7 +4299,13 @@
                     doc.setFontSize(14);
                     doc.setFont('helvetica', 'bold');
                     doc.setTextColor(17, 17, 17);
+                    
                     doc.text(cert.name, margin, yPos);
+                    
+                    // Verified Badge
+                    if (cert.url && socialIcons.verified) {
+                        doc.addImage(socialIcons.verified, 'PNG', margin + doc.getTextWidth(cert.name) + 2, yPos - 3, 4, 4);
+                    }
                     
                     if (cert.date) {
                         doc.setFontSize(13);
@@ -4123,7 +4320,19 @@
                         doc.setFont('helvetica', 'normal');
                         doc.setTextColor(85, 85, 85);
                         doc.text(cert.issuer, margin, yPos);
+                        yPos += 5;
+                    }
+                    
+                    // Add URL if available
+                    if (cert.url) {
+                        doc.setFontSize(12);
+                        doc.setFont('helvetica', 'normal');
+                        doc.setTextColor(0, 113, 227); // Blue color for link
+                        const urlText = cert.url.startsWith('http') ? cert.url : `https://${cert.url}`;
+                        doc.text(`View Certificate: ${urlText}`, margin, yPos);
                         yPos += 8;
+                    } else {
+                        yPos += 3;
                     }
                 });
             }
@@ -4221,7 +4430,7 @@
         /**
          * Render Exec Template PDF
          */
-        function renderExecPDF(doc, cvData, pageWidth, pageHeight, margin, lineHeight) {
+        function renderExecPDF(doc, cvData, pageWidth, pageHeight, margin, lineHeight, socialIcons) {
             let yPos = margin;
             
             // Centered header
@@ -4244,16 +4453,17 @@
             
             // Contact bar with borders
             const contactBar = [cvData.email, cvData.phone, cvData.loc].filter(Boolean);
-            if (cvData.socials && cvData.socials.length > 0) {
-                contactBar.push(...cvData.socials.map(s => s.val));
-            }
             
-            if (contactBar.length > 0) {
+            if (contactBar.length > 0 || cvData.socials.length > 0) {
                 yPos += 5;
                 doc.setDrawColor(238, 238, 238); // #eee
                 doc.setLineWidth(0.2);
                 doc.line(margin, yPos, pageWidth - margin, yPos);
                 yPos += 5;
+                
+                if (cvData.socials && cvData.socials.length > 0) {
+                    contactBar.push(...cvData.socials.map(s => s.val));
+                }
                 
                 doc.setFontSize(12);
                 doc.setFont('helvetica', 'normal');
@@ -4357,12 +4567,10 @@
                 cvData.edu.forEach(edu => {
                     yPos = addNewPageIfNeeded(doc, yPos, 18, pageHeight, margin);
                     
-                    const schoolText = edu.school + (edu.loc ? `, ${edu.loc}` : '');
                     doc.setFontSize(14);
                     doc.setFont('helvetica', 'bold');
                     doc.setTextColor(17, 17, 17);
-                    const schoolWidth = doc.getTextWidth(schoolText);
-                    doc.text(schoolText, margin, yPos);
+                    doc.text(edu.school, margin, yPos);
                     
                     if (edu.date) {
                         doc.setFontSize(13);
@@ -4372,12 +4580,71 @@
                     }
                     yPos += 5;
                     
-                    if (edu.degree) {
+                    const degreeText = formatDegreeWithField(edu.degree, edu.field);
+                    if (degreeText) {
                         doc.setFontSize(14);
                         doc.setFont('helvetica', 'normal');
                         doc.setTextColor(51, 51, 51);
-                        doc.text(edu.degree, margin, yPos);
+                        doc.text(degreeText, margin, yPos);
                         yPos += 8;
+                    }
+                });
+            }
+            
+            // Certifications
+            if (cvData.certs && cvData.certs.length > 0) {
+                yPos = addNewPageIfNeeded(doc, yPos, 25, pageHeight, margin);
+                yPos += 10;
+                doc.setFontSize(13);
+                doc.setFont('helvetica', 'bold');
+                doc.setTextColor(17, 17, 17);
+                const certTitle = typeof t === 'function' ? t('sections.certifications') : 'Certifications';
+                doc.text(certTitle.toUpperCase(), margin, yPos);
+                yPos += 2;
+                doc.setDrawColor(51, 51, 51);
+                doc.setLineWidth(0.5);
+                doc.line(margin, yPos, pageWidth - margin, yPos);
+                yPos += 8;
+                
+                cvData.certs.forEach(cert => {
+                    yPos = addNewPageIfNeeded(doc, yPos, 18, pageHeight, margin);
+                    
+                    doc.setFontSize(14);
+                    doc.setFont('helvetica', 'bold');
+                    doc.setTextColor(17, 17, 17);
+                    doc.text(cert.name, margin, yPos);
+                    
+                    // Verified Badge
+                    if (cert.url && socialIcons.verified) {
+                        doc.addImage(socialIcons.verified, 'PNG', margin + doc.getTextWidth(cert.name) + 2, yPos - 3, 4, 4);
+                    }
+                    
+                    if (cert.date) {
+                        doc.setFontSize(13);
+                        doc.setFont('helvetica', 'normal');
+                        doc.setTextColor(51, 51, 51);
+                        doc.text(cert.date, pageWidth - margin - doc.getTextWidth(cert.date), yPos);
+                    }
+                    yPos += 5;
+                    
+                    if (cert.issuer) {
+                        doc.setFontSize(14);
+                        doc.setFont('helvetica', 'normal');
+                        doc.setTextColor(51, 51, 51);
+                        doc.text(cert.issuer, margin, yPos);
+                        yPos += 5;
+                    }
+                    
+                    // Add URL if available
+                    if (cert.url) {
+                        doc.setFontSize(12);
+                        doc.setFont('helvetica', 'normal');
+                        doc.setTextColor(0, 113, 227); // Blue color for link
+                        const urlText = cert.url.startsWith('http') ? cert.url : `https://${cert.url}`;
+                        doc.text(`View Certificate: ${urlText}`, margin, yPos);
+                        yPos += 8;
+                    } else {
+                        yPos += 3;
                     }
                 });
             }
@@ -4388,7 +4655,7 @@
         /**
          * Render Jakarta Template PDF
          */
-        function renderJakartaPDF(doc, cvData, pageWidth, pageHeight, margin, lineHeight) {
+        function renderJakartaPDF(doc, cvData, pageWidth, pageHeight, margin, lineHeight, socialIcons) {
             let yPos = margin;
             
             // Header with photo
@@ -4404,8 +4671,10 @@
             doc.setFontSize(40);
             doc.setFont('helvetica', 'bold');
             doc.setTextColor(26, 26, 26); // #1a1a1a
-            doc.text(cvData.name || '', textStartX, yPos + 12);
-            yPos += 15;
+            
+            const nameLines = doc.splitTextToSize(cvData.name || '', pageWidth - textStartX - margin);
+            doc.text(nameLines, textStartX, yPos + 12);
+            yPos += 12 + (nameLines.length * 14);
             
             if (cvData.title) {
                 doc.setFontSize(16);
@@ -4427,9 +4696,21 @@
             
             // Social links
             if (cvData.socials && cvData.socials.length > 0) {
-                const socialText = cvData.socials.map(s => s.val).join(' ');
-                if (socialText) {
-                    doc.text(socialText, textStartX, yPos);
+                let currentX = textStartX;
+                for (const s of cvData.socials) {
+                    const iconData = socialIcons[s.type];
+                    const text = s.val;
+                    const textWidth = doc.getTextWidth(text);
+                    const iconSize = 4;
+                    const itemWidth = iconSize + 2 + textWidth + 6;
+                    
+                    if (currentX + itemWidth > pageWidth - margin) { currentX = textStartX; yPos += 6; }
+                    
+                    if (iconData) doc.addImage(iconData, 'PNG', currentX, yPos - 3, iconSize, iconSize);
+                    doc.text(text, currentX + iconSize + 2, yPos);
+                    currentX += itemWidth;
+                }
+                if (cvData.socials.length > 0) {
                     yPos += 6;
                 }
             }
@@ -4533,8 +4814,12 @@
                     doc.setFontSize(14);
                     doc.setFont('helvetica', 'bold');
                     doc.setTextColor(26, 26, 26);
-                    const degreeWidth = doc.getTextWidth(edu.degree);
-                    doc.text(edu.degree, margin, yPos);
+                    
+                    const degreeText = formatDegreeWithField(edu.degree, edu.field);
+                    const degreeLines = doc.splitTextToSize(degreeText, pageWidth - margin - 50);
+                    doc.text(degreeLines, margin, yPos);
+                    
+                    if (degreeLines.length > 1) yPos += (degreeLines.length - 1) * 5;
                     
                     if (edu.date) {
                         doc.setFontSize(12);
@@ -4548,8 +4833,7 @@
                         doc.setFontSize(13);
                         doc.setFont('helvetica', 'bold');
                         doc.setTextColor(44, 62, 80);
-                        const schoolText = edu.school + (edu.loc ? ` • ${edu.loc}` : '');
-                        doc.text(schoolText, margin, yPos);
+                        doc.text(edu.school, margin, yPos);
                         yPos += 8;
                     }
                 });
@@ -4578,6 +4862,11 @@
                     doc.setTextColor(26, 26, 26);
                     doc.text(cert.name, margin, yPos);
                     
+                    // Verified Badge
+                    if (cert.url && socialIcons.verified) {
+                        doc.addImage(socialIcons.verified, 'PNG', margin + doc.getTextWidth(cert.name) + 2, yPos - 3, 4, 4);
+                    }
+                    
                     if (cert.date) {
                         doc.setFontSize(12);
                         doc.setFont('helvetica', 'normal');
@@ -4591,7 +4880,19 @@
                         doc.setFont('helvetica', 'normal');
                         doc.setTextColor(102, 102, 102);
                         doc.text(cert.issuer, margin, yPos);
+                        yPos += 5;
+                    }
+                    
+                    // Add URL if available
+                    if (cert.url) {
+                        doc.setFontSize(11);
+                        doc.setFont('helvetica', 'normal');
+                        doc.setTextColor(44, 62, 80); // Navy color matching template
+                        const urlText = cert.url.startsWith('http') ? cert.url : `https://${cert.url}`;
+                        doc.text(`View Certificate: ${urlText}`, margin, yPos);
                         yPos += 8;
+                    } else {
+                        yPos += 3;
                     }
                 });
             }
@@ -4684,7 +4985,7 @@
         /**
          * Render Robotic Template PDF
          */
-        function renderRoboticPDF(doc, cvData, pageWidth, pageHeight, margin, lineHeight) {
+        function renderRoboticPDF(doc, cvData, pageWidth, pageHeight, margin, lineHeight, socialIcons) {
             let yPos = margin;
             
             // Header
@@ -4713,9 +5014,21 @@
             }
             
             if (cvData.socials && cvData.socials.length > 0) {
-                const socialText = cvData.socials.map(s => s.val).join(' ');
-                if (socialText) {
-                    doc.text(socialText, margin, yPos);
+                let currentX = margin;
+                for (const s of cvData.socials) {
+                    const iconData = socialIcons[s.type];
+                    const text = s.val;
+                    const textWidth = doc.getTextWidth(text);
+                    const iconSize = 3.5;
+                    const itemWidth = iconSize + 2 + textWidth + 6;
+                    
+                    if (currentX + itemWidth > pageWidth - margin) { currentX = margin; yPos += 5; }
+                    
+                    if (iconData) doc.addImage(iconData, 'PNG', currentX, yPos - 2.5, iconSize, iconSize);
+                    doc.text(text, currentX + iconSize + 2, yPos);
+                    currentX += itemWidth;
+                }
+                if (cvData.socials.length > 0) {
                     yPos += 5;
                 }
             }
@@ -4822,9 +5135,12 @@
                     doc.setFontSize(11);
                     doc.setFont('helvetica', 'bold');
                     doc.setTextColor(26, 58, 82);
-                    const degreeText = edu.degree.toUpperCase();
-                    const degreeWidth = doc.getTextWidth(degreeText);
-                    doc.text(degreeText, margin, yPos);
+                    
+                    const degreeText = formatDegreeWithField(edu.degree, edu.field).toUpperCase();
+                    const degreeLines = doc.splitTextToSize(degreeText, pageWidth - margin - 50);
+                    doc.text(degreeLines, margin, yPos);
+                    
+                    if (degreeLines.length > 1) yPos += (degreeLines.length - 1) * 4;
                     
                     if (edu.date) {
                         doc.setFontSize(11);
@@ -4838,8 +5154,7 @@
                         doc.setFontSize(11);
                         doc.setFont('helvetica', 'bold');
                         doc.setTextColor(85, 85, 85);
-                        const schoolText = edu.school + (edu.loc ? ` • ${edu.loc}` : '');
-                        doc.text(schoolText, margin, yPos);
+                        doc.text(edu.school, margin, yPos);
                         yPos += 6;
                     }
                 });
@@ -4868,6 +5183,11 @@
                     doc.setTextColor(26, 58, 82);
                     doc.text(cert.name.toUpperCase(), margin, yPos);
                     
+                    // Verified Badge
+                    if (cert.url && socialIcons.verified) {
+                        doc.addImage(socialIcons.verified, 'PNG', margin + doc.getTextWidth(cert.name.toUpperCase()) + 2, yPos - 2.5, 3.5, 3.5);
+                    }
+                    
                     if (cert.date) {
                         doc.setFontSize(11);
                         doc.setFont('helvetica', 'normal');
@@ -4881,7 +5201,19 @@
                         doc.setFont('helvetica', 'normal');
                         doc.setTextColor(102, 102, 102);
                         doc.text(cert.issuer, margin, yPos);
+                        yPos += 5;
+                    }
+                    
+                    // Add URL if available
+                    if (cert.url) {
+                        doc.setFontSize(10);
+                        doc.setFont('helvetica', 'normal');
+                        doc.setTextColor(26, 58, 82); // Template color
+                        const urlText = cert.url.startsWith('http') ? cert.url : `https://${cert.url}`;
+                        doc.text(`View Certificate: ${urlText}`, margin, yPos);
                         yPos += 6;
+                    } else {
+                        yPos += 3;
                     }
                 });
             }
@@ -5012,7 +5344,7 @@
         /**
          * Main PDF Download Function - Pure jsPDF
          */
-        function downloadPDF() {
+        async function downloadPDF() {
             // Validate cvData exists
             if (!cvData || !cvData.name) {
                 alert('Please generate your CV before downloading.');
@@ -5035,6 +5367,9 @@
             // Create filename: {fullName}_CV_{YYYY-MM-DD}_{LANG}.pdf
             const filename = `${fullName}_CV_${dateStr}_${lang}.pdf`;
             
+            // Generate icons
+            const socialIcons = await generateSocialIconsForPDF(cvData.socials);
+
             try {
                 // Initialize jsPDF
                 const { jsPDF } = window.jspdf;
@@ -5054,16 +5389,16 @@
                 // Render based on template
                 let finalY;
                 if (currentTemplate === 'minimal') {
-                    finalY = renderMinimalPDF(doc, cvData, pageWidth, pageHeight, margin, lineHeight);
+                    finalY = renderMinimalPDF(doc, cvData, pageWidth, pageHeight, margin, lineHeight, socialIcons);
                 } else if (currentTemplate === 'exec') {
-                    finalY = renderExecPDF(doc, cvData, pageWidth, pageHeight, margin, lineHeight);
+                    finalY = renderExecPDF(doc, cvData, pageWidth, pageHeight, margin, lineHeight, socialIcons);
                 } else if (currentTemplate === 'jakarta') {
-                    finalY = renderJakartaPDF(doc, cvData, pageWidth, pageHeight, margin, lineHeight);
+                    finalY = renderJakartaPDF(doc, cvData, pageWidth, pageHeight, margin, lineHeight, socialIcons);
                 } else if (currentTemplate === 'robotic') {
-                    finalY = renderRoboticPDF(doc, cvData, pageWidth, pageHeight, margin, lineHeight);
+                    finalY = renderRoboticPDF(doc, cvData, pageWidth, pageHeight, margin, lineHeight, socialIcons);
                 } else {
                     // Default to minimal
-                    finalY = renderMinimalPDF(doc, cvData, pageWidth, pageHeight, margin, lineHeight);
+                    finalY = renderMinimalPDF(doc, cvData, pageWidth, pageHeight, margin, lineHeight, socialIcons);
                 }
                 
                 // Save PDF
@@ -5180,7 +5515,7 @@
             <div class="premium-modal-content">
                 <div class="premium-modal-body">
                     <div style="display: flex; flex-direction: column; gap: 20px; padding: 24px 0;">
-                        <a href="https://qr-generator-app.com" target="_blank" rel="noopener noreferrer" style="display: flex; align-items: center; gap: 16px; padding: 20px; background: linear-gradient(135deg, #10B981 0%, #059669 100%); border-radius: 12px; text-decoration: none; transition: all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1); box-shadow: 0 4px 12px rgba(16, 185, 129, 0.2);" onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 8px 20px rgba(16, 185, 129, 0.3)'" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 12px rgba(16, 185, 129, 0.2)'">
+                        <a href="https://qrexpress.org" target="_blank" rel="noopener noreferrer" style="display: flex; align-items: center; gap: 16px; padding: 20px; background: linear-gradient(135deg, #10B981 0%, #059669 100%); border-radius: 12px; text-decoration: none; transition: all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1); box-shadow: 0 4px 12px rgba(16, 185, 129, 0.2);" onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 8px 20px rgba(16, 185, 129, 0.3)'" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 12px rgba(16, 185, 129, 0.2)'">
                             <div style="flex: 1;">
                                 <div style="font-size: 16px; font-weight: 600; color: white; margin-bottom: 4px;">QR Generator App</div>
                                 <div style="font-size: 13px; color: rgba(255, 255, 255, 0.9);">Generate QR codes instantly</div>
@@ -5190,7 +5525,7 @@
                             </svg>
                         </a>
                         
-                        <a href="https://pocket-engineer.com" target="_blank" rel="noopener noreferrer" style="display: flex; align-items: center; gap: 16px; padding: 20px; background: linear-gradient(135deg, #F59E0B 0%, #D97706 100%); border-radius: 12px; text-decoration: none; transition: all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1); box-shadow: 0 4px 12px rgba(245, 158, 11, 0.2);" onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 8px 20px rgba(245, 158, 11, 0.3)'" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 12px rgba(245, 158, 11, 0.2)'">
+                        <a href="https://pockeng.com" target="_blank" rel="noopener noreferrer" style="display: flex; align-items: center; gap: 16px; padding: 20px; background: linear-gradient(135deg, #F59E0B 0%, #D97706 100%); border-radius: 12px; text-decoration: none; transition: all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1); box-shadow: 0 4px 12px rgba(245, 158, 11, 0.2);" onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 8px 20px rgba(245, 158, 11, 0.3)'" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 12px rgba(245, 158, 11, 0.2)'">
                             <div style="flex: 1;">
                                 <div style="font-size: 16px; font-weight: 600; color: white; margin-bottom: 4px;">Pocket Engineer</div>
                                 <div style="font-size: 13px; color: rgba(255, 255, 255, 0.9);">Engineering tools and resources</div>
@@ -5210,7 +5545,7 @@
         <div class="premium-modal-container">
             <div class="premium-modal-header">
                 <button class="premium-modal-close" onclick="closeChangelog()" aria-label="Close">×</button>
-                <p class="premium-modal-subtitle">What's new and updated</p>
+                <p class="premium-modal-subtitle">What's new</p>
             </div>
             <div class="premium-modal-content">
                 <div class="premium-modal-body">

@@ -709,7 +709,6 @@ function updateProgress() {
         const school = item.querySelector('.edu-school')?.value.trim() || '';
         const gradMonth = item.querySelector('.grad-month')?.value || '';
         const gradYear = item.querySelector('.grad-year')?.value || '';
-        const location = item.querySelector('.edu-loc')?.value.trim() || '';
         
         // Check if entry is completely filled
         const hasDate = gradMonth && gradYear;

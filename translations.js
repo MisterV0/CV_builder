@@ -35,6 +35,7 @@ const TRANSLATIONS = {
             currentlyWorking: "Currently working",
             present: "Present",
             degree: "Degree",
+            fieldOfStudy: "Field of Study",
             school: "School",
             graduation: "Graduation",
             category: "Category",
@@ -221,6 +222,7 @@ const TRANSLATIONS = {
             currentlyWorking: "Attualmente in carica",
             present: "Presente",
             degree: "Titolo di Studio",
+            fieldOfStudy: "Campo di Studi",
             school: "Istituto",
             graduation: "Laurea",
             category: "Categoria",
@@ -407,6 +409,7 @@ const TRANSLATIONS = {
             currentlyWorking: "În prezent activez",
             present: "Prezent",
             degree: "Diplomă",
+            fieldOfStudy: "Domeniu de Studiu",
             school: "Instituție",
             graduation: "Absolvire",
             category: "Categorie",
@@ -593,6 +596,7 @@ const TRANSLATIONS = {
             currentlyWorking: "Работаю в настоящее время",
             present: "По настоящее время",
             degree: "Степень",
+            fieldOfStudy: "Область Изучения",
             school: "Учебное Заведение",
             graduation: "Окончание",
             category: "Категория",
@@ -779,6 +783,7 @@ const TRANSLATIONS = {
             currentlyWorking: "Працюю в даний час",
             present: "Поточний час",
             degree: "Ступінь",
+            fieldOfStudy: "Галузь Знань",
             school: "Навчальний Заклад",
             graduation: "Закінчення",
             category: "Категорія",
@@ -983,4 +988,3 @@ function getMonthName(index) {
     const lang = getCurrentLanguage();
     return TRANSLATIONS[lang].months[index] || TRANSLATIONS.en.months[index] || '';
 }
-
