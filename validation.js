@@ -1,10 +1,3 @@
-/**
- * CV Builder - ATS Score Validation
- * Analyzes CV against common ATS keywords (no AI, just keyword matching)
- * Language-aware keyword matching for multiple languages
- */
-
-// ATS Keywords Database - Multi-language support
 const ATS_KEYWORDS = {
     en: {
         actionVerbs: [
@@ -928,9 +921,6 @@ function updateCharacterCounter(textarea, counterElement, maxChars) {
     }
 }
 
-/**
- * Add Character Counter Styles
- */
 function addCharacterCounterStyles() {
     if (document.getElementById('char-counter-styles')) return;
     
@@ -997,19 +987,12 @@ function addCharacterCounterStyles() {
     document.head.appendChild(style);
 }
 
-/**
- * Initialize All Character Counters
- */
 function initCharacterCounters() {
     addCharacterCounterStyles();
     initSummaryCharacterCounter();
     initWorkDescriptionCharacterCounters();
 }
 
-/**
- * Observe DOM for dynamically added work descriptions
- * Uses MutationObserver to handle new experience items
- */
 function observeWorkDescriptions() {
     const experienceList = document.getElementById('experienceList');
     if (!experienceList) return;
@@ -1065,15 +1048,6 @@ function observeWorkDescriptions() {
     });
 }
 
-/**
- * CV HEALTH SCORE DASHBOARD
- * Comprehensive analysis of CV completeness, ATS compatibility, and suggestions
- */
-
-/**
- * Calculate CV Health Score
- * Returns an object with completeness, ATS compatibility, length, warnings, and suggestions
- */
 function calculateHealthScore() {
     const result = {
         completeness: 0,
@@ -1435,10 +1409,6 @@ function closeHealthScoreModal() {
     }
 }
 
-/**
- * Add Health Score Modal Styles
- * Styles for the health score modal (button removed - progress widget serves that purpose)
- */
 function addHealthScoreStyles() {
     // Add styles if not already added
     if (!document.getElementById('health-score-styles')) {

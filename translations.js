@@ -1,12 +1,3 @@
-/**
- * CV Builder Translations
- * Professional translations for CV-related content
- * Supported languages: English (en), Italian (it), Romanian (ro), Russian (ru), Ukrainian (uk)
- * 
- * IMPORTANT: This file must be saved with UTF-8 encoding to properly display
- * Romanian and Cyrillic characters. Ensure your editor/IDE is set to UTF-8 encoding.
- */
-
 const TRANSLATIONS = {
     en: {
         // Form Section Titles
@@ -16,9 +7,10 @@ const TRANSLATIONS = {
             education: "Education",
             certifications: "Certifications",
             skills: "Skills",
-            languages: "Languages"
+            languages: "Languages",
+            personalProjects: "Personal Projects"
         },
-        
+
         // Form Labels
         labels: {
             fullName: "Full Name",
@@ -43,9 +35,12 @@ const TRANSLATIONS = {
             name: "Name",
             issuer: "Issuer",
             date: "Date",
-            url: "URL"
+            url: "URL",
+            projectName: "Project Name",
+            projectDescription: "Description",
+            projectLink: "Link"
         },
-        
+
         // Placeholders
         placeholders: {
             summary: "Brief professional intro...",
@@ -55,9 +50,10 @@ const TRANSLATIONS = {
             website: "www.portfolio.com",
             skillCategory: "e.g. Design",
             skillName: "e.g. Figma",
-            languageName: "e.g. English"
+            languageName: "e.g. English",
+            projectLink: "https://github.com/user/project"
         },
-        
+
         // Buttons
         buttons: {
             addPosition: "+ Add Position",
@@ -69,9 +65,24 @@ const TRANSLATIONS = {
             remove: "Remove",
             back: "Back",
             downloadPDF: "Download PDF",
-            showFinalResult: "Show Final Result"
+            showFinalResult: "Show Final Result",
+            resetAll: "Reset all fields",
+            resetCancel: "Cancel",
+            resetConfirm: "Reset All",
+            addProject: "+ Add Project"
         },
-        
+        reset: {
+            title: "Are you sure?",
+            message: "This action cannot be undone. All your entered data will be permanently deleted.",
+            success: "All fields have been successfully reset."
+        },
+
+        demo: {
+            bannerText: "Want to see how a completed CV looks?",
+            buttonLabel: "Try Demo Data",
+            loaded: "Demo data loaded! Feel free to generate a PDF."
+        },
+
         // Social Links
         social: {
             linkedin: "LinkedIn",
@@ -81,19 +92,19 @@ const TRANSLATIONS = {
             addGitHub: "Add GitHub",
             addWebsite: "Add Website"
         },
-        
+
         // Date Picker
         datePicker: {
             month: "Month",
             year: "Year"
         },
-        
+
         // Months (full names)
         months: [
             "January", "February", "March", "April", "May", "June",
             "July", "August", "September", "October", "November", "December"
         ],
-        
+
         // Proficiency Levels
         proficiency: {
             noLevel: "No Level",
@@ -106,34 +117,35 @@ const TRANSLATIONS = {
             independentUser: "Independent User",
             proficientUser: "Proficient User"
         },
-        
+
         // Loading Modal
         loading: {
             title: "Generating Your CV",
             subtitle: "Please wait while we prepare your document"
         },
-        
+
         // Preview Toolbar
         preview: {
             modern: "Modern",
             serif: "Serif",
             jakarta: "Jakarta",
-            robotic: "Robotic"
+            robotic: "Robotic",
+            elegant: "Elegant"
         },
-        
+
         // Tooltips
         tooltips: {
             photo: "CVs with a professional photo are 40% more likely to attract recruiter attention",
             certification: "Adding the link to your certification will display a verified badge in your CV",
             skills: "Click a level segment to show it. Click again to remove it."
         },
-        
+
         // Character Counter
         counter: {
             characters: "characters",
             over: "over"
         },
-        
+
         // ATS Score Checker (from validation.js)
         ats: {
             button: "Check ATS Score",
@@ -150,7 +162,7 @@ const TRANSLATIONS = {
             tipGood: "Your CV could benefit from more action verbs and relevant keywords in your experience descriptions.",
             tipNeedsWork: "Consider adding more action verbs, skills, and quantifiable results to improve your ATS score."
         },
-        
+
         // CV Health Score
         healthScore: {
             tooltip: "Click to view detailed CV health analysis",
@@ -185,7 +197,7 @@ const TRANSLATIONS = {
                 completeMultipleWorkEntries: "Complete {count} work experience entries"
             }
         },
-        
+
         // Language Change Warning
         languageChange: {
             warning: "Change Language?",
@@ -194,7 +206,7 @@ const TRANSLATIONS = {
             cancel: "Cancel"
         }
     },
-    
+
     it: {
         // Form Section Titles
         sections: {
@@ -203,9 +215,10 @@ const TRANSLATIONS = {
             education: "Istruzione",
             certifications: "Certificazioni",
             skills: "Competenze",
-            languages: "Lingue"
+            languages: "Lingue",
+            personalProjects: "Progetti Personali"
         },
-        
+
         // Form Labels
         labels: {
             fullName: "Nome Completo",
@@ -230,9 +243,12 @@ const TRANSLATIONS = {
             name: "Nome",
             issuer: "Ente Rilasciante",
             date: "Data",
-            url: "URL"
+            url: "URL",
+            projectName: "Nome Progetto",
+            projectDescription: "Descrizione",
+            projectLink: "Link"
         },
-        
+
         // Placeholders
         placeholders: {
             summary: "Breve introduzione professionale...",
@@ -242,9 +258,10 @@ const TRANSLATIONS = {
             website: "www.portfolio.com",
             skillCategory: "es. Design",
             skillName: "es. Figma",
-            languageName: "es. Italiano"
+            languageName: "es. Italiano",
+            projectLink: "https://github.com/utente/progetto"
         },
-        
+
         // Buttons
         buttons: {
             addPosition: "+ Aggiungi Posizione",
@@ -256,9 +273,24 @@ const TRANSLATIONS = {
             remove: "Rimuovi",
             back: "Indietro",
             downloadPDF: "Scarica PDF",
-            showFinalResult: "Mostra Risultato Finale"
+            showFinalResult: "Mostra Risultato Finale",
+            resetAll: "Reimposta tutti i campi",
+            resetCancel: "Annulla",
+            resetConfirm: "Reimposta tutto",
+            addProject: "+ Aggiungi Progetto"
         },
-        
+        reset: {
+            title: "Sei sicuro?",
+            message: "Questa azione non può essere annullata. Tutti i dati inseriti verranno eliminati definitivamente.",
+            success: "Tutti i campi sono stati ripristinati con successo."
+        },
+
+        demo: {
+            bannerText: "Vuoi vedere come appare un CV completo?",
+            buttonLabel: "Prova i Dati Demo",
+            loaded: "Dati demo caricati! Prova a generare un PDF."
+        },
+
         // Social Links
         social: {
             linkedin: "LinkedIn",
@@ -268,19 +300,19 @@ const TRANSLATIONS = {
             addGitHub: "Aggiungi GitHub",
             addWebsite: "Aggiungi Sito Web"
         },
-        
+
         // Date Picker
         datePicker: {
             month: "Mese",
             year: "Anno"
         },
-        
+
         // Months (full names in Italian)
         months: [
             "Gennaio", "Febbraio", "Marzo", "Aprile", "Maggio", "Giugno",
             "Luglio", "Agosto", "Settembre", "Ottobre", "Novembre", "Dicembre"
         ],
-        
+
         // Proficiency Levels
         proficiency: {
             noLevel: "Nessun Livello",
@@ -293,34 +325,35 @@ const TRANSLATIONS = {
             independentUser: "Utente Indipendente",
             proficientUser: "Utente Esperto"
         },
-        
+
         // Loading Modal
         loading: {
             title: "Generazione del Tuo CV",
             subtitle: "Attendere mentre prepariamo il documento"
         },
-        
+
         // Preview Toolbar
         preview: {
             modern: "Moderno",
             serif: "Serif",
             jakarta: "Jakarta",
-            robotic: "Robotico"
+            robotic: "Robotico",
+            elegant: "Elegante"
         },
-        
+
         // Tooltips
         tooltips: {
             photo: "I CV con una foto professionale hanno il 40% di probabilità in più di attirare l'attenzione dei recruiter",
             certification: "Aggiungere il link alla tua certificazione mostrerà un badge verificato nel tuo CV",
             skills: "Clicca su un segmento di livello per mostrarlo. Clicca di nuovo per rimuoverlo."
         },
-        
+
         // Character Counter
         counter: {
             characters: "caratteri",
             over: "oltre"
         },
-        
+
         // ATS Score Checker
         ats: {
             button: "Verifica Punteggio ATS",
@@ -337,7 +370,7 @@ const TRANSLATIONS = {
             tipGood: "Il tuo CV potrebbe beneficiare di più verbi d'azione e parole chiave rilevanti nelle descrizioni dell'esperienza.",
             tipNeedsWork: "Considera di aggiungere più verbi d'azione, competenze e risultati quantificabili per migliorare il tuo punteggio ATS."
         },
-        
+
         // CV Health Score
         healthScore: {
             tooltip: "Clicca per visualizzare l'analisi dettagliata della salute del CV",
@@ -372,7 +405,7 @@ const TRANSLATIONS = {
                 completeMultipleWorkEntries: "Completa {count} voci di esperienza lavorativa"
             }
         },
-        
+
         // Language Change Warning
         languageChange: {
             warning: "Cambiare Lingua?",
@@ -381,7 +414,7 @@ const TRANSLATIONS = {
             cancel: "Annulla"
         }
     },
-    
+
     ro: {
         // Form Section Titles
         sections: {
@@ -390,9 +423,10 @@ const TRANSLATIONS = {
             education: "Educație",
             certifications: "Certificări",
             skills: "Competențe",
-            languages: "Limbi"
+            languages: "Limbi",
+            personalProjects: "Proiecte Personale"
         },
-        
+
         // Form Labels
         labels: {
             fullName: "Nume Complet",
@@ -417,9 +451,12 @@ const TRANSLATIONS = {
             name: "Nume",
             issuer: "Organizație Emitentă",
             date: "Data",
-            url: "URL"
+            url: "URL",
+            projectName: "Nume Proiect",
+            projectDescription: "Descriere",
+            projectLink: "Link"
         },
-        
+
         // Placeholders
         placeholders: {
             summary: "Prezentare profesională scurtă...",
@@ -429,9 +466,10 @@ const TRANSLATIONS = {
             website: "www.portfolio.com",
             skillCategory: "ex. Design",
             skillName: "ex. Figma",
-            languageName: "ex. Română"
+            languageName: "ex. Română",
+            projectLink: "https://github.com/utilizator/proiect"
         },
-        
+
         // Buttons
         buttons: {
             addPosition: "+ Adaugă Post",
@@ -443,9 +481,24 @@ const TRANSLATIONS = {
             remove: "Elimină",
             back: "Înapoi",
             downloadPDF: "Descarcă PDF",
-            showFinalResult: "Afișează Rezultatul Final"
+            showFinalResult: "Afișează Rezultatul Final",
+            resetAll: "Resetează toate câmpurile",
+            resetCancel: "Anulează",
+            resetConfirm: "Resetează Tot",
+            addProject: "+ Adaugă Proiect"
         },
-        
+        reset: {
+            title: "Ești sigur?",
+            message: "Această acțiune nu poate fi anulată. Toate datele introduse vor fi șterse definitiv.",
+            success: "Toate câmpurile au fost resetate cu succes."
+        },
+
+        demo: {
+            bannerText: "Vrei să vezi cum arată un CV completat?",
+            buttonLabel: "Încearcă Date Demo",
+            loaded: "Date demo încărcate! Încearcă să generezi un PDF."
+        },
+
         // Social Links
         social: {
             linkedin: "LinkedIn",
@@ -455,19 +508,19 @@ const TRANSLATIONS = {
             addGitHub: "Adaugă GitHub",
             addWebsite: "Adaugă Site Web"
         },
-        
+
         // Date Picker
         datePicker: {
             month: "Lună",
             year: "An"
         },
-        
+
         // Months (full names in Romanian)
         months: [
             "Ianuarie", "Februarie", "Martie", "Aprilie", "Mai", "Iunie",
             "Iulie", "August", "Septembrie", "Octombrie", "Noiembrie", "Decembrie"
         ],
-        
+
         // Proficiency Levels
         proficiency: {
             noLevel: "Fără Nivel",
@@ -480,34 +533,35 @@ const TRANSLATIONS = {
             independentUser: "Utilizator Independent",
             proficientUser: "Utilizator Avansat"
         },
-        
+
         // Loading Modal
         loading: {
             title: "Generarea CV-ului Tău",
             subtitle: "Te rugăm să aștepți în timp ce pregătim documentul"
         },
-        
+
         // Preview Toolbar
         preview: {
             modern: "Modern",
             serif: "Serif",
             jakarta: "Jakarta",
-            robotic: "Robotic"
+            robotic: "Robotic",
+            elegant: "Elegant"
         },
-        
+
         // Tooltips
         tooltips: {
             photo: "CV-urile cu fotografie profesională au cu 40% mai multe șanse să atragă atenția recrutatorilor",
             certification: "Adăugarea link-ului la certificarea ta va afișa un badge verificat în CV-ul tău",
             skills: "Apasă pe un segment de nivel pentru a-l afișa. Apasă din nou pentru a-l elimina."
         },
-        
+
         // Character Counter
         counter: {
             characters: "caractere",
             over: "peste"
         },
-        
+
         // ATS Score Checker
         ats: {
             button: "Verifică Scorul ATS",
@@ -524,7 +578,7 @@ const TRANSLATIONS = {
             tipGood: "CV-ul tău ar putea beneficia de mai mulți verbi de acțiune și cuvinte cheie relevante în descrierile experienței tale.",
             tipNeedsWork: "Luați în considerare adăugarea mai multor verbi de acțiune, competențe și rezultate cuantificabile pentru a îmbunătăți scorul ATS."
         },
-        
+
         // CV Health Score
         healthScore: {
             tooltip: "Apasă pentru a vedea analiza detaliată a sănătății CV-ului",
@@ -559,7 +613,7 @@ const TRANSLATIONS = {
                 completeMultipleWorkEntries: "Completează {count} intrări experiență profesională"
             }
         },
-        
+
         // Language Change Warning
         languageChange: {
             warning: "Schimbare Limbă?",
@@ -568,7 +622,7 @@ const TRANSLATIONS = {
             cancel: "Anulează"
         }
     },
-    
+
     ru: {
         // Form Section Titles
         sections: {
@@ -577,9 +631,10 @@ const TRANSLATIONS = {
             education: "Образование",
             certifications: "Сертификаты",
             skills: "Навыки",
-            languages: "Языки"
+            languages: "Языки",
+            personalProjects: "Личные Проекты"
         },
-        
+
         // Form Labels
         labels: {
             fullName: "Полное Имя",
@@ -604,9 +659,12 @@ const TRANSLATIONS = {
             name: "Название",
             issuer: "Организация",
             date: "Дата",
-            url: "URL"
+            url: "URL",
+            projectName: "Название Проекта",
+            projectDescription: "Описание",
+            projectLink: "Ссылка"
         },
-        
+
         // Placeholders
         placeholders: {
             summary: "Краткое профессиональное введение...",
@@ -616,9 +674,10 @@ const TRANSLATIONS = {
             website: "www.portfolio.com",
             skillCategory: "например, Дизайн",
             skillName: "например, Figma",
-            languageName: "например, Русский"
+            languageName: "например, Русский",
+            projectLink: "https://github.com/user/project"
         },
-        
+
         // Buttons
         buttons: {
             addPosition: "+ Добавить Должность",
@@ -630,9 +689,24 @@ const TRANSLATIONS = {
             remove: "Удалить",
             back: "Назад",
             downloadPDF: "Скачать PDF",
-            showFinalResult: "Показать Результат"
+            showFinalResult: "Показать Результат",
+            resetAll: "Сбросить все поля",
+            resetCancel: "Отмена",
+            resetConfirm: "Сбросить все",
+            addProject: "+ Добавить Проект"
         },
-        
+        reset: {
+            title: "Вы уверены?",
+            message: "Это действие необратимо. Все введенные данные будут безвозвратно удалены.",
+            success: "Все поля были успешно сброшены."
+        },
+
+        demo: {
+            bannerText: "Хотите увидеть, как выглядит заполненное резюме?",
+            buttonLabel: "Заполнить демо-данными",
+            loaded: "Демо-данные загружены! Попробуйте создать PDF."
+        },
+
         // Social Links
         social: {
             linkedin: "LinkedIn",
@@ -642,19 +716,19 @@ const TRANSLATIONS = {
             addGitHub: "Добавить GitHub",
             addWebsite: "Добавить Веб-сайт"
         },
-        
+
         // Date Picker
         datePicker: {
             month: "Месяц",
             year: "Год"
         },
-        
+
         // Months (full names in Russian)
         months: [
             "Январь", "Февраль", "Март", "Апрель", "Май", "Июнь",
             "Июль", "Август", "Сентябрь", "Октябрь", "Ноябрь", "Декабрь"
         ],
-        
+
         // Proficiency Levels
         proficiency: {
             noLevel: "Без Уровня",
@@ -667,34 +741,35 @@ const TRANSLATIONS = {
             independentUser: "Независимый Пользователь",
             proficientUser: "Свободный Пользователь"
         },
-        
+
         // Loading Modal
         loading: {
             title: "Создание Вашего Резюме",
             subtitle: "Пожалуйста, подождите, пока мы подготовим ваш документ"
         },
-        
+
         // Preview Toolbar
         preview: {
             modern: "Современный",
             serif: "С засечками",
             jakarta: "Джакарта",
-            robotic: "Роботический"
+            robotic: "Роботический",
+            elegant: "Элегантный"
         },
-        
+
         // Tooltips
         tooltips: {
             photo: "Резюме с профессиональной фотографией на 40% чаще привлекают внимание рекрутеров",
             certification: "Добавление ссылки на ваш сертификат отобразит проверенный значок в вашем резюме",
             skills: "Нажмите на сегмент уровня, чтобы показать его. Нажмите снова, чтобы убрать."
         },
-        
+
         // Character Counter
         counter: {
             characters: "символов",
             over: "сверх"
         },
-        
+
         // ATS Score Checker
         ats: {
             button: "Проверить ATS Оценку",
@@ -711,7 +786,7 @@ const TRANSLATIONS = {
             tipGood: "Ваше резюме может выиграть от большего количества глаголов действия и релевантных ключевых слов в описаниях вашего опыта.",
             tipNeedsWork: "Рассмотрите возможность добавления большего количества глаголов действия, навыков и количественных результатов для улучшения вашей ATS оценки."
         },
-        
+
         // CV Health Score
         healthScore: {
             tooltip: "Нажмите, чтобы просмотреть подробный анализ здоровья резюме",
@@ -746,7 +821,7 @@ const TRANSLATIONS = {
                 completeMultipleWorkEntries: "Завершите {count} записей об опыте работы"
             }
         },
-        
+
         // Language Change Warning
         languageChange: {
             warning: "Изменить Язык?",
@@ -755,7 +830,7 @@ const TRANSLATIONS = {
             cancel: "Отмена"
         }
     },
-    
+
     uk: {
         // Form Section Titles
         sections: {
@@ -764,9 +839,10 @@ const TRANSLATIONS = {
             education: "Освіта",
             certifications: "Сертифікати",
             skills: "Навички",
-            languages: "Мови"
+            languages: "Мови",
+            personalProjects: "Особисті Проекти"
         },
-        
+
         // Form Labels
         labels: {
             fullName: "Повне Ім'я",
@@ -791,9 +867,12 @@ const TRANSLATIONS = {
             name: "Назва",
             issuer: "Організація",
             date: "Дата",
-            url: "URL"
+            url: "URL",
+            projectName: "Назва Проекту",
+            projectDescription: "Опис",
+            projectLink: "Посилання"
         },
-        
+
         // Placeholders
         placeholders: {
             summary: "Короткий професійний вступ...",
@@ -803,9 +882,10 @@ const TRANSLATIONS = {
             website: "www.portfolio.com",
             skillCategory: "наприклад, Дизайн",
             skillName: "наприклад, Figma",
-            languageName: "наприклад, Українська"
+            languageName: "наприклад, Українська",
+            projectLink: "https://github.com/user/project"
         },
-        
+
         // Buttons
         buttons: {
             addPosition: "+ Додати Посаду",
@@ -817,9 +897,24 @@ const TRANSLATIONS = {
             remove: "Видалити",
             back: "Назад",
             downloadPDF: "Завантажити PDF",
-            showFinalResult: "Показати Результат"
+            showFinalResult: "Показати Результат",
+            resetAll: "Скинути всі поля",
+            resetCancel: "Скасувати",
+            resetConfirm: "Скинути все",
+            addProject: "+ Додати Проект"
         },
-        
+        reset: {
+            title: "Ви впевнені?",
+            message: "Цю дію неможливо скасувати. Всі введені дані будуть остаточно видалені.",
+            success: "Всі поля були успішно скинуті."
+        },
+
+        demo: {
+            bannerText: "Хочете побачити, як виглядає заповнене резюме?",
+            buttonLabel: "Заповнити демо-даними",
+            loaded: "Демо-дані завантажено! Спробуйте створити PDF."
+        },
+
         // Social Links
         social: {
             linkedin: "LinkedIn",
@@ -829,19 +924,19 @@ const TRANSLATIONS = {
             addGitHub: "Додати GitHub",
             addWebsite: "Додати Веб-сайт"
         },
-        
+
         // Date Picker
         datePicker: {
             month: "Місяць",
             year: "Рік"
         },
-        
+
         // Months (full names in Ukrainian)
         months: [
             "Січень", "Лютий", "Березень", "Квітень", "Травень", "Червень",
             "Липень", "Серпень", "Вересень", "Жовтень", "Листопад", "Грудень"
         ],
-        
+
         // Proficiency Levels
         proficiency: {
             noLevel: "Без Рівня",
@@ -854,34 +949,35 @@ const TRANSLATIONS = {
             independentUser: "Незалежний Користувач",
             proficientUser: "Вільний Користувач"
         },
-        
+
         // Loading Modal
         loading: {
             title: "Створення Вашого Резюме",
             subtitle: "Будь ласка, зачекайте, поки ми підготуємо ваш документ"
         },
-        
+
         // Preview Toolbar
         preview: {
             modern: "Сучасний",
             serif: "З засічками",
             jakarta: "Джакарта",
-            robotic: "Роботичний"
+            robotic: "Роботичний",
+            elegant: "Елегантний"
         },
-        
+
         // Tooltips
         tooltips: {
             photo: "Резюме з професійною фотографією на 40% частіше привертають увагу рекрутерів",
             certification: "Додавання посилання на ваш сертифікат відобразить перевірений значок у вашому резюме",
             skills: "Натисніть на сегмент рівня, щоб показати його. Натисніть знову, щоб прибрати."
         },
-        
+
         // Character Counter
         counter: {
             characters: "символів",
             over: "понад"
         },
-        
+
         // ATS Score Checker
         ats: {
             button: "Перевірити ATS Оцінку",
@@ -898,7 +994,7 @@ const TRANSLATIONS = {
             tipGood: "Ваше резюме може виграти від більшої кількості дієслів дії та релевантних ключових слів у описях вашого досвіду.",
             tipNeedsWork: "Розгляньте можливість додавання більшої кількості дієслів дії, навичок та кількісних результатів для покращення вашої ATS оцінки."
         },
-        
+
         // CV Health Score
         healthScore: {
             tooltip: "Натисніть, щоб переглянути детальний аналіз здоров'я резюме",
@@ -933,7 +1029,7 @@ const TRANSLATIONS = {
                 completeMultipleWorkEntries: "Завершіть {count} записів про досвід роботи"
             }
         },
-        
+
         // Language Change Warning
         languageChange: {
             warning: "Змінити Мову?",
@@ -944,9 +1040,6 @@ const TRANSLATIONS = {
     }
 };
 
-/**
- * Get current language from localStorage
- */
 function getCurrentLanguage() {
     const savedLang = localStorage.getItem('cv-language');
     return savedLang || 'en';
@@ -960,7 +1053,7 @@ function t(key) {
     const lang = getCurrentLanguage();
     const keys = key.split('.');
     let value = TRANSLATIONS[lang];
-    
+
     for (const k of keys) {
         if (value && typeof value === 'object' && k in value) {
             value = value[k];
@@ -977,13 +1070,10 @@ function t(key) {
             break;
         }
     }
-    
+
     return typeof value === 'string' ? value : key;
 }
 
-/**
- * Get month name by index (0-11)
- */
 function getMonthName(index) {
     const lang = getCurrentLanguage();
     return TRANSLATIONS[lang].months[index] || TRANSLATIONS.en.months[index] || '';
