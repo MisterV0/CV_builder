@@ -29,13 +29,6 @@
     <meta property="og:image:width" content="745">
     <meta property="og:image:height" content="608">
     
-    <!-- Twitter Card Meta Tags -->
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:site" content="@sartorcv">
-    <meta name="twitter:title" content="Sartor CV – Free Professional CV Builder & Resume Maker">
-    <meta name="twitter:description" content="Build a polished, professional CV online for free. Beautiful templates, instant PDF download — no sign-up needed.">
-    <meta name="twitter:image" content="resources/logo.svg">
-    
     <!-- Language Alternate Links for SEO -->
     <!-- Hreflang for multilingual SEO -->
     <link rel="alternate" hreflang="en" href="https://sartorcv.com/" />
@@ -96,88 +89,32 @@
 </head>
 <body>
 
-    <!-- WELCOME MODAL -->
-    <div id="welcome-modal">
-        <div class="welcome-container">
-            <div class="welcome-header">
-                <div class="welcome-title-wrapper">
-                    <p class="welcome-subtitle">Craft your professional CV with precision and elegance</p>
-                </div>
-            </div>
-            <div class="welcome-content">
-                <div class="welcome-perks">
-                    <h3 class="perks-title">Why Choose Us</h3>
-                    <div class="perks-list">
-                        <div class="perk-item">
-                            <p class="perk-text"><strong>No Registration Required</strong> — Completely free to use with no paywall, no watermarks, and no hidden costs</p>
-                        </div>
-                        <div class="perk-item">
-                            <p class="perk-text"><strong>Multiple Templates</strong> — Professional designs available for instant download</p>
-                        </div>
-                        <div class="perk-item">
-                            <p class="perk-text"><strong>Intuitive Interface</strong> — Simple to use while maintaining professional quality output</p>
-                        </div>
-                        <div class="perk-item">
-                            <p class="perk-text"><strong>Privacy First</strong> — Your data stays in your browser, nothing is stored on our servers</p>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="welcome-todo">
-                    <h3 class="todo-title">How It Works</h3>
-                    <div class="todo-list">
-                        <div class="todo-item active" style="--item-index: 0;">
-                            <div class="todo-dot"></div>
-                            <p class="todo-text">Complete the boxes</p>
-                        </div>
-                        <div class="todo-item" style="--item-index: 1;">
-                            <div class="todo-dot"></div>
-                            <p class="todo-text">Preview your CV</p>
-                        </div>
-                        <div class="todo-item" style="--item-index: 2;">
-                            <div class="todo-dot"></div>
-                            <p class="todo-text">Choose template</p>
-                        </div>
-                        <div class="todo-item" style="--item-index: 3;">
-                            <div class="todo-dot"></div>
-                            <p class="todo-text">Download</p>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="welcome-language">
-                    <h3 class="language-title">Select Language</h3>
+    <!-- LANGUAGE MODAL -->
+    <div id="language-modal">
+        <div class="language-modal-container">
+            <button type="button" class="language-modal-close" onclick="closeLanguageModal()">&times;</button>
+            <h3 class="language-modal-title">Select Language</h3>
             <div class="language-selector">
-                        <button type="button" class="language-btn available" data-lang="en" onclick="selectLanguageInWelcomeModal('en')">
+                <button type="button" class="language-btn available" data-lang="en" onclick="selectLanguageInModal('en')">
                     <span class="language-flag">EN</span>
                     <span class="language-name">English</span>
                 </button>
-                        <button type="button" class="language-btn available" data-lang="it" onclick="selectLanguageInWelcomeModal('it')">
+                <button type="button" class="language-btn available" data-lang="it" onclick="selectLanguageInModal('it')">
                     <span class="language-flag">IT</span>
                     <span class="language-name">Italiano</span>
                 </button>
-                        <button type="button" class="language-btn available" data-lang="ro" onclick="selectLanguageInWelcomeModal('ro')">
+                <button type="button" class="language-btn available" data-lang="ro" onclick="selectLanguageInModal('ro')">
                     <span class="language-flag">RO</span>
                     <span class="language-name">Română</span>
                 </button>
-                        <button type="button" class="language-btn available" data-lang="ru" onclick="selectLanguageInWelcomeModal('ru')">
+                <button type="button" class="language-btn available" data-lang="ru" onclick="selectLanguageInModal('ru')">
                     <span class="language-flag">RU</span>
                     <span class="language-name">Русский</span>
                 </button>
-                        <button type="button" class="language-btn available" data-lang="uk" onclick="selectLanguageInWelcomeModal('uk')">
+                <button type="button" class="language-btn available" data-lang="uk" onclick="selectLanguageInModal('uk')">
                     <span class="language-flag">UA</span>
                     <span class="language-name">Українська</span>
                 </button>
-                    </div>
-                </div>
-            </div>
-            <div class="welcome-footer">
-                <label class="elegant-checkbox">
-                    <input type="checkbox" id="dont-show-again" checked>
-                    <span class="elegant-checkbox-box"></span>
-                    <span class="elegant-checkbox-label">Don't show this again</span>
-                </label>
-                <button type="button" class="welcome-btn" onclick="closeWelcomeModal()"><span>Get Started</span></button>
             </div>
         </div>
     </div>
@@ -503,6 +440,10 @@
                 <button class="tool-btn primary" onclick="downloadPDF()" data-i18n="buttons.downloadPDF">Download PDF</button>
             </div>
         </div>
+        <div id="preview-disclaimer" class="preview-disclaimer">
+            <span class="preview-disclaimer-text">The live preview is an approximation. Your downloaded PDF will be pixel-perfect.</span>
+            <button type="button" class="preview-disclaimer-close" onclick="dismissPreviewDisclaimer()" aria-label="Dismiss">Dismiss</button>
+        </div>
         <div id="paper-scroll">
             <div id="cvSheet" class="cv-sheet"></div>
         </div>
@@ -580,8 +521,6 @@
             setMeta('meta[property="og:title"]',         'content', m.title);
             setMeta('meta[property="og:description"]',   'content', m.description);
             setMeta('meta[property="og:url"]',           'content', m.ogUrl);
-            setMeta('meta[name="twitter:title"]',        'content', m.title);
-            setMeta('meta[name="twitter:description"]',  'content', m.description);
         }
 
         // Update date picker month names when language changes
@@ -684,103 +623,38 @@
             }
         }
         
-        // Show welcome modal on first visit
-        function checkWelcomeModal() {
-            const hasSeenWelcome = localStorage.getItem('cv-welcome-seen');
-            if (!hasSeenWelcome) {
-                const modal = document.getElementById('welcome-modal');
-                if (modal) {
-                    // Set the selected state based on current language - scope to welcome modal only
-                    modal.querySelectorAll('.language-btn').forEach(btn => {
-                        btn.classList.remove('selected');
-                    });
-                    const currentBtn = modal.querySelector(`.language-btn[data-lang="${currentLanguage}"]`);
-                    if (currentBtn) {
-                        currentBtn.classList.add('selected');
-                    }
-                    
-                    modal.classList.add('show');
-                    // Start animation when modal is shown
-                    setTimeout(() => {
-                        animateProgressSteps();
-                    }, 300);
-                }
-            } else {
-                // If already seen, just initialize the app
-                initApp();
-            }
-        }
-        
-        // Select language in welcome modal
-        function selectLanguageInWelcomeModal(lang) {
-            if (lang !== 'en' && lang !== 'it' && lang !== 'ro' && lang !== 'ru' && lang !== 'uk') return; // Only English, Italian, Romanian, Russian, and Ukrainian available
+        // Select language in modal
+        function selectLanguageInModal(lang) {
+            if (lang !== 'en' && lang !== 'it' && lang !== 'ro' && lang !== 'ru' && lang !== 'uk') return;
             
             currentLanguage = lang;
             localStorage.setItem('cv-language', lang);
-            
-            // Update HTML lang attribute
             document.documentElement.lang = lang;
             
-            // Update selected state - scope to welcome modal only
-            const welcomeModal = document.getElementById('welcome-modal');
-            if (welcomeModal) {
-                welcomeModal.querySelectorAll('.language-btn').forEach(btn => {
+            // Update selected state in language modal
+            const langModal = document.getElementById('language-modal');
+            if (langModal) {
+                langModal.querySelectorAll('.language-btn').forEach(btn => {
                     btn.classList.remove('selected');
                 });
-                const selectedBtn = welcomeModal.querySelector(`.language-btn[data-lang="${lang}"]`);
+                const selectedBtn = langModal.querySelector(`.language-btn[data-lang="${lang}"]`);
                 if (selectedBtn) {
                     selectedBtn.classList.add('selected');
-                }
-            }
-            
-            // Also update header language selector if it exists
-            const headerLangSelector = document.getElementById('header-language-selector');
-            if (headerLangSelector) {
-                headerLangSelector.querySelectorAll('.language-btn').forEach(btn => {
-                    btn.classList.remove('selected');
-                });
-                const headerSelectedBtn = headerLangSelector.querySelector(`.language-btn[data-lang="${lang}"]`);
-                if (headerSelectedBtn) {
-                    headerSelectedBtn.classList.add('selected');
                 }
             }
             
             updateLanguageDisplay();
             applyTranslations();
             updateSEOMeta(lang);
+            closeLanguageModal();
         }
         
-        // Clear progress animation interval helper
-        function clearProgressAnimation() {
-            if (progressAnimationInterval) {
-                clearInterval(progressAnimationInterval);
-                progressAnimationInterval = null;
-            }
-        }
-        
-        // Close welcome modal
-        function closeWelcomeModal() {
-            const modal = document.getElementById('welcome-modal');
-            const dontShowAgain = document.getElementById('dont-show-again');
-            
-            if (dontShowAgain && dontShowAgain.checked) {
-                localStorage.setItem('cv-welcome-seen', 'true');
-            }
-            
-            // Clear progress animation interval to prevent memory leak
-            clearProgressAnimation();
-            
-            // Always restore checkbox visibility when closing
-            restoreCheckboxVisibility();
-            
+        // Close language modal
+        function closeLanguageModal() {
+            const modal = document.getElementById('language-modal');
             if (modal) {
                 modal.classList.remove('show');
-                setTimeout(() => {
-                    modal.style.display = 'none';
-                }, 400);
             }
-            
-            initApp();
         }
         
         // --- RESET ALL LOGIC ---
@@ -877,9 +751,9 @@
         
         // Open language modal from header
         function openLanguageModal() {
-            const modal = document.getElementById('welcome-modal');
+            const modal = document.getElementById('language-modal');
             if (modal) {
-                // Pre-select current language - scope to welcome modal only
+                // Pre-select current language
                 modal.querySelectorAll('.language-btn').forEach(btn => {
                     btn.classList.remove('selected');
                 });
@@ -888,27 +762,7 @@
                     currentBtn.classList.add('selected');
                 }
                 
-                // Hide the "don't show again" checkbox when opened from header
-                const checkboxWrapper = document.getElementById('dont-show-again')?.closest('.elegant-checkbox');
-                if (checkboxWrapper) {
-                    checkboxWrapper.style.display = 'none';
-                }
-                
                 modal.classList.add('show');
-                modal.style.display = 'flex';
-                
-                // Start animation when modal is opened
-            setTimeout(() => {
-                    animateProgressSteps();
-            }, 300);
-            }
-        }
-        
-        // Restore checkbox visibility when closing modal opened from header
-        function restoreCheckboxVisibility() {
-            const checkboxWrapper = document.getElementById('dont-show-again')?.closest('.elegant-checkbox');
-            if (checkboxWrapper) {
-                checkboxWrapper.style.display = 'flex';
             }
         }
         
@@ -922,16 +776,6 @@
         }
 
         function goHome() {
-            // Reset to welcome modal if user wants to go home
-            const hasSeenWelcome = localStorage.getItem('cv-welcome-seen');
-            if (!hasSeenWelcome) {
-                const modal = document.getElementById('welcome-modal');
-                if (modal) {
-                    modal.classList.add('show');
-                    modal.style.display = 'flex';
-                }
-            }
-            
             const appName = document.querySelector('.app-name');
             const footer = document.getElementById('app-footer');
             const footerNav = document.getElementById('app-footer-nav');
@@ -948,64 +792,27 @@
         let photoData = null;
         let currentTemplate = 'minimal';
 
-        // --- INIT ---
-        // Animate progress steps in loop
-        let progressAnimationInterval = null;
-        
-        function animateProgressSteps() {
-            const todoItems = document.querySelectorAll('.todo-item');
-            if (todoItems.length === 0) return;
-            
-            // Clear existing interval if any
-            clearProgressAnimation();
-            
-            let currentStep = 0;
-            
-            function updateActiveStep() {
-                todoItems.forEach((item, index) => {
-                    if (index === currentStep) {
-                        item.classList.add('active');
-                    } else {
-                        item.classList.remove('active');
-                    }
-                });
-                
-                currentStep = (currentStep + 1) % todoItems.length;
-            }
-            
-            // Start with first step active
-            updateActiveStep();
-            
-            // Update every 2 seconds
-            progressAnimationInterval = setInterval(updateActiveStep, 2000);
-        }
-        
-        // Cleanup on page unload to prevent memory leaks
-        window.addEventListener('beforeunload', function() {
-            clearProgressAnimation();
-        });
-        
-        // Cleanup when welcome modal is closed via backdrop click or ESC
+        // Close language modal on backdrop click or ESC
         document.addEventListener('click', function(e) {
-            const welcomeModal = document.getElementById('welcome-modal');
-            if (welcomeModal && e.target === welcomeModal && welcomeModal.classList.contains('show')) {
-                clearProgressAnimation();
+            const langModal = document.getElementById('language-modal');
+            if (langModal && e.target === langModal && langModal.classList.contains('show')) {
+                closeLanguageModal();
             }
         });
         
         document.addEventListener('keydown', function(e) {
             if (e.key === 'Escape') {
-                const welcomeModal = document.getElementById('welcome-modal');
-                if (welcomeModal && welcomeModal.classList.contains('show')) {
-                    clearProgressAnimation();
+                const langModal = document.getElementById('language-modal');
+                if (langModal && langModal.classList.contains('show')) {
+                    closeLanguageModal();
                 }
             }
         });
         
         window.onload = function() {
-            // Initialize language and welcome modal
+            // Initialize language and app
             initLanguage();
-            checkWelcomeModal();
+            initApp();
             
             // Initialize premium modals
             initModals();
@@ -1478,16 +1285,22 @@
             reader.onload = function(evt) {
                 const img = new Image();
                 img.onload = function() {
-                    // Validate image dimensions (max 2000x2000px)
-                    const maxDimension = 2000;
-                    if (this.width > maxDimension || this.height > maxDimension) {
-                        alert(`Image dimensions are too large. Maximum size is ${maxDimension}x${maxDimension} pixels.`);
-                        e.target.value = '';
-                        return;
-                    }
-                    
-                    // All validations passed, set the photo
-                    photoData = evt.target.result;
+                    // Resize and center-crop to square for optimal CV photo quality
+                    // 400px = sharp at 300dpi print (22mm ≈ 260px @300dpi)
+                    const TARGET = 400;
+                    const sw = img.width, sh = img.height;
+                    const side = Math.min(sw, sh);
+                    const sx = (sw - side) / 2, sy = (sh - side) / 2;
+                    const canvas = document.createElement('canvas');
+                    canvas.width = TARGET;
+                    canvas.height = TARGET;
+                    const ctx = canvas.getContext('2d');
+                    ctx.imageSmoothingEnabled = true;
+                    ctx.imageSmoothingQuality = 'high';
+                    ctx.drawImage(img, sx, sy, side, side, 0, 0, TARGET, TARGET);
+                    const optimized = canvas.toDataURL('image/jpeg', 0.92);
+
+                    photoData = optimized;
                     document.getElementById('avatarImg').src = photoData;
                     document.getElementById('avatarImg').style.display = 'block';
                     const placeholderIcon = document.querySelector('.placeholder-icon');
@@ -1573,7 +1386,22 @@
         function showFinalResult() {
             document.getElementById('loading-modal').style.display = 'none';
             document.getElementById('preview-modal').style.display = 'flex';
+            // Show/hide disclaimer based on localStorage
+            const disclaimer = document.getElementById('preview-disclaimer');
+            if (disclaimer) {
+                if (localStorage.getItem('previewDisclaimerDismissed') === '1') {
+                    disclaimer.classList.add('hidden');
+                } else {
+                    disclaimer.classList.remove('hidden');
+                }
+            }
             requestAnimationFrame(() => paginatePreview());
+        }
+
+        function dismissPreviewDisclaimer() {
+            const el = document.getElementById('preview-disclaimer');
+            if (el) el.classList.add('hidden');
+            try { localStorage.setItem('previewDisclaimerDismissed', '1'); } catch(e) {}
         }
 
         function generateCV() {
@@ -1682,19 +1510,20 @@
             // Restore sheet so layout is measurable
             sheet.style.display = 'block';
             sheet.style.visibility = 'hidden';
+            sheet.style.position = 'relative';
 
-            // 297mm → CSS pixels (1in = 96px, 1in = 25.4mm)
-            const PAGE_H_PX = Math.round(297 * 96 / 25.4); // ~1122 px
+            // A4: 297mm in CSS pixels
+            const PAGE_H = Math.round(297 * 96 / 25.4); // ~1122 px
 
             const totalH = sheet.scrollHeight;
-            if (totalH <= PAGE_H_PX) {
-                // Single page — just show the sheet directly as one page clip
+            if (totalH <= PAGE_H) {
+                // Single page
                 const frag = document.createDocumentFragment();
                 const pageDiv = document.createElement('div');
                 pageDiv.className = 'cv-page-clip';
                 const inner = sheet.cloneNode(true);
                 inner.removeAttribute('id');
-                inner.style.cssText = 'position:absolute;left:0;width:100%;top:0px;min-height:unset;box-shadow:none;visibility:visible;display:block;';
+                inner.style.cssText = 'position:absolute;left:0;width:100%;top:0;min-height:unset;box-shadow:none;visibility:visible;display:block;';
                 pageDiv.appendChild(inner);
                 frag.appendChild(pageDiv);
                 paperScroll.insertBefore(frag, paperScroll.firstChild);
@@ -1703,75 +1532,110 @@
                 return;
             }
 
-            const sheetBound = sheet.getBoundingClientRect();
+            const sheetRect = sheet.getBoundingClientRect();
+            const topOf = (el) => el.getBoundingClientRect().top - sheetRect.top;
+            const botOf = (el) => el.getBoundingClientRect().bottom - sheetRect.top;
 
-            // Collect ALL block-level descendants that could be split
-            const allEls = Array.from(sheet.querySelectorAll('header, h3, div[style]')).filter(el => {
+            // Collect every leaf-ish block element — the smallest renderable units.
+            // We prefer the deepest block-level elements so we break between them,
+            // never through them.
+            const candidates = [];
+            const seen = new Set();
+            sheet.querySelectorAll('header, h1, h2, h3, h4, p, li, tr, hr, blockquote, .lang-bar, .skill-bar').forEach(el => {
+                if (el.offsetHeight > 2 && el.offsetHeight < PAGE_H) {
+                    candidates.push(el);
+                    seen.add(el);
+                }
+            });
+            // Also collect divs that are "leaf" blocks (don't contain other block candidates)
+            sheet.querySelectorAll('div').forEach(el => {
+                if (seen.has(el)) return;
                 const h = el.offsetHeight;
-                return h > 4 && h < PAGE_H_PX;
+                if (h <= 2 || h >= PAGE_H) return;
+                const style = getComputedStyle(el);
+                if (style.display === 'inline' || style.display === 'none') return;
+                // Only include if none of its children are already in the set
+                // (prefer the deepest blocks as break boundaries)
+                let hasChildCandidate = false;
+                for (const c of candidates) {
+                    if (el.contains(c) && el !== c) { hasChildCandidate = true; break; }
+                }
+                if (!hasChildCandidate) {
+                    candidates.push(el);
+                }
             });
 
-            function elTop(el) { return el.getBoundingClientRect().top - sheetBound.top; }
-            function elBottom(el) { return el.getBoundingClientRect().bottom - sheetBound.top; }
+            candidates.sort((a, b) => topOf(a) - topOf(b));
 
-            // Sort by top position
-            allEls.sort((a, b) => elTop(a) - elTop(b));
-
-            const pageStarts = [0];
+            // Build page break points
+            const breaks = [0]; // start of each page (in sheet px)
             let safety = 0;
+
             while (safety++ < 50) {
-                const prevStart = pageStarts[pageStarts.length - 1];
-                const idealBreak = prevStart + PAGE_H_PX;
+                const pageStart = breaks[breaks.length - 1];
+                const pageEnd = pageStart + PAGE_H;
 
-                if (idealBreak >= totalH - 10) break; // remaining content fits
+                if (pageEnd >= totalH - 8) break; // rest fits
 
-                // Find the best break: scan all elements near the ideal break
-                // and pick the one whose top is closest to (but before) idealBreak
-                // without straddling.
-                let bestBreak = idealBreak;
-                let found = false;
+                // Find the best break: we want the largest pageStart value ≤ pageEnd
+                // such that no candidate element straddles that line.
+                //
+                // Walk candidates backwards from the break line and find the first
+                // element whose top is before pageEnd and whose bottom is after.
+                // Break just before that element.
 
-                // Walk backwards from idealBreak to find the last element top
-                // that ends before the break — i.e., find the element that straddles
-                // and break just before it.
-                for (let i = allEls.length - 1; i >= 0; i--) {
-                    const top = elTop(allEls[i]);
-                    const bot = elBottom(allEls[i]);
-                    // Element starts before break and ends after break — it straddles
-                    if (top < idealBreak && bot > idealBreak + 2) {
-                        const candidate = top - 4;
-                        // Only accept if we don't lose too much page space
-                        if (candidate > prevStart + PAGE_H_PX * 0.4) {
-                            bestBreak = candidate;
-                            found = true;
-                            break;
-                        }
+                let breakY = pageEnd; // default: hard break at page boundary
+                const minBreak = pageStart + PAGE_H * 0.35; // don't waste > 65% of a page
+
+                // First pass: find the lowest straddling-element top (ceiling for our break)
+                let ceiling = pageEnd;
+                for (let i = 0; i < candidates.length; i++) {
+                    const t = topOf(candidates[i]);
+                    const b = botOf(candidates[i]);
+                    if (b <= minBreak) continue;
+                    if (t >= pageEnd) break; // sorted by top, done
+                    if (b > pageEnd && t > minBreak && t < ceiling) {
+                        ceiling = t - 2; // break must be before this straddler
                     }
-                    // Element fully before break — no straddling from here on
-                    if (bot <= idealBreak) break;
                 }
 
-                pageStarts.push(bestBreak);
+                // Second pass: find the highest element bottom ≤ ceiling
+                let bestBottom = -1;
+                for (let i = 0; i < candidates.length; i++) {
+                    const b = botOf(candidates[i]);
+                    if (b > ceiling) continue;
+                    if (b > minBreak && b > bestBottom) bestBottom = b;
+                }
+
+                breakY = (bestBottom > minBreak) ? bestBottom : ceiling;
+
+                // Safety: ensure forward progress
+                if (breakY <= pageStart + 50) breakY = pageEnd;
+
+                breaks.push(breakY);
             }
 
+            // Build page clips — each clip shows exactly [startY, nextStartY)
             const frag = document.createDocumentFragment();
-            for (let i = 0; i < pageStarts.length; i++) {
-                const startY = pageStarts[i];
+            for (let i = 0; i < breaks.length; i++) {
+                const startY = breaks[i];
+                const nextY = (i + 1 < breaks.length) ? breaks[i + 1] : totalH;
+                const visibleH = Math.min(nextY - startY, PAGE_H);
+
                 const pageDiv = document.createElement('div');
                 pageDiv.className = 'cv-page-clip';
                 const inner = sheet.cloneNode(true);
                 inner.removeAttribute('id');
-                inner.style.cssText = [
-                    'position:absolute',
-                    'left:0',
-                    'width:100%',
-                    `top:${-startY}px`,
-                    'min-height:unset',
-                    'box-shadow:none',
-                    'visibility:visible',
-                    'display:block',
-                ].join(';');
+                inner.style.cssText = `position:absolute;left:0;width:100%;top:${-startY}px;min-height:unset;box-shadow:none;visibility:visible;display:block;`;
                 pageDiv.appendChild(inner);
+
+                // White mask hides content that belongs to the next page
+                if (visibleH < PAGE_H) {
+                    const mask = document.createElement('div');
+                    mask.style.cssText = `position:absolute;left:0;right:0;top:${visibleH}px;bottom:0;background:#fff;z-index:2;pointer-events:none;`;
+                    pageDiv.appendChild(mask);
+                }
+
                 frag.appendChild(pageDiv);
             }
 
@@ -1799,7 +1663,7 @@
             sheet.className = 'cv-sheet ' + templateClass;
             
             let html = '';
-            const imgHTML = cvData.photo ? `<img src="${cvData.photo}" style="width:110px; height:110px; border-radius:50%; object-fit:cover; display:block;">` : '';
+            const imgHTML = cvData.photo ? `<img src="${cvData.photo}" style="width:110px; height:110px; border-radius:50%; object-fit:cover; display:block; border:2px solid #e5e7eb; box-shadow:0 2px 8px rgba(0,0,0,0.08);">` : '';
             const verifiedIcon = `<svg viewBox="0 0 24 24" style="width:16px; height:16px; margin-left:6px; vertical-align:middle; display:inline-block;"><circle cx="12" cy="12" r="10" fill="#10B981" stroke="#10B981" stroke-width="1"><\/circle><path d="M9 12l2 2 4-4" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" fill="none"><\/path><\/svg>`;
 
             const socialHTML = cvData.socials.map(s => `<span style="display:inline-flex; align-items:center; margin-right:12px; color:#555;">${getSocialIcon(s.type)}${s.val}<\/span>`).join('');
@@ -2128,7 +1992,7 @@
                         `).join('')}
                     <\/div>` : ''}
 
-                    ${cvData.projects && cvData.projects.length ? `<h3 style="font-size:12px; text-transform:uppercase; font-weight:700; letter-spacing:2px; margin-top:24px; margin-bottom:14px; padding-bottom:10px; border-bottom:2px solid #E8EEF5; color:#1A3A52;">${typeof t === 'function' ? t('sections.personalProjects') : 'Personal Projects'}<\/h3>
+                    ${cvData.projects && cvData.projects.length ? `<h3 style="font-size:12px; text-transform:uppercase; font-weight:700; letter-spacing:2px; margin-top:32px; margin-bottom:14px; padding-bottom:10px; border-bottom:2px solid #E8EEF5; color:#1A3A52;">${typeof t === 'function' ? t('sections.personalProjects') : 'Personal Projects'}<\/h3>
                     ${cvData.projects.map(p => {
                         const projUrl = p.link ? (p.link.startsWith('http') ? p.link : `https://${p.link}`) : null;
                         return `<div style="margin-bottom:12px;">
@@ -2514,15 +2378,10 @@
         }
         
         
-        // --- SHOW APP NAME AFTER LANGUAGE SELECTION ---
+        // --- SHOW APP NAME ---
         function updateAppNameVisibility() {
             const appName = document.querySelector('.app-name');
-            const welcomeModal = document.getElementById('welcome-modal');
-            if(welcomeModal && !welcomeModal.classList.contains('show')) {
-                if(appName) appName.style.display = 'flex';
-            } else {
-                if(appName) appName.style.display = 'none';
-            }
+            if(appName) appName.style.display = 'flex';
         }
     </script>
 

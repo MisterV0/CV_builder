@@ -85,7 +85,7 @@ function preConvertPhoto(dataUrl) {
     });
 }
 
-function addImageToPDF(doc, imageData, x, y, width, height) {
+function addImageToPDF(doc, imageData, x, y, width, height, circular) {
     if (!imageData) {
         return false;
     }
@@ -104,12 +104,31 @@ function addImageToPDF(doc, imageData, x, y, width, height) {
             if (!imageData) return false;
         }
         
-        doc.addImage(imageData, imageFormat, x, y, width, height);
+        if (circular) {
+            // Circular clipping using save/restore and ellipse clip path
+            const cx = x + width / 2;
+            const cy = y + height / 2;
+            const rx = width / 2;
+            const ry = height / 2;
+            doc.saveGraphicsState();
+            doc.circle(cx, cy, rx, null);
+            doc.clip();
+            doc.discardPath();
+            doc.addImage(imageData, imageFormat, x, y, width, height);
+            doc.restoreGraphicsState();
+        } else {
+            doc.addImage(imageData, imageFormat, x, y, width, height);
+        }
         return true;
     } catch (error) {
-        // If image fails, continue without it
-        console.warn('Could not add image to PDF:', error);
-        return false;
+        // If image fails, continue without it (fallback to non-circular)
+        try {
+            doc.addImage(imageData, imageFormat, x, y, width, height);
+            return true;
+        } catch (e2) {
+            console.warn('Could not add image to PDF:', error);
+            return false;
+        }
     }
 }
 
@@ -218,7 +237,7 @@ function renderMinimalPDF(doc, cvData, pageWidth, pageHeight, margin, lineHeight
     if (cvData.photo) {
         const photoSize = 22; // mm
         const photoX = pageWidth - margin - photoSize;
-        addImageToPDF(doc, cvData.photo, photoX, headerStartY, photoSize, photoSize);
+        addImageToPDF(doc, cvData.photo, photoX, headerStartY, photoSize, photoSize, true);
     }
     
     // Header bottom border
@@ -244,7 +263,7 @@ function renderMinimalPDF(doc, cvData, pageWidth, pageHeight, margin, lineHeight
     
     // Work Experience
     if (cvData.exp && cvData.exp.length > 0) {
-        yPos = addNewPageIfNeeded(doc, yPos, 20, pageHeight, margin);
+        yPos = addNewPageIfNeeded(doc, yPos, 45, pageHeight, margin);
         doc.setFontSize(13);
         doc.setFont('NotoSans', 'bold');
         doc.setTextColor(17, 17, 17);
@@ -303,7 +322,7 @@ function renderMinimalPDF(doc, cvData, pageWidth, pageHeight, margin, lineHeight
     
     // Education
     if (cvData.edu && cvData.edu.length > 0) {
-        yPos = addNewPageIfNeeded(doc, yPos, 20, pageHeight, margin);
+        yPos = addNewPageIfNeeded(doc, yPos, 45, pageHeight, margin);
         yPos += 5;
         doc.setFontSize(13);
         doc.setFont('NotoSans', 'bold');
@@ -363,7 +382,7 @@ function renderMinimalPDF(doc, cvData, pageWidth, pageHeight, margin, lineHeight
     
     // Certifications
     if (cvData.certs && cvData.certs.length > 0) {
-        yPos = addNewPageIfNeeded(doc, yPos, 20, pageHeight, margin);
+        yPos = addNewPageIfNeeded(doc, yPos, 45, pageHeight, margin);
         yPos += 5;
         doc.setFontSize(13);
         doc.setFont('NotoSans', 'bold');
@@ -422,7 +441,7 @@ function renderMinimalPDF(doc, cvData, pageWidth, pageHeight, margin, lineHeight
     
     // Skills
     if (cvData.skills && cvData.skills.length > 0) {
-        yPos = addNewPageIfNeeded(doc, yPos, 25, pageHeight, margin);
+        yPos = addNewPageIfNeeded(doc, yPos, 45, pageHeight, margin);
         yPos += 5;
         doc.setFontSize(13);
         doc.setFont('NotoSans', 'bold');
@@ -471,7 +490,7 @@ function renderMinimalPDF(doc, cvData, pageWidth, pageHeight, margin, lineHeight
     
     // Languages
     if (cvData.languages && cvData.languages.length > 0) {
-        yPos = addNewPageIfNeeded(doc, yPos, 25, pageHeight, margin);
+        yPos = addNewPageIfNeeded(doc, yPos, 45, pageHeight, margin);
         yPos += 5;
         doc.setFontSize(13);
         doc.setFont('NotoSans', 'bold');
@@ -509,7 +528,7 @@ function renderMinimalPDF(doc, cvData, pageWidth, pageHeight, margin, lineHeight
     
     // Personal Projects
     if (cvData.projects && cvData.projects.length > 0) {
-        yPos = addNewPageIfNeeded(doc, yPos, 25, pageHeight, margin);
+        yPos = addNewPageIfNeeded(doc, yPos, 45, pageHeight, margin);
         yPos += 5;
         doc.setFontSize(13);
         doc.setFont('NotoSans', 'bold');
@@ -567,7 +586,7 @@ function renderExecPDF(doc, cvData, pageWidth, pageHeight, margin, lineHeight, s
     if (cvData.photo) {
         const photoSize = 22;
         const photoX = (pageWidth - photoSize) / 2;
-        addImageToPDF(doc, cvData.photo, photoX, yPos, photoSize, photoSize);
+        addImageToPDF(doc, cvData.photo, photoX, yPos, photoSize, photoSize, true);
         yPos += photoSize + 6;
     }
     
@@ -635,7 +654,7 @@ function renderExecPDF(doc, cvData, pageWidth, pageHeight, margin, lineHeight, s
     
     // Work Experience
     if (cvData.exp && cvData.exp.length > 0) {
-        yPos = addNewPageIfNeeded(doc, yPos, 20, pageHeight, margin);
+        yPos = addNewPageIfNeeded(doc, yPos, 45, pageHeight, margin);
         doc.setFontSize(12);
         doc.setFont('NotoSans', 'bold');
         doc.setTextColor(17, 17, 17);
@@ -694,7 +713,7 @@ function renderExecPDF(doc, cvData, pageWidth, pageHeight, margin, lineHeight, s
     
     // Education
     if (cvData.edu && cvData.edu.length > 0) {
-        yPos = addNewPageIfNeeded(doc, yPos, 25, pageHeight, margin);
+        yPos = addNewPageIfNeeded(doc, yPos, 45, pageHeight, margin);
         yPos += 10;
         doc.setFontSize(12);
         doc.setFont('NotoSans', 'bold');
@@ -749,7 +768,7 @@ function renderExecPDF(doc, cvData, pageWidth, pageHeight, margin, lineHeight, s
     
     // Certifications
     if (cvData.certs && cvData.certs.length > 0) {
-        yPos = addNewPageIfNeeded(doc, yPos, 25, pageHeight, margin);
+        yPos = addNewPageIfNeeded(doc, yPos, 45, pageHeight, margin);
         yPos += 10;
         doc.setFontSize(12);
         doc.setFont('NotoSans', 'bold');
@@ -807,7 +826,7 @@ function renderExecPDF(doc, cvData, pageWidth, pageHeight, margin, lineHeight, s
     
     // Personal Projects
     if (cvData.projects && cvData.projects.length > 0) {
-        yPos = addNewPageIfNeeded(doc, yPos, 25, pageHeight, margin);
+        yPos = addNewPageIfNeeded(doc, yPos, 45, pageHeight, margin);
         yPos += 10;
         doc.setFontSize(12);
         doc.setFont('NotoSans', 'bold');
@@ -865,7 +884,7 @@ function renderElegantPDF(doc, cvData, pageWidth, pageHeight, margin, lineHeight
     // Photo (top-right corner)
     if (cvData.photo) {
         const photoSize = 20;
-        addImageToPDF(doc, cvData.photo, pageWidth - margin - photoSize, margin, photoSize, photoSize);
+        addImageToPDF(doc, cvData.photo, pageWidth - margin - photoSize, margin, photoSize, photoSize, true);
     }
 
     // Centered name
@@ -932,7 +951,7 @@ function renderElegantPDF(doc, cvData, pageWidth, pageHeight, margin, lineHeight
 
     // Section helper
     function elegantSection(title) {
-        yPos = addNewPageIfNeeded(doc, yPos, 20, pageHeight, margin);
+        yPos = addNewPageIfNeeded(doc, yPos, 45, pageHeight, margin);
         yPos += 3;
         doc.setFontSize(13);
         doc.setFont('NotoSans', 'bold');
@@ -1141,7 +1160,7 @@ function renderJakartaPDF(doc, cvData, pageWidth, pageHeight, margin, lineHeight
     
     if (cvData.photo) {
         const photoSize = 22;
-        addImageToPDF(doc, cvData.photo, margin, yPos, photoSize, photoSize);
+        addImageToPDF(doc, cvData.photo, margin, yPos, photoSize, photoSize, true);
         textStartX = margin + 24;
     }
     
@@ -1216,7 +1235,7 @@ function renderJakartaPDF(doc, cvData, pageWidth, pageHeight, margin, lineHeight
     
     // Work Experience
     if (cvData.exp && cvData.exp.length > 0) {
-        yPos = addNewPageIfNeeded(doc, yPos, 25, pageHeight, margin);
+        yPos = addNewPageIfNeeded(doc, yPos, 45, pageHeight, margin);
         yPos += 5;
         doc.setFontSize(12);
         doc.setFont('NotoSans', 'bold');
@@ -1273,7 +1292,7 @@ function renderJakartaPDF(doc, cvData, pageWidth, pageHeight, margin, lineHeight
     
     // Education
     if (cvData.edu && cvData.edu.length > 0) {
-        yPos = addNewPageIfNeeded(doc, yPos, 25, pageHeight, margin);
+        yPos = addNewPageIfNeeded(doc, yPos, 45, pageHeight, margin);
         yPos += 5;
         doc.setFontSize(12);
         doc.setFont('NotoSans', 'bold');
@@ -1332,7 +1351,7 @@ function renderJakartaPDF(doc, cvData, pageWidth, pageHeight, margin, lineHeight
     
     // Certifications
     if (cvData.certs && cvData.certs.length > 0) {
-        yPos = addNewPageIfNeeded(doc, yPos, 20, pageHeight, margin);
+        yPos = addNewPageIfNeeded(doc, yPos, 45, pageHeight, margin);
         yPos += 5;
         doc.setFontSize(12);
         doc.setFont('NotoSans', 'bold');
@@ -1390,7 +1409,7 @@ function renderJakartaPDF(doc, cvData, pageWidth, pageHeight, margin, lineHeight
     
     // Skills
     if (cvData.skills && cvData.skills.length > 0) {
-        yPos = addNewPageIfNeeded(doc, yPos, 25, pageHeight, margin);
+        yPos = addNewPageIfNeeded(doc, yPos, 45, pageHeight, margin);
         yPos += 5;
         doc.setFontSize(12);
         doc.setFont('NotoSans', 'bold');
@@ -1439,7 +1458,7 @@ function renderJakartaPDF(doc, cvData, pageWidth, pageHeight, margin, lineHeight
     
     // Languages
     if (cvData.languages && cvData.languages.length > 0) {
-        yPos = addNewPageIfNeeded(doc, yPos, 25, pageHeight, margin);
+        yPos = addNewPageIfNeeded(doc, yPos, 45, pageHeight, margin);
         yPos += 5;
         doc.setFontSize(12);
         doc.setFont('NotoSans', 'bold');
@@ -1472,7 +1491,7 @@ function renderJakartaPDF(doc, cvData, pageWidth, pageHeight, margin, lineHeight
     
     // Personal Projects
     if (cvData.projects && cvData.projects.length > 0) {
-        yPos = addNewPageIfNeeded(doc, yPos, 25, pageHeight, margin);
+        yPos = addNewPageIfNeeded(doc, yPos, 45, pageHeight, margin);
         yPos += 5;
         doc.setFontSize(12);
         doc.setFont('NotoSans', 'bold');
@@ -1574,7 +1593,7 @@ function renderRoboticPDF(doc, cvData, pageWidth, pageHeight, margin, lineHeight
     if (cvData.photo) {
         const photoSize = 22;
         const photoX = pageWidth - margin - photoSize;
-        addImageToPDF(doc, cvData.photo, photoX, headerStartY, photoSize, photoSize);
+        addImageToPDF(doc, cvData.photo, photoX, headerStartY, photoSize, photoSize, true);
     }
     
     // Header border
@@ -1603,7 +1622,7 @@ function renderRoboticPDF(doc, cvData, pageWidth, pageHeight, margin, lineHeight
     
     // Work Experience
     if (cvData.exp && cvData.exp.length > 0) {
-        yPos = addNewPageIfNeeded(doc, yPos, 25, pageHeight, margin);
+        yPos = addNewPageIfNeeded(doc, yPos, 45, pageHeight, margin);
         yPos += 2;
         doc.setFontSize(11);
         doc.setFont('NotoSans', 'bold');
@@ -1661,7 +1680,7 @@ function renderRoboticPDF(doc, cvData, pageWidth, pageHeight, margin, lineHeight
     
     // Education
     if (cvData.edu && cvData.edu.length > 0) {
-        yPos = addNewPageIfNeeded(doc, yPos, 25, pageHeight, margin);
+        yPos = addNewPageIfNeeded(doc, yPos, 45, pageHeight, margin);
         yPos += 2;
         doc.setFontSize(11);
         doc.setFont('NotoSans', 'bold');
@@ -1720,7 +1739,7 @@ function renderRoboticPDF(doc, cvData, pageWidth, pageHeight, margin, lineHeight
     
     // Certifications
     if (cvData.certs && cvData.certs.length > 0) {
-        yPos = addNewPageIfNeeded(doc, yPos, 20, pageHeight, margin);
+        yPos = addNewPageIfNeeded(doc, yPos, 45, pageHeight, margin);
         yPos += 2;
         doc.setFontSize(11);
         doc.setFont('NotoSans', 'bold');
@@ -1778,7 +1797,7 @@ function renderRoboticPDF(doc, cvData, pageWidth, pageHeight, margin, lineHeight
     
     // Skills with progress bars
     if (cvData.skills && cvData.skills.length > 0) {
-        yPos = addNewPageIfNeeded(doc, yPos, 25, pageHeight, margin);
+        yPos = addNewPageIfNeeded(doc, yPos, 45, pageHeight, margin);
         yPos += 2;
         doc.setFontSize(11);
         doc.setFont('NotoSans', 'bold');
@@ -1923,12 +1942,13 @@ function renderRoboticPDF(doc, cvData, pageWidth, pageHeight, margin, lineHeight
             
             yPos += 5;
         });
+        yPos += 6;
     }
     
     // Personal Projects
     if (cvData.projects && cvData.projects.length > 0) {
-        yPos = addNewPageIfNeeded(doc, yPos, 25, pageHeight, margin);
-        yPos += 2;
+        yPos = addNewPageIfNeeded(doc, yPos, 45, pageHeight, margin);
+        yPos += 4;
         doc.setFontSize(11);
         doc.setFont('NotoSans', 'bold');
         doc.setTextColor(26, 58, 82);
