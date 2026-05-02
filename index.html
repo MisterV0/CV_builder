@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sartor CV – Free Professional CV Builder &amp; Resume Maker</title>
+    <title>Sartor CV – Build a Job-Winning CV in Minutes</title>
     
     <!-- Favicon -->
     <link rel="icon" type="image/svg+xml" href="resources/logo.svg">
@@ -14,7 +14,7 @@
     <meta name="author" content="Sartor CV">
 
     <!-- Primary SEO Meta -->
-    <meta name="description" content="Build a polished, professional CV online for free. Choose from beautiful templates, fill in your details and download a perfect PDF — no sign-up needed. Crea curriculum vitae gratis. Creează CV profesional. Конструктор резюме онлайн бесплатно.">
+    <meta name="description" content="Create a job-winning CV in minutes with elegant templates, smart wording guidance, and instant PDF export. Free, fast, and built for modern hiring.">
     <meta name="keywords" content="CV builder, resume builder, curriculum vitae, free CV, professional CV, PDF resume, online CV maker, Sartor CV, costruttore CV, curriculum vitae gratis, modello CV, curriculum online, creator CV, CV gratuit online, model CV profesional, конструктор резюме, резюме онлайн, бесплатное резюме, скачать резюме, конструктор резюме безкоштовно, резюме онлайн безкоштовно">
     <meta name="image" content="resources/logo.svg">
 
@@ -22,8 +22,8 @@
     <meta property="og:type" content="website">
     <meta property="og:site_name" content="Sartor CV">
     <meta property="og:url" content="https://sartorcv.com/">
-    <meta property="og:title" content="Sartor CV – Free Professional CV Builder & Resume Maker">
-    <meta property="og:description" content="Build a polished, professional CV online for free. Beautiful templates, instant PDF download — no sign-up needed.">
+    <meta property="og:title" content="Sartor CV – Build a Job-Winning CV in Minutes">
+    <meta property="og:description" content="Create a job-winning CV in minutes with elegant templates and instant PDF export. Free, fast, and built for modern hiring.">
     <meta property="og:image" content="resources/logo.svg">
     <meta property="og:image:type" content="image/svg+xml">
     <meta property="og:image:width" content="745">
@@ -184,11 +184,13 @@
 
     <div class="container">
         <header>
-            <h1>Sartor CV</h1>
+            <h1>The Free CV Builder That Gets You Hired Faster</h1>
+            <p class="hero-subtitle">Build a polished, recruiter-ready resume in minutes with elegant templates and instant PDF download.</p>
         </header>
 
         <div class="app-name" style="display:flex; flex-direction:column;">
             <h3 class="app-name-text" style="margin:0;">Sartor CV</h3>
+            <p class="app-name-subtitle">Simple. Elegant. Hired.</p>
 
         </div>
 
@@ -487,8 +489,8 @@
         // --- MULTILINGUAL SEO META UPDATE ---
         const _SEO_META = {
             en: {
-                title: 'Sartor CV – Free Professional CV Builder & Resume Maker',
-                description: 'Build a polished, professional CV online for free. Choose from beautiful templates, fill in your details and download a perfect PDF — no sign-up needed.',
+                title: 'Sartor CV – Build a Job-Winning CV in Minutes',
+                description: 'Create a job-winning CV in minutes with elegant templates, smart wording guidance, and instant PDF export. Free, fast, and built for modern hiring.',
                 ogUrl: 'https://sartorcv.com/'
             },
             it: {
@@ -646,6 +648,7 @@
             updateLanguageDisplay();
             applyTranslations();
             updateSEOMeta(lang);
+            initApp();
             closeLanguageModal();
         }
         
@@ -1763,7 +1766,6 @@
                  const socialExec = cvData.socials.map(s => s.val).join(' | ');
                  html = `
                     <div style="text-align:center;">
-                        ${imgHTML ? `<div style="margin-bottom:16px; display:flex; justify-content:center;">${imgHTML}<\/div>` : ''}
                         ${cvData.name ? `<h1 style="margin-bottom:5px;">${cvData.name}<\/h1>` : ''}
                         <div style="text-transform:uppercase; font-size:12px; letter-spacing:2px; color:#555;">${cvData.title}<\/div>
                         <div style="margin:10px 0 30px; font-size:12px; color:#444; border-top:1px solid #eee; border-bottom:1px solid #eee; padding:10px 0;">
@@ -1818,7 +1820,6 @@
                 html = `
                     <header style="margin-bottom:40px; padding-bottom:24px; border-bottom:2px solid #2C3E50;">
                         <div style="display:block; align-items:start;">
-                            ${imgHTML ? `<div style="margin-bottom: 20px;">${imgHTML}<\/div>` : ''}
                             <div>
                                 <h1 style="margin:0 0 8px; font-size:40px; color:#1a1a1a; word-wrap: break-word;">${cvData.name}<\/h1>
                                 <div style="font-size:16px; color:#2C3E50; font-weight:600; margin-bottom:12px; word-wrap: break-word;">${cvData.title}<\/div>
@@ -2352,6 +2353,9 @@
             // Apply translations
             applyTranslations();
             updateSEOMeta(lang);
+            
+            // Show footer and app UI
+            initApp();
         }
         
         // Close modals when clicking backdrop
@@ -2636,10 +2640,10 @@
     </div>
     
     <!-- FOOTER -->
-    <div id="app-footer" style="display:none;">
+    <div id="app-footer" style="display:flex;">
         <div style="display: flex; flex-direction: column; gap: 16px; width: 100%; align-items: center;">
             <div style="text-align: center;">
-                <span style="color: var(--text-secondary); font-size: 12px;">© 2025 Sartor CV - Tailored by your needs, Proudly made in EU</span>
+                <span style="color: var(--text-secondary); font-size: 12px;">© 2026 Sartor CV - Tailored by your needs, Proudly made in EU</span>
             </div>
             <div style="display: flex; gap: 24px; align-items: center; flex-wrap: wrap; justify-content: center;">
             <button class="footer-link" onclick="openToS()" data-subtitle="Our policies">Terms of Service</button>
